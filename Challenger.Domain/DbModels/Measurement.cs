@@ -25,5 +25,7 @@
         public double Tigh { get; set; }
 
         public double Calf { get; set; }
+
+        //public double Fat { get; set; }
     }
 }
