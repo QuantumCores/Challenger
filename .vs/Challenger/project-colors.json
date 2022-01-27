@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "174765a0-daeb-4226-afa0-83ea212ef6c0": {
+      "ProjectGuid": "174765a0-daeb-4226-afa0-83ea212ef6c0",
+      "DisplayName": "Challenger.Api",
+      "ColorIndex": 0
+    },
+    "068f13ef-7abd-46fd-b65a-db0d5a7d201c": {
+      "ProjectGuid": "068f13ef-7abd-46fd-b65a-db0d5a7d201c",
+      "DisplayName": "Challenger.DbUp",
+      "ColorIndex": 1
+    },
+    "b92c4d06-a0c0-45c9-9640-decc8105eb03": {
+      "ProjectGuid": "b92c4d06-a0c0-45c9-9640-decc8105eb03",
+      "DisplayName": "WebRecon",
+      "ColorIndex": 2
+    },
+    "daf49d8f-105d-4bc8-a0f6-bfd75843d9a9": {
+      "ProjectGuid": "daf49d8f-105d-4bc8-a0f6-bfd75843d9a9",
+      "DisplayName": "Challenger.Infrastructure",
+      "ColorIndex": 3
+    },
+    "eecdfd36-a2ad-4b5b-a60c-eb60df32463f": {
+      "ProjectGuid": "eecdfd36-a2ad-4b5b-a60c-eb60df32463f",
+      "DisplayName": "Challenger.Domain",
+      "ColorIndex": 4
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 5
+}

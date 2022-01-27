@@ -1,0 +1,15 @@
+CREATE TABLE [dbo].[User](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	
+	[Email] [nvarchar] (100) NOT NULL,
+	
+	[DateOfBirth] [DateTime]
+	
+	[Height] [double] NOT NULL,
+	
+	
+ CONSTRAINT [PK_dbo.User] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]

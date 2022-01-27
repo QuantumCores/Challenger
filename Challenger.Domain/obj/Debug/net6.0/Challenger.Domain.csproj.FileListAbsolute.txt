@@ -1,0 +1,11 @@
+H:\PROJ\Challenger\Challenger.Domain\bin\Debug\net6.0\Challenger.Domain.deps.json
+H:\PROJ\Challenger\Challenger.Domain\bin\Debug\net6.0\Challenger.Domain.dll
+H:\PROJ\Challenger\Challenger.Domain\bin\Debug\net6.0\ref\Challenger.Domain.dll
+H:\PROJ\Challenger\Challenger.Domain\bin\Debug\net6.0\Challenger.Domain.pdb
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.GeneratedMSBuildEditorConfig.editorconfig
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.AssemblyInfoInputs.cache
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.AssemblyInfo.cs
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.csproj.CoreCompileInputs.cache
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.dll
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\ref\Challenger.Domain.dll
+H:\PROJ\Challenger\Challenger.Domain\obj\Debug\net6.0\Challenger.Domain.pdb

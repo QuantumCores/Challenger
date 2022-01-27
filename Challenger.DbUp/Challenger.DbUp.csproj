@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DB\Identity\001_dbo.Identity.sql" />
+    <None Remove="DB\Scripts\01\001_dbo.User.sql" />
+    <None Remove="DB\Scripts\01\002_dbo.Measurement.sql" />
+    <None Remove="DB\Scripts\01\003_dbo.GymRecord.sql" />
+    <None Remove="DB\Scripts\01\004_dbo.FitRecord.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DB\Identity\001_dbo.Identity.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Scripts\01\001_dbo.User.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Scripts\01\002_dbo.Measurement.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Scripts\01\003_dbo.GymRecord.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Scripts\01\004_dbo.FitRecord.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup" Version="4.5.0" />
+    <PackageReference Include="dbup-core" Version="4.5.0" />
+  </ItemGroup>
+
+</Project>

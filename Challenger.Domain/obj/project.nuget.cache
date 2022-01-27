@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "PT0ruWrWALt9YyHPSUWHARePn5nbNwGv4s6EFMhBTVMiwgTQu9XnFFvlSnCYNnWAbxxupqb8mI24sEQNvhlexQ==",
+  "success": true,
+  "projectFilePath": "H:\\PROJ\\Challenger\\Challenger.Domain\\Challenger.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kanon\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
+    "C:\\Users\\kanon\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,35 @@
+Specs, configFileName));
+        }
+        else {
+            ts.filterMutate(configParseDiagnostics, function (error) { return !isErrorNoInputFiles(error); });
+        }
+        return existingErrors !== configParseDiagnostics.length;
+    }
+    ts.updateErrorForNoInputFiles = updateErrorForNoInputFiles;
+    function isSuccessfulParsedTsconfig(value) {
+        return !!value.options;
+    }
+    /**
+     * This *just* extracts options/include/exclude/files out of a config file.
+     * It does *not* resolve the included files.
+     */
+    function parseConfig(json, sourceFile, host, basePath, configFileName, resolutionStack, errors, extendedConfigCache) {
+        var _a;
+        basePath = ts.normalizeSlashes(basePath);
+        var resolvedPath = ts.getNormalizedAbsolutePath(configFileName || "", basePath);
+        if (resolutionStack.indexOf(resolvedPath) >= 0) {
+            errors.push(ts.createCompilerDiagnostic(ts.Diagnostics.Circularity_detected_while_resolving_configuration_Colon_0, __spreadArray(__spreadArray([], resolutionStack), [resolvedPath]).join(" -> ")));
+            return { raw: json || convertToObject(sourceFile, errors) };
+        }
+        var ownConfig = json ?
+            parseOwnConfigOfJson(json, host, basePath, configFileName, errors) :
+            parseOwnConfigOfJsonSourceFile(sourceFile, host, basePath, configFileName, errors);
+        if ((_a = ownConfig.options) === null || _a === void 0 ? void 0 : _a.paths) {
+            // If we end up needing to resolve relative paths from 'paths' relative to
+            // the config file location, we'll need to know where that config file was.
+            // Since 'paths' can be inherited from an extended config in another directory,
+            // we wouldn't know which directory to use unless we store it here.
+            ownConfig.options.pathsBasePath = basePath;
+        }
+        if (ownConfig.extendedConfigPath) {
+            // copy the resolution stack so it is never reused between branches in po

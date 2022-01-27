@@ -1,0 +1,43 @@
+ctory.length, resolutionDirectory.length);
+                while (i < limit && directory.charCodeAt(i) === resolutionDirectory.charCodeAt(i)) {
+                    i++;
+                }
+                if (i === directory.length && (resolutionDirectory.length === i || resolutionDirectory[i] === ts.directorySeparator)) {
+                    return directory;
+                }
+                var rootLength = ts.getRootLength(directory);
+                if (i < rootLength) {
+                    return undefined;
+                }
+                var sep = directory.lastIndexOf(ts.directorySeparator, i - 1);
+                if (sep === -1) {
+                    return undefined;
+                }
+                return directory.substr(0, Math.max(sep, rootLength));
+            }
+        }
+    }
+    ts.createModuleResolutionCacheWithMaps = createModuleResolutionCacheWithMaps;
+    function resolveModuleNameFromCache(moduleName, containingFile, cache) {
+        var containingDirectory = ts.getDirectoryPath(containingFile);
+        var perFolderCache = cache && cache.getOrCreateCacheForDirectory(containingDirectory);
+        return perFolderCache && perFolderCache.get(moduleName);
+    }
+    ts.resolveModuleNameFromCache = resolveModuleNameFromCache;
+    function resolveModuleName(moduleName, containingFile, compilerOptions, host, cache, redirectedReference) {
+        var traceEnabled = isTraceEnabled(compilerOptions, host);
+        if (redirectedReference) {
+            compilerOptions = redirectedReference.commandLine.options;
+        }
+        if (traceEnabled) {
+            trace(host, ts.Diagnostics.Resolving_module_0_from_1, moduleName, containingFile);
+            if (redirectedReference) {
+                trace(host, ts.Diagnostics.Using_compiler_options_of_project_reference_redirect_0, redirectedReference.sourceFile.fileName);
+            }
+        }
+        var containingDirectory = ts.getDirectoryPath(containingFile);
+        var perFolderCache = cache && cache.getOrCreateCacheForDirectory(containingDirectory, redirectedReference);
+        var result = perFolderCache && perFolderCache.get(moduleName);
+        if (result) {
+            if (traceEnabled) {
+                trace(host, ts.Diagnostics.Resolution_for_module_0_was_found_

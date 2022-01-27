@@ -1,0 +1,36 @@
+ (re) { return re.test(file); });
+                    if (includeIndex !== -1) {
+                        var key_1 = keyMapper(file);
+                        if (!literalFileMap.has(key_1) && !wildCardJsonFileMap.has(key_1)) {
+                            wildCardJsonFileMap.set(key_1, file);
+                        }
+                    }
+                    return "continue";
+                }
+                // If we have already included a literal or wildcard path with a
+                // higher priority extension, we should skip this file.
+                //
+                // This handles cases where we may encounter both <file>.ts and
+                // <file>.d.ts (or <file>.js if "allowJs" is enabled) in the same
+                // directory when they are compilation outputs.
+                if (hasFileWithHigherPriorityExtension(file, literalFileMap, wildcardFileMap, supportedExtensions, keyMapper)) {
+                    return "continue";
+                }
+                // We may have included a wildcard path with a lower priority
+                // extension due to the user-defined order of entries in the
+                // "include" array. If there is a lower priority extension in the
+                // same directory, we should remove it.
+                removeWildcardFilesWithLowerPriorityExtension(file, wildcardFileMap, supportedExtensions, keyMapper);
+                var key = keyMapper(file);
+                if (!literalFileMap.has(key) && !wildcardFileMap.has(key)) {
+                    wildcardFileMap.set(key, file);
+                }
+            };
+            for (var _a = 0, _b = host.readDirectory(basePath, supportedExtensionsWithJsonIfResolveJsonModule, validatedExcludeSpecs, validatedIncludeSpecs, /*depth*/ undefined); _a < _b.length; _a++) {
+                var file = _b[_a];
+                _loop_6(file);
+            }
+        }
+        var literalFiles = ts.arrayFrom(literalFileMap.values());
+        var wildcardFiles = ts.arrayFrom(wildcardFileMap.values());
+        return literalFiles.concat(wildcardFile

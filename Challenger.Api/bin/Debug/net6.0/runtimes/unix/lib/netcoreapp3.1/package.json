@@ -1,0 +1,40 @@
+eturn options.typeRoots;
+        }
+        var currentDirectory;
+        if (options.configFilePath) {
+            currentDirectory = ts.getDirectoryPath(options.configFilePath);
+        }
+        else if (host.getCurrentDirectory) {
+            currentDirectory = host.getCurrentDirectory();
+        }
+        if (currentDirectory !== undefined) {
+            return getDefaultTypeRoots(currentDirectory, host);
+        }
+    }
+    ts.getEffectiveTypeRoots = getEffectiveTypeRoots;
+    /**
+     * Returns the path to every node_modules/@types directory from some ancestor directory.
+     * Returns undefined if there are none.
+     */
+    function getDefaultTypeRoots(currentDirectory, host) {
+        if (!host.directoryExists) {
+            return [ts.combinePaths(currentDirectory, nodeModulesAtTypes)];
+            // And if it doesn't exist, tough.
+        }
+        var typeRoots;
+        ts.forEachAncestorDirectory(ts.normalizePath(currentDirectory), function (directory) {
+            var atTypes = ts.combinePaths(directory, nodeModulesAtTypes);
+            if (host.directoryExists(atTypes)) {
+                (typeRoots || (typeRoots = [])).push(atTypes);
+            }
+            return undefined;
+        });
+        return typeRoots;
+    }
+    var nodeModulesAtTypes = ts.combinePaths("node_modules", "@types");
+    /**
+     * @param {string | undefined} containingFile - file that contains type reference directive, can be undefined if containing file is unknown.
+     * This is possible in case if resolution is performed for directives specified via 'types' parameter. In this case initial path for secondary lookups
+     * is assumed to be the same as root directory of the project.
+     */
+    function resolveTypeReferenceDirective(typeReferenceDirectiveName, containingFile, options, ho
