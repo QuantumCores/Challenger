@@ -1,15 +1,15 @@
-export interface MeasurementDto {
+export class MeasurementDto {
 
-    Id: number;
-    UserId: number;
-    MeasurementDate: Date
-    Weight: number;
-    Waist: number;
-    Neck: number;
-    Chest: number;
-    Hips: number;
-    Biceps: number;
-    Tigh: number;
-    Calf: number;
-    //Fat :number;
+    id: number;
+    userId: number;
+    measurementDate: Date;
+    weight: number;
+    waist: number;
+    neck: number;
+    chest: number;
+    hips: number;
+    biceps: number;
+    tigh: number;
+    calf: number;
+    fat : number;
 }

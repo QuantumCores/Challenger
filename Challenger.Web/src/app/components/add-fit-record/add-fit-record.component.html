@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-12 py-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group first">
+                        <label for="RecordDate">Date</label>
+                        <input class="form-control" type="date" name="RecordDate" id="RecordDate"
+                            [(ngModel)]="record.RecordDate" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Excersize">Excersize</label>
+                        <input class="form-control" id="Excersize" 
+                            [(ngModel)]="record.Excersize" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Duration">Duration (s)</label>
+                        <input class="form-control" id="Duration"
+                            [(ngModel)]="record.Duration" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Repetitions">Repetitions</label>
+                        <input class="form-control" id="Repetitions" 
+                            [(ngModel)]="record.Repetitions" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Distance">Distance (m)</label>
+                        <input class="form-control" id="Distance"
+                            [(ngModel)]="record.Distance" />
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>

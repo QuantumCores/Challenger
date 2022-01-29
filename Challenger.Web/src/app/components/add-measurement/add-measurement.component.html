@@ -1,29 +1,68 @@
-<!-- <form class="add-form">
-    <div class="form-control">
-        <label for="date">Date</label>
-        <input type="date" name="date" id="date" placeholder="currentDate" [(ngModel)]="measurement.MeasurementDate.toDateString()" />
-    </div>
-    <div class="form-control">
-        <label for="weight">Weight</label>
-        <input type="number" name="weight" id="weight" [(ngModel)]="measurement.Weight" />
-    </div>    
-    <input type="submit" value="Save Task" class="btn btn-block" />
-</form> -->
 <div class="container">
     <div class="row align-items-center justify-content-center">
-        <div class="col-md-7 py-5">
+        <div class="col-md-12 py-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group first">
+                        <label for="date">Date</label>
+                        <input class="form-control" type="date" name="date" id="date" [value]="measurement.measurementDate | date: 'yyyy-MM-dd'"
+                            (change)='setDate($event)' />
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="date">Date</label>
-                        <input type="date" name="date" id="date" placeholder="currentDate"
-                            [(ngModel)]="measurement.MeasurementDate" />
+                        <label for="Weight">Weight (kg)</label>
+                        <input class="form-control" id="Weight" [(ngModel)]="measurement.weight" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="weight">Weight</label>
-                        <input id="weight" [(ngModel)]="measurement.Weight" />
+                        <label for="Fat">Fat (%)</label>
+                        <input class="form-control" id="Fat" [(ngModel)]="measurement.fat" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Waist">Waist (cm)</label>
+                        <input class="form-control" id="Waist" [(ngModel)]="measurement.waist" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Neck">Neck (cm)</label>
+                        <input class="form-control" id="Neck" [(ngModel)]="measurement.neck" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Chest">Chest (cm)</label>
+                        <input class="form-control" id="Chest" [(ngModel)]="measurement.chest" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Biceps">Biceps (cm)</label>
+                        <input class="form-control" id="Biceps" [(ngModel)]="measurement.biceps" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Tigh">Tigh (cm)</label>
+                        <input class="form-control" id="Tigh" [(ngModel)]="measurement.tigh" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Calf">Calf (cm)</label>
+                        <input class="form-control" id="Calf" [(ngModel)]="measurement.calf" />
                     </div>
                 </div>
             </div>

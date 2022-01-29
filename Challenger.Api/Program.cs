@@ -14,7 +14,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Register services directly with Autofac here. Don't
 // call builder.Populate(), that happens in AutofacServiceProviderFactory.
-builder.Host.ConfigureContainer<ContainerBuilder>(builder => 
+builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterType<FitRecordRepository>().As<IFitRecordRepository>();
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
@@ -26,8 +26,20 @@ builder.Services.AddDbContext<ChallengerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
 
 builder.Services.AddAutoMapper(
-    typeof(Program).Assembly, 
+    typeof(Program).Assembly,
     typeof(FitRecordDto).Assembly);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "testujemyCors",
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyMethod()
+                          .WithHeaders("content-type")
+                          .AllowCredentials();
+                      });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -43,6 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("testujemyCors");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

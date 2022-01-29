@@ -22,14 +22,22 @@ namespace Challenger.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<MeasurementDto[]> Get()
+        {
+            var all = await _measurementRepository.GetAll();
+            return _mapper.Map<MeasurementDto[]>(all);
+        }
 
         [HttpPost]
-        public async Task<JsonResult> Add([FromBody] MeasurementDto measurement)
+        public async Task<MeasurementDto> Add([FromBody] MeasurementDto measurement)
         {
-            _measurementRepository.Add(_mapper.Map<Measurement>(measurement));
+            var entity = _mapper.Map<Measurement>(measurement);
+            entity.UserId = 1;
+            _measurementRepository.Add(entity);
             await _measurementRepository.SaveChanges();
 
-            return Json(measurement);
+            return measurement;
         }
 
         [HttpPatch]

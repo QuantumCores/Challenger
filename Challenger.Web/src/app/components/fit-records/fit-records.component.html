@@ -1,0 +1,26 @@
+<h2>My fit records!</h2>
+<div style="border-bottom: black solid 1px;"></div>
+
+<app-button color="green" text="add" (click)="addRecord()">
+</app-button>
+<div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
+    <app-add-fit-record [record]="recordToAdd"></app-add-fit-record>
+    <div style="margin-bottom: 5px; margin-top: 5px;">
+        <div
+        (click)="onCancell()"
+            style="display: inline-block; width: 49%; background-color: red; color: white; text-align: center; padding: 5px; border-radius: 2px;">
+            cancell
+        </div>
+        <div style="display: inline-block; width: 2%;">
+
+        </div>
+        <div
+        *ngIf="isValid"
+        (click)="onSave()"
+            style="display: inline-block; width: 49%; background-color: lightskyblue; color: white; text-align: center; padding: 5px; border-radius: 2px;">
+            save
+        </div>
+    </div>
+</div>
+
+<app-fit-record-item *ngFor="let record of records" [record]="record"></app-fit-record-item>

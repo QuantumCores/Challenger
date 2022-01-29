@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MeasurementDto } from '../measurement-item/measurementDto';
 
@@ -8,19 +9,7 @@ import { MeasurementDto } from '../measurement-item/measurementDto';
 })
 export class AddMeasurementComponent implements OnInit {
 
-  measurement: MeasurementDto = {
-    Id: 12,
-    UserId: 23,
-    MeasurementDate: new Date,
-    Weight: 73,
-    Waist: 90,
-    Neck: 38,
-    Chest: 100,
-    Hips: 25,
-    Biceps: 37,
-    Tigh: 45,
-    Calf: 23,
-  };
+  @Input() measurement: MeasurementDto;
   currentDate: Date = new Date;
 
   constructor() {
@@ -30,4 +19,11 @@ export class AddMeasurementComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getDate(): string {
+   return formatDate(this.measurement.measurementDate , 'yyyy-MM-dd', 'en-us');
+  }
+
+  setDate(event: any): void {
+    this.measurement.measurementDate = new Date(event.target.value);
+  }
 }

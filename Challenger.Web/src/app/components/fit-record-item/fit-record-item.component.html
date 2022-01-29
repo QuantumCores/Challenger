@@ -1,0 +1,23 @@
+<div
+    style="border-radius: 2px; border: black solid 1px; display: flex; flex-direction: row; justify-content: flex-start; align-content: stretch; width: 100%; margin-bottom: 10px;">
+    <div style="align-self:flex-start; flex:1;">
+        <div
+            style="display: flex; flex-direction: row; justify-content:left; align-content: stretch; background-color: rgb(198, 135, 250);">
+            <div style="flex: 1; flex: grow 1; align-self:flex-start; padding-left: 5px; padding-right: 5px;">
+                {{record.RecordDate | date:'yyyy.MM.dd'}}</div>
+            <div style="flex: grow 1; background-color: red; color: white; padding-left: 5px; padding-right: 5px;">
+                <b>x</b></div>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-evenly; align-content: stretch;">
+            <div
+                style="flex: 1; align-self:stretch; border: gray solid 1px; padding-left: 5px; padding-right: 5px; text-align: center;">
+                {{record.Duration}} kg</div>
+            <div
+                style="flex: 1; align-self:stretch; border: gray solid 1px; padding-left: 5px; padding-right: 5px; text-align: center;">
+                {{record.Repetitions}}</div>
+            <div
+                style="flex: 1; align-self:stretch; border: gray solid 1px; padding-left: 5px; padding-right: 5px; text-align: center;">
+                {{record.Excersize}}</div>
+        </div>
+    </div>
+</div>
