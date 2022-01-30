@@ -15,6 +15,9 @@ import { AddGymRecordComponent } from './components/add-gym-record/add-gym-recor
 import { AddFitRecordComponent } from './components/add-fit-record/add-fit-record.component';
 import { FitRecordsComponent } from './components/fit-records/fit-records.component';
 import { ButtonComponent } from './components/button/button.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -28,13 +31,16 @@ import { ButtonComponent } from './components/button/button.component';
     AddGymRecordComponent,
     AddFitRecordComponent,
     FitRecordsComponent,
-    ButtonComponent
+    ButtonComponent,
+    HeaderComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

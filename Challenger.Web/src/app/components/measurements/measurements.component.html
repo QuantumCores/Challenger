@@ -1,6 +1,6 @@
 <h2>My measurements</h2>
 
-<app-button color="green" text="add" (click)="addMeasurement()">
+<app-button color="green" text="Add" (click)="addMeasurement()">
 </app-button>
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
     <app-add-measurement [measurement]="measurementToAdd"></app-add-measurement>
