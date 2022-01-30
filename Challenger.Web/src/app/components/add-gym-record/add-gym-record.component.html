@@ -6,42 +6,41 @@
                     <div class="form-group first">
                         <label for="RecordDate">Date</label>
                         <input class="form-control" type="date" name="RecordDate" id="RecordDate"
-                            [(ngModel)]="record.RecordDate" />
+                            [value]="record.recordDate | date: 'yyyy-MM-dd'" (change)='setDate($event); onChange();' />
                     </div>
                 </div>
             </div>
-            <div class="row">                
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
-                        <input class="form-control" id="Excersize" 
-                            [(ngModel)]="record.Excersize" />
+                        <input class="form-control" id="Excersize" [(ngModel)]="record.excersize"
+                            (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Weight">Weight (kg)</label>
-                        <input class="form-control" id="Weight"
-                            [(ngModel)]="record.Weight" />
+                        <input class="form-control" id="Weight" [(ngModel)]="record.weight" (change)='onChange()' />
                     </div>
                 </div>
             </div>
-            <div class="row">                
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Repetitions">Repetitions</label>
-                        <input class="form-control" id="Repetitions" 
-                            [(ngModel)]="record.Repetitions" />
+                        <input class="form-control" id="Repetitions" [(ngModel)]="record.repetitions"
+                            (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="MuscleGroup">MuscleGroup</label>
-                        <input class="form-control" id="MuscleGroup"
-                            [(ngModel)]="record.MuscleGroup" />
+                        <input class="form-control" id="MuscleGroup" [(ngModel)]="record.muscleGroup"
+                            (change)='onChange()' />
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>

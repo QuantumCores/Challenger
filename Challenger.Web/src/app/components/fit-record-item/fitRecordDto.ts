@@ -1,10 +1,10 @@
 export class FitRecordDto {
 
-    Id: number;
-    UserId: number;
-    RecordDate: Date;
-    Excersize: string;
-    Duration: number;
-    Distance: number;
-    Repetitions: number;
+    id: number;
+    userId: number;
+    recordDate: Date;
+    excersize: string;
+    duration: number;
+    distance: number;
+    repetitions: number;
 }

@@ -1,10 +1,10 @@
 export class GymRecordDto {
 
-    Id: number;
-    UserId: number;
-    RecordDate: Date;
-    Excersize: string;
-    Weight: number;
-    Repetitions: number;
-    MuscleGroup: string;
+    id: number;
+    userId: number;
+    recordDate: Date;
+    excersize: string;
+    weight: number;
+    repetitions: number;
+    muscleGroup: string;
 }

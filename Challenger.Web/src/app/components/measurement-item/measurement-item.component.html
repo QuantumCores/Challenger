@@ -6,7 +6,8 @@
             <div style="flex: 1; flex: grow 1; align-self:flex-start; padding-left: 5px; padding-right: 5px;"
                 (click)="onSelect()">
                 {{measurement.measurementDate | date:'yyyy.MM.dd'}}</div>
-            <div style="flex: grow 1; background-color: red; color: white; padding-left: 5px; padding-right: 5px;">
+            <div style="flex: grow 1; background-color: red; color: white; padding-left: 5px; padding-right: 5px;"
+                (click)="onDelete(measurement.id)">
                 <b>x</b>
             </div>
         </div>
@@ -22,7 +23,8 @@
                 {{measurement.waist}} cm</div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: space-evenly; align-content: stretch;">
-            <app-add-measurement *ngIf="isSelected" [measurement]="measurement"></app-add-measurement>
+            <app-add-measurement *ngIf="isSelected" [measurement]="measurement" (onChangeMeasurement)="onChange()">
+            </app-add-measurement>
         </div>
     </div>
 </div>

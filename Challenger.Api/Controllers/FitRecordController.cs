@@ -21,14 +21,22 @@ namespace Challenger.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<FitRecordDto[]> Get()
+        {
+            var all = await _fitRecordRepository.GetAll();
+            return _mapper.Map<FitRecordDto[]>(all);
+        }
 
         [HttpPost]
-        public async Task<JsonResult> Add([FromBody] FitRecordDto record)
+        public async Task<FitRecordDto> Add([FromBody] FitRecordDto record)
         {
-            _fitRecordRepository.Add(_mapper.Map<FitRecord>(record));
+            var entity = _mapper.Map<FitRecord>(record);
+            entity.UserId = 1;
+            _fitRecordRepository.Add(entity);
             await _fitRecordRepository.SaveChanges();
 
-            return Json(record);
+            return record;
         }
 
         [HttpPatch]
@@ -37,7 +45,7 @@ namespace Challenger.Api.Controllers
             await _fitRecordRepository.Update(_mapper.Map<FitRecord>(record));
             await _fitRecordRepository.SaveChanges();
 
-            return Json(record);
+            return Json(new { IsSuccess = true });
         }
 
         [HttpDelete]

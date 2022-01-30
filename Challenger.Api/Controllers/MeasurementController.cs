@@ -46,7 +46,7 @@ namespace Challenger.Api.Controllers
             await _measurementRepository.Update(_mapper.Map<Measurement>(measurement));
             await _measurementRepository.SaveChanges();
 
-            return Json(measurement);
+            return Json(new { IsSuccess = true });
         }
 
         [HttpDelete]

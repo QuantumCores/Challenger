@@ -7,9 +7,14 @@ namespace Challenger.Domain.Dtos
     {
         public DtoAutomapperProfile()
         {
-            CreateMap<FitRecordDto, FitRecord>().ReverseMap();
-            CreateMap<GymRecordDto, GymRecord>().ReverseMap();
-            CreateMap<MeasurementDto, Measurement>().ReverseMap();
+            CreateMap<FitRecordDto, FitRecord>()
+                .ReverseMap();
+
+            CreateMap<GymRecordDto, GymRecord>()
+                .ReverseMap();
+
+            CreateMap<MeasurementDto, Measurement>()
+                .ReverseMap();
         }
     }
 }

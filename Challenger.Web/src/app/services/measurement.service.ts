@@ -23,13 +23,12 @@ export class MeasurementService {
   }
 
   public deleteMeasurement(measurement: MeasurementDto): Observable<MeasurementDto> {
-    const url = `${this.apiUrl}/${measurement.id}`;
+    const url = `${this.apiUrl}?id=${measurement.id}`;
     return this.http.delete<MeasurementDto>(url);
   }
 
-  public updateMeasurementReminder(measurement: MeasurementDto): Observable<MeasurementDto> {
-    const url = `${this.apiUrl}/${measurement.id}`;
-    return this.http.put<MeasurementDto>(url, MeasurementDto, httpOptions);
+  public updateMeasurement(measurement: MeasurementDto): Observable<MeasurementDto> {
+    return this.http.patch<MeasurementDto>(this.apiUrl, measurement, httpOptions);
   }
 
   public addMeasurement(measurement: MeasurementDto): Observable<MeasurementDto> {

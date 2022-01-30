@@ -21,14 +21,22 @@ namespace Challenger.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<GymRecordDto[]> Get()
+        {
+            var all = await _gymRecordRepository.GetAll();
+            return _mapper.Map<GymRecordDto[]>(all);
+        }
 
         [HttpPost]
-        public async Task<JsonResult> Add([FromBody] GymRecordDto record)
+        public async Task<GymRecordDto> Add([FromBody] GymRecordDto record)
         {
-            _gymRecordRepository.Add(_mapper.Map<GymRecord>(record));
+            var entity = _mapper.Map<GymRecord>(record);
+            entity.UserId = 1;
+            _gymRecordRepository.Add(entity);
             await _gymRecordRepository.SaveChanges();
 
-            return Json(record);
+            return record;
         }
 
         [HttpPatch]
@@ -37,7 +45,7 @@ namespace Challenger.Api.Controllers
             await _gymRecordRepository.Update(_mapper.Map<GymRecord>(record));
             await _gymRecordRepository.SaveChanges();
 
-            return Json(record);
+            return Json(new { IsSuccess = true });
         }
 
         [HttpDelete]

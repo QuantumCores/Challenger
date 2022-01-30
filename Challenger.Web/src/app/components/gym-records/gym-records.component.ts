@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GYMRECORDS } from 'src/app/mock-gymRecords';
+import { GymRecordService } from 'src/app/services/gym-record.service';
 import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 
 @Component({
@@ -9,20 +9,32 @@ import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 })
 export class GymRecordsComponent implements OnInit {
 
-  records = GYMRECORDS;
+  records: GymRecordDto[];
   isAdding: boolean = false;
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
 
-  constructor() { }
+  constructor(private gymRecordService: GymRecordService) { }
 
   ngOnInit(): void {
-    this.sortByDate();
+    this.getGymRecords();
   }
 
-  addRecord(): void {
-    this.isAdding = true;
-    this.recordToAdd = new GymRecordDto();
+  getGymRecords(): void {
+    this.gymRecordService.getGymRecords().subscribe(
+      (records) => {
+        this.records = records;
+        this.sortByDate();
+      });
+
+  }
+
+  addGymRecord(): void {
+    this.isAdding = !this.isAdding;
+
+    if (this.isAdding) {
+      this.recordToAdd = new GymRecordDto();
+    }
   }
 
   onCancell(): void {
@@ -30,20 +42,47 @@ export class GymRecordsComponent implements OnInit {
     this.recordToAdd = new GymRecordDto();
   }
 
+  onChange(record: GymRecordDto): void {
+    if (this.validate(record)) {
+      this.gymRecordService.updateGymRecord(record).subscribe(
+        (data) =>{
+          this.sortByDate();
+        }
+      );
+    }
+  }
+
   onSave(): void {
-    let cloned = {...this.recordToAdd};
-    this.records.push(cloned);
-    this.sortByDate();
+    if (this.validate(this.recordToAdd)) {
+      this.gymRecordService.addGymRecord(this.recordToAdd).subscribe(
+        (record) => {
+          this.records.push(record);
+          this.sortByDate();
+        })
+    }
   }
 
-  validate(): boolean{
-    return !(!this.recordToAdd.RecordDate || !this.recordToAdd.Weight) 
+  onDelete(id: number): void {
+
+    let toDelete = this.records.filter(x => x.id == id)[0];
+    this.gymRecordService.deleteGymRecord(toDelete).subscribe(
+      (record) => {
+        let index = this.records.indexOf(toDelete);
+        if (index > -1) {
+          this.records.splice(index, 1);
+          this.sortByDate();
+        }
+      });
   }
 
-  sortByDate():void{
+  validate(record: GymRecordDto): boolean {
+    return !(!record.recordDate || !record.excersize)
+  }
+
+  sortByDate(): void {
     this.records.sort((a: GymRecordDto, b: GymRecordDto) => {
-      let bDate = new Date(b.RecordDate);
-      let aDate = new Date(a.RecordDate);
+      let bDate = new Date(b.recordDate);
+      let aDate = new Date(a.recordDate);
       return bDate.getTime() - aDate.getTime();
     })
   }

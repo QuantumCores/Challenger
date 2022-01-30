@@ -30,8 +30,11 @@ export class MeasurementsComponent implements OnInit {
   }
 
   addMeasurement(): void {
-    this.isAdding = true;
-    this.measurementToAdd = new MeasurementDto();
+    this.isAdding = !this.isAdding;
+
+    if (this.isAdding) {
+      this.measurementToAdd = new MeasurementDto();
+    }
   }
 
   onCancell(): void {
@@ -39,18 +42,41 @@ export class MeasurementsComponent implements OnInit {
     this.measurementToAdd = new MeasurementDto();
   }
 
-  onSave(): void {
-    let cloned = { ...this.measurementToAdd };
-    if (this.validate()) {
-      this.measurementService.addMeasurement(cloned).subscribe(
-        (measurement) => (this.measurements.push(measurement)));
+  onChange(measurement: MeasurementDto): void {
+    if (this.validate(measurement)) {
+      this.measurementService.updateMeasurement(measurement).subscribe(
+        (data) =>{
+          this.sortByDate();
+        }
+      );
     }
-
-    this.sortByDate();
   }
 
-  validate(): boolean {
-    return !(!this.measurementToAdd.measurementDate || !this.measurementToAdd.weight)
+  onSave(): void {
+    if (this.validate(this.measurementToAdd)) {
+      this.measurementService.addMeasurement(this.measurementToAdd).subscribe(
+        (measurement) => {
+          this.measurements.push(measurement);
+          this.sortByDate();
+        })
+    }
+  }
+
+  onDelete(id: number): void {
+
+    let toDelete = this.measurements.filter(x => x.id == id)[0];
+    this.measurementService.deleteMeasurement(toDelete).subscribe(
+      (measurement) => {
+        let index = this.measurements.indexOf(toDelete);
+        if (index > -1) {
+          this.measurements.splice(index, 1);
+          this.sortByDate();
+        }
+      });
+  }
+
+  validate(measurement: MeasurementDto): boolean {
+    return !(!measurement.measurementDate || !measurement.weight || measurement.weight == 0)
   }
 
   sortByDate(): void {

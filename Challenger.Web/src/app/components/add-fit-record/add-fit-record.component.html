@@ -6,42 +6,41 @@
                     <div class="form-group first">
                         <label for="RecordDate">Date</label>
                         <input class="form-control" type="date" name="RecordDate" id="RecordDate"
-                            [(ngModel)]="record.RecordDate" />
+                            [value]="record.recordDate | date: 'yyyy-MM-dd'" (change)='setDate($event); onChange();'
+                            (change)='onChange()' />
                     </div>
                 </div>
             </div>
-            <div class="row">                
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
-                        <input class="form-control" id="Excersize" 
-                            [(ngModel)]="record.Excersize" />
+                        <input class="form-control" id="Excersize" [(ngModel)]="record.excersize"
+                            (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Duration">Duration (s)</label>
-                        <input class="form-control" id="Duration"
-                            [(ngModel)]="record.Duration" />
+                        <input class="form-control" id="Duration" [(ngModel)]="record.duration" (change)='onChange()' />
                     </div>
                 </div>
             </div>
-            <div class="row">                
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Repetitions">Repetitions</label>
-                        <input class="form-control" id="Repetitions" 
-                            [(ngModel)]="record.Repetitions" />
+                        <input class="form-control" id="Repetitions" [(ngModel)]="record.repetitions"
+                            (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Distance">Distance (m)</label>
-                        <input class="form-control" id="Distance"
-                            [(ngModel)]="record.Distance" />
+                        <input class="form-control" id="Distance" [(ngModel)]="record.distance" (change)='onChange()' />
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FITRECORDS } from 'src/app/mock-fitRecords';
+import { FitRecordService } from 'src/app/services/fit-record.service';
 import { FitRecordDto } from '../fit-record-item/fitRecordDto';
 
 @Component({
@@ -9,20 +9,32 @@ import { FitRecordDto } from '../fit-record-item/fitRecordDto';
 })
 export class FitRecordsComponent implements OnInit {
 
-  records = FITRECORDS;
+  records: FitRecordDto[];
   isAdding: boolean = false;
   isValid: boolean = true;
   recordToAdd: FitRecordDto;
 
-  constructor() { }
+  constructor(private fitRecordService: FitRecordService) { }
 
   ngOnInit(): void {
-    this.sortByDate();
+    this.getFitRecords();
   }
 
-  addRecord(): void {
-    this.isAdding = true;
-    this.recordToAdd = new FitRecordDto();
+  getFitRecords(): void {
+    this.fitRecordService.getFitRecords().subscribe(
+      (records) => {
+        this.records = records;
+        this.sortByDate();
+      });
+
+  }
+
+  addFitRecord(): void {
+    this.isAdding = !this.isAdding;
+
+    if (this.isAdding) {
+      this.recordToAdd = new FitRecordDto();
+    }
   }
 
   onCancell(): void {
@@ -30,22 +42,48 @@ export class FitRecordsComponent implements OnInit {
     this.recordToAdd = new FitRecordDto();
   }
 
+  onChange(record: FitRecordDto): void {
+    if (this.validate(record)) {
+      this.fitRecordService.updateFitRecord(record).subscribe(
+        (data) =>{
+          this.sortByDate();
+        }
+      );
+    }
+  }
+
   onSave(): void {
-    let cloned = {...this.recordToAdd};
-    this.records.push(cloned);
-    this.sortByDate();
+    if (this.validate(this.recordToAdd)) {
+      this.fitRecordService.addFitRecord(this.recordToAdd).subscribe(
+        (record) => {
+          this.records.push(record);
+          this.sortByDate();
+        })
+    }
   }
 
-  validate(): boolean{
-    return !(!this.recordToAdd.RecordDate || !this.recordToAdd.Excersize) 
+  onDelete(id: number): void {
+
+    let toDelete = this.records.filter(x => x.id == id)[0];
+    this.fitRecordService.deleteFitRecord(toDelete).subscribe(
+      (record) => {
+        let index = this.records.indexOf(toDelete);
+        if (index > -1) {
+          this.records.splice(index, 1);
+          this.sortByDate();
+        }
+      });
   }
 
-  sortByDate():void{
+  validate(record: FitRecordDto): boolean {
+    return !(!record.recordDate || !record.excersize)
+  }
+
+  sortByDate(): void {
     this.records.sort((a: FitRecordDto, b: FitRecordDto) => {
-      let bDate = new Date(b.RecordDate);
-      let aDate = new Date(a.RecordDate);
+      let bDate = new Date(b.recordDate);
+      let aDate = new Date(a.recordDate);
       return bDate.getTime() - aDate.getTime();
     })
   }
-
 }

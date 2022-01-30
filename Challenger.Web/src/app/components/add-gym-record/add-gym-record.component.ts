@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 
 @Component({
@@ -8,19 +9,44 @@ import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 })
 export class AddGymRecordComponent implements OnInit {
 
-  @Input() record: GymRecordDto = {
-    Id: 1,
-    UserId: 23,
-    RecordDate: new Date(2022, 1, 23),
-    Excersize: 'Ławka płasko',
-    Weight: 80,
-    Repetitions: 8,
-    MuscleGroup: 'Chest'
-  };
+  @Input() record: GymRecordDto;
+  @Output() onChangeGymRecord: EventEmitter<GymRecordDto> = new EventEmitter<GymRecordDto>();
+  original: any;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
   }
 
+  ngOnInit(): void {
+    if (this.record) {
+      this.original = { ...this.record };
+    }
+  }
+
+  onChange(): void {
+    if (this.hasChanged()) {
+      this.onChangeGymRecord.emit(this.record);
+    }
+  }
+
+  getDate(): string {
+    return formatDate(this.record.recordDate, 'yyyy-MM-dd', 'en-us');
+  }
+
+  setDate(event: any): void {
+    this.record.recordDate = new Date(event.target.value);
+  }
+
+  hasChanged(): boolean {
+    if (this.original) {
+      let keys = Object.keys(this.original);
+      let asAny = this.record as any;
+      for (let i = 0; i < keys.length; i++) {
+        let prop = keys[i];
+        if (this.original[prop] !== asAny[prop]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

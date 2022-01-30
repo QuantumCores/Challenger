@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GymRecordDto } from './gymRecordDto';
 
 @Component({
@@ -9,9 +9,26 @@ import { GymRecordDto } from './gymRecordDto';
 export class GymRecordItemComponent implements OnInit {
 
   @Input() record: GymRecordDto;
+  @Output() onChangeGymRecord: EventEmitter<GymRecordDto> = new EventEmitter<GymRecordDto>();
+  @Output() onDeleteGymRecord: EventEmitter<number> = new EventEmitter<number>();
+  
+  isSelected: boolean = false;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  onSelect(): void {
+    this.isSelected = !this.isSelected;
+  }
+
+  onChange(): void {    
+      this.onChangeGymRecord.emit(this.record);   
+  }
+
+  onDelete(id:number): void {
+      this.onDeleteGymRecord.emit(id);
   }
 }
