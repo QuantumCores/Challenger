@@ -6,6 +6,10 @@ using Challenger.Domain.RankingService;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,40 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
+
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IdentityContext>();
+
+
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.AddSingleton(jwtSettings);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}
+).AddJwtBearer(x =>
+{
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = false,
+        RequireExpirationTime = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        //ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+        //ValidAudience = jwtSettings.GetSection("validAudience").Value,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.GetSection("securityKey").Value)),
+    };
+});
+
 
 builder.Services.AddAutoMapper(
     typeof(Program).Assembly,
@@ -58,6 +96,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("testujemyCors");
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
