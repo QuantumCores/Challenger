@@ -6,9 +6,15 @@
         public const string Version = "v1";
         public const string Base = Route + "/" + Version;
 
+        public static class Authentication
+        {
+            public const string Register = Base + "/register";
+            public const string Login = Base + "/login";
+        }
+
         public static class Migrator
         {   
-            public const string CreateAppDatabase = Base + Base + "/createAppDatabase";
+            public const string CreateAppDatabase = Base + "/createAppDatabase";
             public const string CreateIdentityDatabase = Base + "/createIdentityDatabase";
         }
     }

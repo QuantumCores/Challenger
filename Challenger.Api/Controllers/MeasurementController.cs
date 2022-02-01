@@ -2,12 +2,14 @@
 using Challenger.Domain.Contracts;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenger.Api.Controllers
 {
 
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class MeasurementController : Controller
     {

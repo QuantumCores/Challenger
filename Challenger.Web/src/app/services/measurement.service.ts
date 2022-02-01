@@ -24,7 +24,7 @@ export class MeasurementService {
 
   public deleteMeasurement(measurement: MeasurementDto): Observable<MeasurementDto> {
     const url = `${this.apiUrl}?id=${measurement.id}`;
-    return this.http.delete<MeasurementDto>(url);
+    return this.http.delete<MeasurementDto>(url, httpOptions);
   }
 
   public updateMeasurement(measurement: MeasurementDto): Observable<MeasurementDto> {

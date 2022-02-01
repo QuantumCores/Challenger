@@ -1,9 +1,11 @@
 ﻿using Challenger.Api.Contracts.V1;
 using Challenger.DbUp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenger.Api.Controllers
 {
+    [Authorize]
     public class MigratorController : Controller
     {
         private readonly IConfiguration _configuration;

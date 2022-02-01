@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Challenger.Domain.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
     builder.RegisterType<RankingService>().As<IRankingService>();
+    builder.RegisterType<AccountService>().As<IAccountService>();
+    builder.RegisterType<JwtService>().As<IJwtService>();
+    
 });
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
@@ -51,13 +55,13 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = false,
+        ValidateAudience = true,
         RequireExpirationTime = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
 
-        //ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-        //ValidAudience = jwtSettings.GetSection("validAudience").Value,
+        ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+        ValidAudience = jwtSettings.GetSection("validAudience").Value,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.GetSection("securityKey").Value)),
     };
 });
@@ -74,7 +78,8 @@ builder.Services.AddCors(options =>
                       {
                           builder.WithOrigins("http://localhost:4200")
                           .AllowAnyMethod()
-                          .WithHeaders("content-type")
+                          .AllowAnyHeader()
+                          //.WithHeaders("content-type")
                           .AllowCredentials();
                       });
 });

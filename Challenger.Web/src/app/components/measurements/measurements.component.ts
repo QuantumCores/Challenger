@@ -58,7 +58,7 @@ export class MeasurementsComponent implements OnInit {
         (measurement) => {
           this.measurements.push(measurement);
           this.sortByDate();
-        })
+        });
     }
   }
 
