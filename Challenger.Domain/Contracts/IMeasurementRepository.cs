@@ -8,6 +8,8 @@ namespace Challenger.Domain.Contracts
 
         Task<List<Measurement>> GetAll();
 
+        Task<List<Measurement>> GetAllForUser(long userId);
+
         void Add(Measurement record);
 
         Task Update(Measurement record);

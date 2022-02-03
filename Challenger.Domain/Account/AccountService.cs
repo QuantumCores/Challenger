@@ -1,4 +1,6 @@
-﻿using Challenger.Domain.Contracts.Account;
+﻿using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Account;
+using Challenger.Domain.DbModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +11,8 @@ namespace Challenger.Domain.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserStore<IdentityUser> _userStore;
+        private readonly IUserRepository _userRepository;
+
         // private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<AccountService> _logger;
         //private readonly IEmailSender _emailSender;
@@ -17,29 +21,35 @@ namespace Challenger.Domain.Account
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
+            IUserRepository userRepository,
             ILogger<AccountService> logger
             //IEmailSender emailSender
             )
         {
             _userManager = userManager;
             _userStore = userStore;
+            _userRepository = userRepository;
             //_emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             //_emailSender = emailSender;
         }
 
-        public async Task<IdentityResult?> Register(RegisterModel Input)
+        public async Task<IdentityResult?> Register(RegisterModel registerModel)
         {
             var user = CreateUser();
 
-            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await _userStore.SetUserNameAsync(user, registerModel.Email, CancellationToken.None);
             //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            var result = await _userManager.CreateAsync(user, Input.Password);
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
 
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                var domainUser = CreateDomainUser(registerModel);
+                _userRepository.Add(domainUser);
+                await _userRepository.SaveChanges();
 
                 //var userId = await _userManager.GetUserIdAsync(user);
                 //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -91,6 +101,26 @@ namespace Challenger.Domain.Account
             try
             {
                 return Activator.CreateInstance<IdentityUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+
+        private User CreateDomainUser(RegisterModel Input)
+        {
+            try
+            {
+                return new User
+                {
+                    DateOfBirth = Input.BirthDate,
+                    Email = Input.Email,
+                    Height = Input.Height,
+                    UserName = Input.Nickname,
+                };
             }
             catch
             {

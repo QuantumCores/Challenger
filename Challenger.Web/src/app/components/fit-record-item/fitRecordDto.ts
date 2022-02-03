@@ -4,7 +4,8 @@ export class FitRecordDto {
     userId: number;
     recordDate: Date;
     excersize: string;
-    duration: number;
-    distance: number;
-    repetitions: number;
+    duration?: number;
+    durationUnit?: string;
+    distance?: number;
+    repetitions?: number;
 }

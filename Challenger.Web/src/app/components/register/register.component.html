@@ -10,6 +10,17 @@
         </div>
         <div class="col-md-5">
             <em *ngIf="validateControl('email') && hasError('email', 'required')">Email is required</em>
+            <em *ngIf="validateControl('email') && hasError('email', 'email')">Email is invalid</em>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="nickname" class="col-form-label col-sm-2">Nickname:</label>
+        <div class="col-md-5">
+            <input type="text" id="nickname" formControlName="nickname" class="form-control" placeholder="grubas" />
+        </div>
+        <div class="col-md-5">
+            <em *ngIf="validateControl('nickname') && hasError('nickname', 'required')">Nickname is required</em>
+            <em *ngIf="validateControl('nickname') && hasError('nickname', 'minlength')">Nickname is to short (3)</em>
         </div>
     </div>
     <div class="form-group row">
@@ -19,6 +30,9 @@
         </div>
         <div class="col-md-5">
             <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
+            <em *ngIf="validateControl('password') && hasError('password', 'pattern')">Minimum eight and maximum 16
+                characters, at least one uppercase letter, one lowercase letter, one number and one special
+                character</em>
         </div>
     </div>
     <div class="form-group row">
@@ -26,11 +40,17 @@
         <div class="col-md-5">
             <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" />
         </div>
+        <div class="col-md-5">
+            <em *ngIf="!confirmPassword()">Confirm password is different from passwords</em>
+        </div>
     </div>
     <div class="form-group row">
         <label for="height" class="col-form-label col-sm-2">Height (cm):</label>
         <div class="col-md-5">
-            <input type="number" id="height" formControlName="height" class="form-control" />
+            <input type="number" id="height" formControlName="height" class="form-control" min="150" max="200" />
+        </div>
+        <div class="col-md-5">
+            <em *ngIf="!confirmHeight()">Height has to be in 150-200cm range</em>
         </div>
     </div>
     <div class="form-group row">
@@ -41,6 +61,12 @@
     </div>
     <br>
 
-    <button type="submit" class="btn btn-info" [disabled]="!registerForm.valid">Register</button>
+    <button type="submit" class="btn"
+        [ngClass]="{'btn-primary': registerForm.valid, 'btn-secondary': !registerForm.valid}"
+        [disabled]="!registerForm.valid">Register</button>
 
 </form>
+
+<p *ngIf="errorMessage">
+    {{errorMessage}}
+</p>

@@ -28,6 +28,11 @@ namespace Challenger.Infrastructure.Repositories
             return _context.GymRecords.Include(x => x.User).ToListAsync();
         }
 
+        public Task<List<GymRecord>> GetAllForUser(long userId)
+        {
+            return _context.GymRecords.Where(x => x.UserId == userId).ToListAsync();
+        }
+
         public void Remove(GymRecord record)
         {
             _context.GymRecords.Remove(record);

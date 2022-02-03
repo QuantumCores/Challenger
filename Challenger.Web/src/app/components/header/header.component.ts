@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountHelper } from 'src/app/helpers/AccountHelper';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountHelper: AccountHelper) { }
 
   ngOnInit(): void {
-  }  
+  } 
+  
+  isUserAuthenticated(): boolean {    
+    return this.accountHelper.isUserAuthenticated();
+  }
 }

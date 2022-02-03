@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { RegisterModel } from '../components/register/RegisterModel';
 import { Observable } from 'rxjs';
 import { LoginModel } from '../components/login/LoginModel';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,7 +16,7 @@ const httpOptions = {
 })
 export class AccountService {
 
-  private apiUrl = 'https://localhost:7099/Account/api/v1'
+  private apiUrl = `${environment.httpDomain}/Account/api/v1`;
 
   constructor(private http: HttpClient) { }
 

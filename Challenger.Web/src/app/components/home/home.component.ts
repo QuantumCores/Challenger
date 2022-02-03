@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountHelper } from 'src/app/helpers/AccountHelper';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,12 @@ export class HomeComponent implements OnInit {
 
   title = 'Challenger';
   
-  constructor() { }
+  constructor(private accountHelper: AccountHelper) { }
 
   ngOnInit(): void {
   }
 
+  isUserAuthenticated(): boolean {    
+    return this.accountHelper.isUserAuthenticated();
+  }
 }

@@ -54,7 +54,7 @@ namespace Challenger.Domain.RankingService
                 if (userGymRecords.Contains(userKey))
                 {
                     var byDate = userGymRecords[userKey].GroupBy(x => x.RecordDate.Date);
-                    var fullSum = 0;
+                    var fullSum = 0.0;
                     foreach (var dateGroup in byDate)
                     {
                         var dateSum = dateGroup.Sum(x => CalculateScore(x));
@@ -70,7 +70,7 @@ namespace Challenger.Domain.RankingService
                 }
 
                 var ordered = usersDictionary[userKey].OrderBy(x => x.Key);
-                var fullScore = 0;
+                var fullScore = 0.0;
                 foreach (var scoreByDate in ordered)
                 {
                     scoreByDate.Value.FullScore = fullScore += scoreByDate.Value.Score;
@@ -83,12 +83,12 @@ namespace Challenger.Domain.RankingService
             return result;
         }
 
-        private int CalculateScore(FitRecord record)
+        private double CalculateScore(FitRecord record)
         {
-            return 10;
+            return 1;
         }
 
-        private int CalculateScore(GymRecord record)
+        private double CalculateScore(GymRecord record)
         {
             return 1;
         }

@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FitRecordDto } from '../fit-record-item/fitRecordDto';
+import { ActivityEnum } from './ActivityEnum';
 
 @Component({
   selector: 'app-add-fit-record',
@@ -12,6 +13,7 @@ export class AddFitRecordComponent implements OnInit {
   @Input() record: FitRecordDto;
   @Output() onChangeFitRecord: EventEmitter<FitRecordDto> = new EventEmitter<FitRecordDto>();
   original: any;
+  activities: string[];
 
   constructor() {
   }
@@ -20,6 +22,8 @@ export class AddFitRecordComponent implements OnInit {
     if (this.record) {
       this.original = { ...this.record };
     }
+
+    this.activities = Object.keys(ActivityEnum).filter(x => !this.stringIsNumber(x));
   }
 
   onChange(): void {
@@ -50,4 +54,7 @@ export class AddFitRecordComponent implements OnInit {
     return false;
   }
 
+  stringIsNumber(value: string): boolean {
+    return isNaN(Number(value)) === false;
+  }
 }

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
 import { FitRecordDto } from '../components/fit-record-item/fitRecordDto';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,7 +15,8 @@ const httpOptions = {
 })
 export class FitRecordService {
 
-  private apiUrl = 'https://localhost:7099/FitRecord'
+  //private apiUrl = 'https://localhost:7099/FitRecord'
+  private apiUrl = `${environment.httpDomain}/FitRecord`;
 
   constructor(private http: HttpClient) { }
 

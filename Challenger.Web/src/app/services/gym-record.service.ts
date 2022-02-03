@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
 import { GymRecordDto } from '../components/gym-record-item/gymRecordDto';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,7 +15,8 @@ const httpOptions = {
 })
 export class GymRecordService {
 
-  private apiUrl = 'https://localhost:7099/GymRecord'
+  //private apiUrl = 'https://localhost:7099/GymRecord'
+  private apiUrl = `${environment.httpDomain}/GymRecord`;
 
   constructor(private http: HttpClient) { }
 

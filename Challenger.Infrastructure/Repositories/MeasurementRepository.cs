@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Challenger.Infrastructure.Repositories
 {
-    public class MeasurementRepository: IMeasurementRepository
+    public class MeasurementRepository : IMeasurementRepository
     {
         private readonly ChallengerContext _context;
 
@@ -25,6 +25,11 @@ namespace Challenger.Infrastructure.Repositories
         public Task<List<Measurement>> GetAll()
         {
             return _context.Measurements.Include(x => x.User).ToListAsync();
+        }
+
+        public Task<List<Measurement>> GetAllForUser(long userId)
+        {
+            return _context.Measurements.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public void Remove(Measurement record)

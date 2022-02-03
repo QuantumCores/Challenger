@@ -8,6 +8,8 @@ namespace Challenger.Domain.Contracts
 
         Task<List<FitRecord>> GetAll();
 
+        Task<List<FitRecord>> GetAllForUser(long userId);
+
         void Add(FitRecord record);
 
         Task Update(FitRecord record);

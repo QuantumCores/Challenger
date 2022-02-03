@@ -15,14 +15,27 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
-                        <input class="form-control" id="Excersize" [(ngModel)]="record.excersize"
-                            (change)='onChange()' />
+                        <select class="form-select" aria-label="Default select example" id="Excersize"
+                            [(ngModel)]="record.excersize" (change)='onChange()'>
+                            <option *ngFor="let activity of activities" [value]="activity">{{ activity }}</option>
+                        </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group first">
-                        <label for="Duration">Duration (s)</label>
+                        <label for="Duration">Duration</label>
                         <input class="form-control" id="Duration" [(ngModel)]="record.duration" (change)='onChange()' />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group first">
+                        <label for="Duration">Unit</label>
+                        <select class="form-select" aria-label="Default select example" id="DurationUnit"
+                            [(ngModel)]="record.durationUnit" (change)='onChange()'>
+                            <option value="h">h</option>
+                            <option value="m">m</option>
+                            <option value="s">s</option>
+                        </select>
                     </div>
                 </div>
             </div>

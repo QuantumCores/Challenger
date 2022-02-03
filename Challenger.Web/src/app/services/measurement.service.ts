@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MeasurementDto } from '../components/measurement-item/measurementDto';
 import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,7 +15,8 @@ const httpOptions = {
 })
 export class MeasurementService {
 
-  private apiUrl = 'https://localhost:7099/Measurement'
+  private apiUrl = `${environment.httpDomain}/Measurement`;
+  //private apiUrl = 'http://54.37.137.86:81/Measurement';
 
   constructor(private http: HttpClient) { }
 

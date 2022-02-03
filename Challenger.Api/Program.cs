@@ -23,11 +23,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterType<FitRecordRepository>().As<IFitRecordRepository>();
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
+    builder.RegisterType<UserRepository>().As<IUserRepository>();
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
     builder.RegisterType<RankingService>().As<IRankingService>();
     builder.RegisterType<AccountService>().As<IAccountService>();
     builder.RegisterType<JwtService>().As<IJwtService>();
-    
+
 });
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
@@ -36,7 +37,7 @@ builder.Services.AddDbContext<ChallengerContext>(options =>
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<IdentityContext>();
 
 
@@ -73,14 +74,15 @@ builder.Services.AddAutoMapper(
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "testujemyCors",
+    options.AddPolicy(name: "AllowAnyOrigin",
                       builder =>
                       {
-                          builder.WithOrigins("http://localhost:4200")
+                          builder//.WithOrigins("http://54.37.137.86", "https://54.37.137.86", "http://localhost:4200")
+                          .AllowAnyOrigin()
                           .AllowAnyMethod()
-                          .AllowAnyHeader()
+                          .AllowAnyHeader();
                           //.WithHeaders("content-type")
-                          .AllowCredentials();
+                          //.AllowCredentials();
                       });
 });
 
@@ -92,14 +94,14 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors("testujemyCors");
-app.UseHttpsRedirection();
+app.UseCors("AllowAnyOrigin");
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

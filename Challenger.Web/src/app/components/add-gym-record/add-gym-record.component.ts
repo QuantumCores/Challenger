@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GymRecordDto } from '../gym-record-item/gymRecordDto';
+import { MuscleGroupsEnum } from './MuscleGroupsEnum';
 
 @Component({
   selector: 'app-add-gym-record',
@@ -12,6 +13,7 @@ export class AddGymRecordComponent implements OnInit {
   @Input() record: GymRecordDto;
   @Output() onChangeGymRecord: EventEmitter<GymRecordDto> = new EventEmitter<GymRecordDto>();
   original: any;
+  muscleGroups: string[];
 
   constructor() {
   }
@@ -20,6 +22,8 @@ export class AddGymRecordComponent implements OnInit {
     if (this.record) {
       this.original = { ...this.record };
     }
+
+    this.muscleGroups = Object.keys(MuscleGroupsEnum).filter(x => !this.stringIsNumber(x));
   }
 
   onChange(): void {
@@ -48,5 +52,9 @@ export class AddGymRecordComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  stringIsNumber(value: string): boolean {
+    return isNaN(Number(value)) === false;
   }
 }

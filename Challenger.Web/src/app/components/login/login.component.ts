@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/services/account.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { AccountHelper } from 'src/app/helpers/AccountHelper';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private jwtHelper: JwtHelperService,
+    private accountHelper: AccountHelper,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       (result) => {
         if (result.isSuccess) {
           localStorage.setItem("jwt", result.token);
+          this.router.navigate(['']);
         }
         else {
 
@@ -56,12 +57,7 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  isUserAuthenticated(): boolean {
-    const token = localStorage.getItem("jwt");
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      return true;
-    }
-
-    return false;
+  isUserAuthenticated(): boolean {    
+    return this.accountHelper.isUserAuthenticated();
   }
 }

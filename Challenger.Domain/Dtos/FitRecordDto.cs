@@ -10,10 +10,12 @@
 
         public string Excersize { get; set; }
 
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
-        public double Distance { get; set; }
+        public string? DurationUnit { get; set; }
 
-        public double Repetitions { get; set; }
+        public double? Distance { get; set; }
+
+        public double? Repetitions { get; set; }
     }
 }

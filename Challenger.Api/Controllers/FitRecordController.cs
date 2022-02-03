@@ -13,20 +13,24 @@ namespace Challenger.Api.Controllers
     public class FitRecordController : Controller
     {
         private readonly IFitRecordRepository _fitRecordRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public FitRecordController(
             IFitRecordRepository fitRecordRepository,
+            IUserRepository userRepository,
             IMapper mapper)
         {
             _fitRecordRepository = fitRecordRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<FitRecordDto[]> Get()
         {
-            var all = await _fitRecordRepository.GetAll();
+            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var all = await _fitRecordRepository.GetAllForUser(userId);
             return _mapper.Map<FitRecordDto[]>(all);
         }
 
@@ -34,7 +38,7 @@ namespace Challenger.Api.Controllers
         public async Task<FitRecordDto> Add([FromBody] FitRecordDto record)
         {
             var entity = _mapper.Map<FitRecord>(record);
-            entity.UserId = 1;
+            entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
             _fitRecordRepository.Add(entity);
             await _fitRecordRepository.SaveChanges();
 
@@ -44,6 +48,12 @@ namespace Challenger.Api.Controllers
         [HttpPatch]
         public async Task<JsonResult> Update([FromBody] FitRecordDto record)
         {
+            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            if (userId != record.UserId)
+            {
+                return Json(new { IsSuccess = false });
+            }
+
             await _fitRecordRepository.Update(_mapper.Map<FitRecord>(record));
             await _fitRecordRepository.SaveChanges();
 
@@ -54,6 +64,12 @@ namespace Challenger.Api.Controllers
         public async Task<JsonResult> Delete(long id)
         {
             var toDelete = await _fitRecordRepository.Get(id);
+            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            if (userId != toDelete.UserId)
+            {
+                return Json(new { IsSuccess = false });
+            }
+
             _fitRecordRepository.Remove(toDelete);
             await _fitRecordRepository.SaveChanges();
 

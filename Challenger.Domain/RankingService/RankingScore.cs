@@ -2,9 +2,9 @@
 {
     public class RankingScore
     {
-        public int Score { get; set; }
+        public double Score { get; set; }
 
-        public int FullScore { get; set; }
+        public double FullScore { get; set; }
 
         public DateTime Date { get; set; }
     }

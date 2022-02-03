@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 import { MeasurementItemComponent } from './components/measurement-item/measurement-item.component';
 import { AddMeasurementComponent } from './components/add-measurement/add-measurement.component';
@@ -22,6 +23,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { RankingComponent } from './components/ranking/ranking.component';
 
 export function tokenGetter() {
   console.log("tokenGetter called = " + localStorage.getItem('jwt'));
@@ -45,7 +47,8 @@ export function tokenGetter() {
     HeaderComponent,
     HomeComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,
@@ -58,10 +61,13 @@ export function tokenGetter() {
       {
         config: {
           tokenGetter: tokenGetter,
-          allowedDomains: ['localhost', 'localhost:7099'],
+          allowedDomains: ['localhost', 'localhost:7099', 'localhost:80', '54.37.137.86', '54.37.137.86:81'],
           disallowedRoutes: []
         }
-      })
+      }),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
