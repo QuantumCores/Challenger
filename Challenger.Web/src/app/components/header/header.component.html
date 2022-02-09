@@ -10,15 +10,18 @@
                 <li class="nav-item active" aria-current="page">
                     <a class="nav-link" routerLink="ranking">Ranking</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="rules">Rules</a>
+                </li>
                 <li class="nav-item" *ngIf="isUserAuthenticated()">
                     <a class="nav-link" routerLink="measurements">Measurements</a>
-                </li>                
+                </li>
                 <li class="nav-item" *ngIf="isUserAuthenticated()">
                     <a class="nav-link" routerLink="gymRecords">GymRecords</a>
-                </li>   
+                </li>
                 <li class="nav-item" *ngIf="isUserAuthenticated()">
                     <a class="nav-link" routerLink="fitRecords">FitRecords</a>
-                </li>   
+                </li>
             </ul>
             <app-login></app-login>
         </div>

@@ -7,6 +7,7 @@ CREATE TABLE [dbo].[FitRecords](
 	[DurationUnit] [varchar](1) NULL,
 	[Distance] [float] NULL,
 	[Repetitions] [float] NULL,
+	[BurntCalories] [float] NOT NULL,
  CONSTRAINT [PK_dbo.FitRecords] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

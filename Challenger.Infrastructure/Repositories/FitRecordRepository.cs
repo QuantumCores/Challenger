@@ -28,6 +28,22 @@ namespace Challenger.Infrastructure.Repositories
             return _context.FitRecords.Include(x => x.User).ToListAsync();
         }
 
+        public Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate)
+        {
+            var records = (IQueryable<FitRecord>)_context.FitRecords;
+            if (startDate != default(DateTime))
+            {
+                records = records.Where(x => x.RecordDate >= startDate);
+            }
+
+            if(endDate != default(DateTime))
+            {
+                records = records.Where(y => y.RecordDate <= endDate);
+            }
+
+            return records.Include(x => x.User).ToListAsync();
+        }
+
         public Task<List<FitRecord>> GetAllForUser(long userId)
         {
             return _context.FitRecords.Where(x => x.UserId == userId).ToListAsync();

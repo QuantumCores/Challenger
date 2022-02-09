@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateHelper } from 'src/app/helpers/DateHelper';
 import { FitRecordService } from 'src/app/services/fit-record.service';
 import { FitRecordDto } from '../fit-record-item/fitRecordDto';
 
@@ -14,7 +15,7 @@ export class FitRecordsComponent implements OnInit {
   isValid: boolean = true;
   recordToAdd: FitRecordDto;
 
-  constructor(private fitRecordService: FitRecordService) { }
+  constructor(private fitRecordService: FitRecordService, private dateHelper: DateHelper) { }
 
   ngOnInit(): void {
     this.getFitRecords();
@@ -45,7 +46,7 @@ export class FitRecordsComponent implements OnInit {
   onChange(record: FitRecordDto): void {
     if (this.validate(record)) {
       this.fitRecordService.updateFitRecord(record).subscribe(
-        (data) =>{
+        (data) => {
           this.sortByDate();
         }
       );
@@ -54,6 +55,7 @@ export class FitRecordsComponent implements OnInit {
 
   onSave(): void {
     if (this.validate(this.recordToAdd)) {
+      this.setDateAndTime();
       this.fitRecordService.addFitRecord(this.recordToAdd).subscribe(
         (record) => {
           this.records.push(record);
@@ -76,7 +78,15 @@ export class FitRecordsComponent implements OnInit {
   }
 
   validate(record: FitRecordDto): boolean {
-    return !(!record.recordDate || !record.excersize)
+    return !(!record.recordDate || !record.excersize || !record.burntCalories)
+  }
+
+  setDateAndTime(): void {
+
+    let now = new Date();
+    if (this.dateHelper.getDateOnlyAsNumber(now) == this.dateHelper.getDateOnlyAsNumber(this.recordToAdd.recordDate)) {
+      this.recordToAdd.recordDate = now;
+    }
   }
 
   sortByDate(): void {

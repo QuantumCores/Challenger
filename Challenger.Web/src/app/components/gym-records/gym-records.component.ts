@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateHelper } from 'src/app/helpers/DateHelper';
 import { GymRecordService } from 'src/app/services/gym-record.service';
 import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 
@@ -14,7 +15,7 @@ export class GymRecordsComponent implements OnInit {
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
 
-  constructor(private gymRecordService: GymRecordService) { }
+  constructor(private gymRecordService: GymRecordService, private dateHelper: DateHelper) { }
 
   ngOnInit(): void {
     this.getGymRecords();
@@ -45,7 +46,7 @@ export class GymRecordsComponent implements OnInit {
   onChange(record: GymRecordDto): void {
     if (this.validate(record)) {
       this.gymRecordService.updateGymRecord(record).subscribe(
-        (data) =>{
+        (data) => {
           this.sortByDate();
         }
       );
@@ -54,6 +55,7 @@ export class GymRecordsComponent implements OnInit {
 
   onSave(): void {
     if (this.validate(this.recordToAdd)) {
+      this.setDateAndTime();
       this.gymRecordService.addGymRecord(this.recordToAdd).subscribe(
         (record) => {
           this.records.push(record);
@@ -76,7 +78,21 @@ export class GymRecordsComponent implements OnInit {
   }
 
   validate(record: GymRecordDto): boolean {
-    return !(!record.recordDate || !record.excersize)
+
+    if(!record.recordDate)
+    {
+      console.log("Co kurwa"+ record.recordDate);
+    }
+
+    return !(!record.recordDate || !record.excersize || !record.muscleGroup || !record.repetitions || !record.weight)
+  }
+
+  setDateAndTime(): void {
+
+    let now = new Date();
+    if (this.dateHelper.getDateOnlyAsNumber(now) == this.dateHelper.getDateOnlyAsNumber(this.recordToAdd.recordDate)) {
+      this.recordToAdd.recordDate = now;
+    }
   }
 
   sortByDate(): void {

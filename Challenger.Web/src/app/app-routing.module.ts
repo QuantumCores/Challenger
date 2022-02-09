@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ChallengeRulesComponent } from './components/challenge-rules/challenge-rules.component';
 import { FitRecordsComponent } from './components/fit-records/fit-records.component';
 import { GymRecordsComponent } from './components/gym-records/gym-records.component';
 import { HomeComponent } from './components/home/home.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'gymRecords', component: GymRecordsComponent },
   { path: 'fitRecords', component: FitRecordsComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'rules', component: ChallengeRulesComponent }
 ];
 
 @NgModule({

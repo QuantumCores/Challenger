@@ -8,6 +8,8 @@ namespace Challenger.Domain.Contracts
 
         Task<List<GymRecord>> GetAll();
 
+        Task<List<GymRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate);
+
         Task<List<GymRecord>> GetAllForUser(long userId);
 
         void Add(GymRecord record);

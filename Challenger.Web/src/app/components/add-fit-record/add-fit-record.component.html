@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <div class="form-group first">
                         <label for="RecordDate">Date</label>
-                        <input class="form-control" type="date" name="RecordDate" id="RecordDate"
+                        <input class="form-control" type="date" name="RecordDate" id="RecordDate" style="border-color: orange;"
                             [value]="record.recordDate | date: 'yyyy-MM-dd'" (change)='setDate($event); onChange();'
                             (change)='onChange()' />
                     </div>
@@ -15,27 +15,16 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
-                        <select class="form-select" aria-label="Default select example" id="Excersize"
+                        <select class="form-select" aria-label="Default select example" id="Excersize" style="border-color:orange;"
                             [(ngModel)]="record.excersize" (change)='onChange()'>
                             <option *ngFor="let activity of activities" [value]="activity">{{ activity }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="Duration">Duration</label>
-                        <input class="form-control" id="Duration" [(ngModel)]="record.duration" (change)='onChange()' />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group first">
-                        <label for="Duration">Unit</label>
-                        <select class="form-select" aria-label="Default select example" id="DurationUnit"
-                            [(ngModel)]="record.durationUnit" (change)='onChange()'>
-                            <option value="h">h</option>
-                            <option value="m">m</option>
-                            <option value="s">s</option>
-                        </select>
+                        <label for="BurntCalories">Burnt calories (kCal)</label>
+                        <input class="form-control" id="BurntCalories" type="number" [(ngModel)]="record.burntCalories" (change)='onChange()' style="border-color: orange;" />
                     </div>
                 </div>
             </div>
@@ -43,14 +32,33 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Repetitions">Repetitions</label>
-                        <input class="form-control" id="Repetitions" [(ngModel)]="record.repetitions"
+                        <input class="form-control" id="Repetitions" type="number" [(ngModel)]="record.repetitions"
                             (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Distance">Distance (m)</label>
-                        <input class="form-control" id="Distance" [(ngModel)]="record.distance" (change)='onChange()' />
+                        <input class="form-control" id="Distance" type="number" [(ngModel)]="record.distance" (change)='onChange()' />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group first">
+                        <label for="Duration">Duration</label>
+                        <input class="form-control" id="Duration" type="number" [(ngModel)]="record.duration" (change)='onChange()' />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group first">
+                        <label for="Duration">Duration unit</label>
+                        <select class="form-select" aria-label="Default select example" id="DurationUnit"
+                            [(ngModel)]="record.durationUnit" (change)='onChange()'>
+                            <option value="h">h</option>
+                            <option value="m">m</option>
+                            <option value="s">s</option>
+                        </select>
                     </div>
                 </div>
             </div>

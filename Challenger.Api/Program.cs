@@ -17,10 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+var rankingSettings = new RankingSettings();
+builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
+
 // Register services directly with Autofac here. Don't
 // call builder.Populate(), that happens in AutofacServiceProviderFactory.
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
+    builder.RegisterInstance(rankingSettings);
     builder.RegisterType<FitRecordRepository>().As<IFitRecordRepository>();
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
     builder.RegisterType<UserRepository>().As<IUserRepository>();

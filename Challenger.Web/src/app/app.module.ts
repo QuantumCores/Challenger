@@ -24,10 +24,9 @@ import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { ChallengeRulesComponent } from './components/challenge-rules/challenge-rules.component';
 
 export function tokenGetter() {
-  console.log("tokenGetter called = " + localStorage.getItem('jwt'));
-
   return localStorage.getItem("jwt");
 }
 
@@ -48,7 +47,8 @@ export function tokenGetter() {
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    RankingComponent
+    RankingComponent,
+    ChallengeRulesComponent
   ],
   imports: [
     BrowserModule,

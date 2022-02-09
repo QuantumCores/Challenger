@@ -1,3 +1,5 @@
+<div echarts [options]="measurementsChartOptions" class="demo-chart"></div>
+
 <h2>My measurements</h2>
 
 <app-button color="green" text="Add" (click)="addMeasurement()">
@@ -19,6 +21,6 @@
     </div>
 </div>
 
-<app-measurement-item *ngFor="let measurement of measurements" [measurement]="measurement"
+<app-measurement-item *ngFor="let measurement of measurements; let i=index" [measurement]="measurement"
     (onDeleteMeasurement)="onDelete(measurement.id)" (onChangeMeasurement)="onChange(measurement)">
 </app-measurement-item>

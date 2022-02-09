@@ -1,0 +1,21 @@
+Write-Host "Chronos Api"
+cd ChronosDomain\Chronos.Api
+$location = Get-Location 
+Write-Host $location
+Start-Process -FilePath "cmd" -ArgumentList "/c dotnet run"
+
+Write-Host ""
+Write-Host "Chronos Web"
+cd ..\Chronos.Web
+$location = Get-Location 
+Write-Host $location
+Start-Process -FilePath "cmd" -ArgumentList "/c ng serve"
+
+Write-Host ""
+Write-Host "The Game Client"
+cd ..\..\TheGame.Client
+$location = Get-Location 
+Write-Host $location
+Start-Process -FilePath "cmd" -ArgumentList "/c dotnet run"
+
+#Read-Host -Prompt '.'

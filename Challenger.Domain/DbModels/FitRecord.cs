@@ -24,5 +24,7 @@ namespace Challenger.Domain.DbModels
         public double? Distance { get; set; }
 
         public double? Repetitions { get; set; }
+
+        public double BurntCalories { get; set; }
     }
 }

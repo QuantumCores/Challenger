@@ -4,12 +4,12 @@ export class MeasurementDto {
     userId: number;
     measurementDate: Date;
     weight: number;
-    waist: number;
-    neck: number;
-    chest: number;
-    hips: number;
-    biceps: number;
-    tigh: number;
-    calf: number;
-    fat : number;
+    waist?: number;
+    neck?: number;
+    chest?: number;
+    hips?: number;
+    biceps?: number;
+    tigh?: number;
+    calf?: number;
+    fat? : number;
 }

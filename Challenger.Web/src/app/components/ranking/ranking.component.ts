@@ -29,10 +29,18 @@ export class RankingComponent implements OnInit {
   setOptions() {
     return {
       title: {
-        text: 'BECON SCORE CHART',
+        text: 'BECON SCORE',
+        textAlign: 'left',
+        textStyle: { fontSize:20, lineHeight: 56 }
       },
       legend: {
-        data: this.getLegend()
+        data: this.getLegend(),
+        bottom: 0,
+        textStyle: { fontSize:16, padding: 5 },
+        itemGap: 20,
+        height: 150,
+        icon: 'roundRect',
+        selector: false
       },
       tooltip: {
       },
@@ -41,6 +49,7 @@ export class RankingComponent implements OnInit {
         nameLocation: 'middle',
         nameTextStyle: { fontSize: '18', lineHeight: 56 },
         type: 'time',
+        min: '2022-02-05'
       },
       yAxis: {
         name: 'Score',

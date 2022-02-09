@@ -23,6 +23,11 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Users.FindAsync(id);
         }
 
+        public Task<User> GetByEmail(string email)
+        {
+            return _context.Users.SingleAsync(x => x.Email == email);
+        }
+
         public async Task<long> GetIdByEmail(string email)
         {
             var user = await _context.Users.SingleAsync(x => x.Email == email);

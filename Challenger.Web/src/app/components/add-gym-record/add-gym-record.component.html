@@ -6,7 +6,8 @@
                     <div class="form-group first">
                         <label for="RecordDate">Date</label>
                         <input class="form-control" type="date" name="RecordDate" id="RecordDate"
-                            [value]="record.recordDate | date: 'yyyy-MM-dd'" (change)='setDate($event); onChange();' />
+                            style="border-color: orange;" [value]="record.recordDate | date: 'yyyy-MM-dd'"
+                            (change)='setDate($event); onChange();' />
                     </div>
                 </div>
             </div>
@@ -15,32 +16,34 @@
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
                         <input class="form-control" id="Excersize" [(ngModel)]="record.excersize"
-                            (change)='onChange()' />
+                            style="border-color: orange;" (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="Weight">Weight (kg)</label>
-                        <input class="form-control" id="Weight" [(ngModel)]="record.weight" (change)='onChange()' />
+                        <label for="MuscleGroup">MuscleGroup</label>
+                        <select class="form-select" aria-label="Default select example" id="MuscleGroup"
+                            style="border-color:orange;" [(ngModel)]="record.muscleGroup" (change)='onChange()'>
+                            <option *ngFor="let muscle of muscleGroups" [value]="muscle">{{ muscle }}</option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="Repetitions">Repetitions</label>
-                        <input class="form-control" id="Repetitions" [(ngModel)]="record.repetitions"
-                            (change)='onChange()' />
+                        <label for="Weight">Weight (kg)</label>
+                        <input class="form-control" id="Weight" type="number" [(ngModel)]="record.weight" (change)='onChange()'
+                            style="border-color:orange;" />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="MuscleGroup">MuscleGroup</label>
-                        <select class="form-select" aria-label="Default select example" id="MuscleGroup" [(ngModel)]="record.muscleGroup"  (change)='onChange()'>
-                                <option *ngFor="let muscle of muscleGroups" [value]="muscle">{{ muscle }}</option>
-                        </select>
+                        <label for="Repetitions">Repetitions</label>
+                        <input class="form-control" id="Repetitions" type="number" [(ngModel)]="record.repetitions"
+                            style="border-color:orange;" (change)='onChange()' />
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
     </div>

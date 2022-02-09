@@ -22,6 +22,4 @@ export class RankingService {
   public getUsersScores(): Observable<UserScoresDto[]> {
     return this.http.get<UserScoresDto[]>(this.apiUrl);
   }
-
-
 }

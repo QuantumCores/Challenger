@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <div class="form-group first">
                         <label for="date">Date</label>
-                        <input class="form-control" type="date" name="date" id="date"
+                        <input class="form-control" type="date" name="date" id="date" style="border-color: orange;"
                             [value]="measurement.measurementDate | date: 'yyyy-MM-dd'"
                             (change)='setDate($event); onChange();' />
                     </div>
@@ -15,14 +15,14 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Weight">Weight (kg)</label>
-                        <input class="form-control" id="Weight" [(ngModel)]="measurement.weight"
+                        <input class="form-control" id="Weight" type="number" [(ngModel)]="measurement.weight" style="border-color: orange;"
                             (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Fat">Fat (%)</label>
-                        <input class="form-control" id="Fat" [(ngModel)]="measurement.fat" (change)='onChange()' />
+                        <input class="form-control" id="Fat" type="number" [(ngModel)]="measurement.fat" (change)='onChange()' />
                     </div>
                 </div>
             </div>
@@ -30,13 +30,13 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Waist">Waist (cm)</label>
-                        <input class="form-control" id="Waist" [(ngModel)]="measurement.waist" (change)='onChange()' />
+                        <input class="form-control" id="Waist" type="number" [(ngModel)]="measurement.waist" (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Neck">Neck (cm)</label>
-                        <input class="form-control" id="Neck" [(ngModel)]="measurement.neck" (change)='onChange()' />
+                        <input class="form-control" id="Neck" type="number" [(ngModel)]="measurement.neck" (change)='onChange()' />
                     </div>
                 </div>
             </div>
@@ -44,13 +44,13 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Chest">Chest (cm)</label>
-                        <input class="form-control" id="Chest" [(ngModel)]="measurement.chest" (change)='onChange()' />
+                        <input class="form-control" id="Chest" type="number" [(ngModel)]="measurement.chest" (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Biceps">Biceps (cm)</label>
-                        <input class="form-control" id="Biceps" [(ngModel)]="measurement.biceps"
+                        <input class="form-control" id="Biceps" type="number" [(ngModel)]="measurement.biceps"
                             (change)='onChange()' />
                     </div>
                 </div>
@@ -59,13 +59,21 @@
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Tigh">Tigh (cm)</label>
-                        <input class="form-control" id="Tigh" [(ngModel)]="measurement.tigh" (change)='onChange()' />
+                        <input class="form-control" id="Tigh" type="number" [(ngModel)]="measurement.tigh" (change)='onChange()' />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group first">
                         <label for="Calf">Calf (cm)</label>
-                        <input class="form-control" id="Calf" [(ngModel)]="measurement.calf" (change)='onChange()' />
+                        <input class="form-control" id="Calf" type="number" [(ngModel)]="measurement.calf" (change)='onChange()' />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group first">
+                        <label for="Hips">Hips (cm)</label>
+                        <input class="form-control" id="Hips" type="number" [(ngModel)]="measurement.hips" (change)='onChange()' />
                     </div>
                 </div>
             </div>

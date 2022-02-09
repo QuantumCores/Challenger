@@ -8,6 +8,8 @@ namespace Challenger.Domain.Contracts
 
         ValueTask<User> Get(long id);
 
+        Task<User> GetByEmail(string email);
+
         Task<long> GetIdByEmail(string email);
 
         Task<List<User>> GetAll();

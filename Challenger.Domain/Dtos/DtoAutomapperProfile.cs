@@ -15,6 +15,9 @@ namespace Challenger.Domain.Dtos
 
             CreateMap<MeasurementDto, Measurement>()
                 .ReverseMap();
+
+            CreateMap<UserDto, User>()
+                .ReverseMap();
         }
     }
 }

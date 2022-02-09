@@ -8,4 +8,5 @@ export class FitRecordDto {
     durationUnit?: string;
     distance?: number;
     repetitions?: number;
+    burntCalories: number;
 }

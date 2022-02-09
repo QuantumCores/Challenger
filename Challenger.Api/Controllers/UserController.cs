@@ -1,6 +1,10 @@
-﻿using Challenger.Domain.Account;
+﻿using AutoMapper;
+using Challenger.Api.Contracts.V1;
+using Challenger.Domain.Account;
 using Challenger.Domain.Contracts;
 using Challenger.Domain.DbModels;
+using Challenger.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenger.Api.Controllers
@@ -10,16 +14,16 @@ namespace Challenger.Api.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly IJwtService _jwtService;
+        private readonly IMapper _mapper;
         private readonly ILogger<AccountController> _logger;
 
         public UserController(
             IUserRepository userRepository,
-            IJwtService jwtService,
+            IMapper mapper,
             ILogger<AccountController> logger)
         {
             _userRepository = userRepository;
-            _jwtService = jwtService;
+            _mapper = mapper;
             _logger = logger;
         }
 
@@ -27,6 +31,14 @@ namespace Challenger.Api.Controllers
         public Task<List<User>> GetAll()
         {
             return _userRepository.GetAll();
+        }
+
+        [Authorize]
+        [HttpGet(ApiRoutes.User.Basic)]
+        public async Task<UserDto> Get()
+        {
+            var user = await _userRepository.GetByEmail(User.Identity.Name);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

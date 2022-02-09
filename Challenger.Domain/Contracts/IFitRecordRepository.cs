@@ -8,6 +8,8 @@ namespace Challenger.Domain.Contracts
 
         Task<List<FitRecord>> GetAll();
 
+        Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate);
+
         Task<List<FitRecord>> GetAllForUser(long userId);
 
         void Add(FitRecord record);
