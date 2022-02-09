@@ -120,21 +120,21 @@ namespace Challenger.Domain.RankingService
             {
                 if (record.Repetitions.HasValue && record.Repetitions >= 10000)
                 {
-                    return record.Repetitions.Value / _settings.StepsPerPoint;
+                    return Math.Round(record.Repetitions.Value / _settings.StepsPerPoint, 1);
                 }
             }
             else
             {
                 if (record.BurntCalories != 0)
                 {
-                    return record.BurntCalories / _settings.CaloriesPerPoint;
+                    return Math.Round(record.BurntCalories / _settings.CaloriesPerPoint, 1);
                 }
                 else
                 {
                     if (record.Duration.HasValue && record.Duration.Value != 0 && record.DurationUnit != null)
                     {
                         var time = TimeHelper.CalculateTimeInMinutes(record.Duration.Value, record.DurationUnit);
-                        return (180.0 * time / 60.0) / _settings.CaloriesPerPoint;
+                        return Math.Round((_settings.CaloriesPerHourActivity[record.Excersize] * time / 60.0) / _settings.CaloriesPerPoint, 1);
                     }
                 }
             }

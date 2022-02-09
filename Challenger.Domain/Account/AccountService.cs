@@ -120,6 +120,7 @@ namespace Challenger.Domain.Account
                     Email = Input.Email,
                     Height = Input.Height,
                     UserName = Input.Nickname,
+                    Sex = Input.Sex,
                 };
             }
             catch

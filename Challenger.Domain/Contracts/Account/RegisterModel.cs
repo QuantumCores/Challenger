@@ -46,5 +46,8 @@ namespace Challenger.Domain.Contracts.Account
 
         [Required]
         public DateTime BirthDate { get; set; }
+
+        [Required]
+        public string Sex { get; set; }
     }
 }

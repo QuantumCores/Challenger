@@ -9,5 +9,7 @@
         public double CaloriesPerPoint { get; set; }
 
         public int StepsPerPoint { get; set; }
+
+        public Dictionary<string, double> CaloriesPerHourActivity { get; set; }
     }
 }

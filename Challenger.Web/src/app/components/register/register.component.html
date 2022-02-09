@@ -30,9 +30,15 @@
         </div>
         <div class="col-md-5">
             <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
-            <em *ngIf="validateControl('password') && hasError('password', 'pattern')">Minimum eight and maximum 16
-                characters, at least one uppercase letter, one lowercase letter (!@#$&_*), one number and one special
-                character</em>
+            <em *ngIf="validateControl('password') && hasError('password', 'pattern')">
+                <ul>
+                    <li>minimum 8 and maximum 16 characters</li>
+                    <li>at least one uppercase letter</li>
+                    <li>at least one lowercase letter</li>
+                    <li>one number </li>
+                    <li>and one special character (!@#$&_*)</li>                    
+                </ul>
+            </em>
         </div>
     </div>
     <div class="form-group row">
@@ -41,7 +47,7 @@
             <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" />
         </div>
         <div class="col-md-5">
-            <em *ngIf="!confirmPassword()">Confirm password is different from passwords</em>
+            <em *ngIf="!confirmPassword()">Confirm password is different from password</em>
         </div>
     </div>
     <div class="form-group row">
@@ -59,7 +65,16 @@
             <input type="date" id="birthDate" formControlName="birthDate" class="form-control" />
         </div>
     </div>
-    <br>
+    <div class="form-group row">
+        <label for="sex" class="col-form-label col-sm-2">Sex:</label>
+        <div class="col-md-5">
+            <select class="form-select" aria-label="Default select example" id="sex" formControlName="sex">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+        </div>
+    </div>
+<br>
 
     <button type="submit" class="btn"
         [ngClass]="{'btn-primary': registerForm.valid, 'btn-secondary': !registerForm.valid}"

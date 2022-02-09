@@ -12,6 +12,8 @@
 
         public double Height { get; set; }
 
+        public string Sex { get; set; }
+
         public List<GymRecord> UserGymRecords {get;set;}
 
         public List<FitRecord> UserFitRecords { get; set; }

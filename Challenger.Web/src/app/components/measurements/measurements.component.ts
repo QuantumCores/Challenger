@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SeriesModel } from 'echarts';
-import { CalculationProvider } from 'src/app/providers/CalculationProvider';
 import { MeasurementService } from 'src/app/services/measurement.service';
 import { UserService } from 'src/app/services/user.service';
 import { MeasurementDto } from '../measurement-item/measurementDto';
+import { MeasurementsChart } from './measurements.chart';
 import { UserBasicDto } from './UserBasicDto';
 
 @Component({
@@ -23,7 +22,7 @@ export class MeasurementsComponent implements OnInit {
   constructor(
     private measurementService: MeasurementService,
     private userService: UserService,
-    private calculationProvider: CalculationProvider) { }
+    private chart: MeasurementsChart) { }
 
   ngOnInit(): void {
     this.getUserBasicData();
@@ -35,7 +34,7 @@ export class MeasurementsComponent implements OnInit {
       (measurements) => {
         this.measurements = measurements;
         this.sortByDate();
-        this.measurementsChartOptions = this.setOptions();
+        this.measurementsChartOptions = this.chart.setOptions(this.measurements, this.userBasicData);
       });
   }
 
@@ -65,7 +64,7 @@ export class MeasurementsComponent implements OnInit {
       this.measurementService.updateMeasurement(measurement).subscribe(
         (data) => {
           this.sortByDate();
-          this.measurementsChartOptions = this.setOptions();
+          this.measurementsChartOptions = this.chart.setOptions(this.measurements, this.userBasicData);
         }
       );
     }
@@ -77,7 +76,7 @@ export class MeasurementsComponent implements OnInit {
         (measurement) => {
           this.measurements.push(measurement);
           this.sortByDate();
-          this.measurementsChartOptions = this.setOptions();
+          this.measurementsChartOptions = this.chart.setOptions(this.measurements, this.userBasicData);
         });
     }
   }
@@ -97,118 +96,7 @@ export class MeasurementsComponent implements OnInit {
 
   validate(measurement: MeasurementDto): boolean {
     return !(!measurement.measurementDate || !measurement.weight || measurement.weight == 0)
-  }
-
-  setOptions() {
-    const keysToPrint: string[] = this.getLegend();
-
-    return {
-      legend: {
-        data: keysToPrint,
-        bottom: 0,
-        textStyle: { fontSize: 16, padding: 5 },
-        itemGap: 20,
-        height: 150,
-        icon: 'roundRect',
-        selector: false
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross'
-        }
-      },
-      xAxis: {
-        name: 'Date',
-        nameLocation: 'middle',
-        nameTextStyle: { fontSize: '18', lineHeight: 46 },
-        type: 'time',
-        min: '2022-02-05'
-      },
-      yAxis: [{
-        name: 'Weight',
-        //nameLocation: 'middle',
-        nameTextStyle: { fontSize: '18', lineHeight: 56 },
-        axisLine: { show: true, lineStyle: { color: '#5470C6' } },
-        axisTick: { show: true },
-        type: 'value',
-        alignTicks: true,
-        min: 40,
-        axisLabel: {
-          formatter: '{value} kg'
-        }
-      },
-      {
-        name: 'Fat',
-        //nameLocation: 'middle',
-        nameTextStyle: { fontSize: '18', lineHeight: 56 },
-        axisLine: { show: true },
-        axisTick: { show: true },
-        type: 'value',
-        alignTicks: true,
-        min: 10,
-        axisLabel: {
-          formatter: '{value} %'
-        }
-      },
-      ],
-      series: this.getFatAndWeightSeries(),
-    };
-  }
-
-  getFatAndWeightSeries(): any[] {
-    let series: any[] = [];
-
-    let weightData: any[] = [];
-    let fatData: any[] = [];
-    let fatCalcData: any[] = [];
-    for (let i = 0; i < this.measurements.length; i++) {
-      const element = this.measurements[i];
-      weightData.push({ value: [new Date(element.measurementDate), element.weight] });
-
-      if (element.fat) {
-        fatData.push({ value: [new Date(element.measurementDate), element.fat] });
-      }
-
-      if (element.waist && element.neck) {
-        const calcFat = this.calculationProvider.calculateFatNavyFormula(true, element.waist, element.neck, this.userBasicData.height, 0);
-        fatCalcData.push({ value: [new Date(element.measurementDate), calcFat] });
-      }
-    }
-    series.push({ name: 'weight', type: 'line', data: weightData });
-    series.push({ name: 'fat', yAxisIndex: 1, type: 'line', data: fatData });
-    series.push({ name: 'calcFat', yAxisIndex: 1, type: 'line', data: fatCalcData });
-
-    return series;
-  }
-
-  getSeries(keysToPrint: string[]): any {
-    let series: any[] = [];
-
-    for (let i = 0; i < keysToPrint.length; i++) {
-      const key = keysToPrint[i];
-      series.push(this.getSerie(key));
-    }
-
-    return series;
-  }
-
-  getSerie(name: string): any {
-    let data: any[] = [];
-    for (let i = 0; i < this.measurements.length; i++) {
-      const element = this.measurements[i];
-      const asAny = element as any;
-      if (asAny[name]) {
-        data.push({ value: [new Date(element.measurementDate), asAny[name]] });
-      }
-    }
-
-    return {
-      name: name,
-      type: 'line',
-      data: data,
-    };
-  }
+  } 
 
   sortByDate(): void {
     this.measurements.sort((a: MeasurementDto, b: MeasurementDto) => {
@@ -216,21 +104,5 @@ export class MeasurementsComponent implements OnInit {
       let aDate = new Date(a.measurementDate);
       return bDate.getTime() - aDate.getTime();
     })
-  }
-
-  getLegend(): string[] {
-
-    return ['weight', 'fat', 'calcFat'];
-    const keys = Object.keys(this.measurements[0]);
-    let result: string[] = [];
-
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      if (key != 'id' && key != 'userId' && key != 'measurementDate') {
-        result.push(key);
-      }
-    }
-
-    return result;
-  }
+  } 
 }

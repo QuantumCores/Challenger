@@ -4,4 +4,5 @@ export class UserBasicDto {
     email: string;
     dateOfBirth: Date;
     height: number;
+    sex: string;
 }

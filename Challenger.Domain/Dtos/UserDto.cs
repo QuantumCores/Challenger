@@ -9,5 +9,7 @@
         public DateTime DateOfBirth { get; set; }
 
         public double Height { get; set; }
+
+        public string Sex { get; set; }
     }
 }

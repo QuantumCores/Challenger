@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
       confirmPassword: new FormControl("", [Validators.required]),
       height: new FormControl("", [Validators.required]),
       birthDate: new FormControl("", [Validators.required]),
+      sex: new FormControl("", [Validators.required]),
     })
   }
 
