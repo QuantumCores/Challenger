@@ -55,7 +55,7 @@ export class RankingChart {
             return {
                 name: x.userName,
                 type: 'line',
-                data: x.scores.map(y => { return { name: x.userName, value: [new Date(y.date), y.fullScore] }; }),
+                data: x.scores.map(y => { return { name: x.userName, value: [new Date(y.date), Math.round(y.fullScore * 10) / 10] }; }),
             }
         })
     }

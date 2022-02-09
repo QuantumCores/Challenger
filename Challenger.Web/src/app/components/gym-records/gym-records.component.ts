@@ -15,7 +15,9 @@ export class GymRecordsComponent implements OnInit {
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
 
-  constructor(private gymRecordService: GymRecordService, private dateHelper: DateHelper) { }
+  constructor(
+    private gymRecordService: GymRecordService,
+    private dateHelper: DateHelper) { }
 
   ngOnInit(): void {
     this.getGymRecords();
@@ -79,20 +81,19 @@ export class GymRecordsComponent implements OnInit {
 
   validate(record: GymRecordDto): boolean {
 
-    if(!record.recordDate)
-    {
-      console.log("Co kurwa"+ record.recordDate);
-    }
-
     return !(!record.recordDate || !record.excersize || !record.muscleGroup || !record.repetitions || !record.weight)
   }
 
   setDateAndTime(): void {
 
     let now = new Date();
-    if (this.dateHelper.getDateOnlyAsNumber(now) == this.dateHelper.getDateOnlyAsNumber(this.recordToAdd.recordDate)) {
+    if (this.compareDates(now, this.recordToAdd.recordDate)) {
       this.recordToAdd.recordDate = now;
     }
+  }
+
+  compareDates(left: Date, right: Date): boolean {
+    return this.dateHelper.getDateOnlyAsNumber(left) == this.dateHelper.getDateOnlyAsNumber(right)
   }
 
   sortByDate(): void {
