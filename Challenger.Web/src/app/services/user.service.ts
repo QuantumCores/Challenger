@@ -1,20 +1,42 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { IfStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserBasicDto } from '../components/measurements/UserBasicDto';
+import { AccountHelper } from '../helpers/AccountHelper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  private userBasic: UserBasicDto;
   private apiUrl = `${environment.httpDomain}/User`;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private accountHelper: AccountHelper) { }
 
   public getUserBasic(): Observable<UserBasicDto> {
-    const url = `${this.apiUrl}/api/v1/basic`;
-    return this.http.get<UserBasicDto>(url);
+    let subject = new Subject<UserBasicDto>();
+
+    if (this.userBasic) {
+      let email = this.accountHelper.getUserEmail();
+      if (email && this.userBasic.email == email) {
+        return of(this.userBasic);
+      }
+    }
+    else {
+      const url = `${this.apiUrl}/api/v1/basic`;
+
+      this.http.get<UserBasicDto>(url).subscribe(
+        (userDto) => {
+          this.userBasic = userDto;
+          subject.next(userDto);
+        }
+      );
+    }
+    return subject;
   }
 }
