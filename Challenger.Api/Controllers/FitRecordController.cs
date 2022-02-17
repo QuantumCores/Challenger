@@ -41,6 +41,7 @@ namespace Challenger.Api.Controllers
             entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
             _fitRecordRepository.Add(entity);
             await _fitRecordRepository.SaveChanges();
+            record = _mapper.Map<FitRecordDto>(entity);
 
             return record;
         }

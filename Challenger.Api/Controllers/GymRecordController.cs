@@ -41,6 +41,7 @@ namespace Challenger.Api.Controllers
             entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
             _gymRecordRepository.Add(entity);
             await _gymRecordRepository.SaveChanges();
+            record = _mapper.Map<GymRecordDto>(entity);
 
             return record;
         }

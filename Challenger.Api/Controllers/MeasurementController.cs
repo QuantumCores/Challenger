@@ -42,6 +42,7 @@ namespace Challenger.Api.Controllers
             entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
             _measurementRepository.Add(entity);
             await _measurementRepository.SaveChanges();
+            measurement = _mapper.Map<MeasurementDto>(entity);
 
             return measurement;
         }
