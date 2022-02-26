@@ -1,12 +1,12 @@
-<h1>ZASADY Bekon hallenge</h1>
+<h1>Regulamin</h1>
 
 <ul>
     <li>
-        Wyzwanie trwa od 5 lutego do 1 lipca 2022.
+        Wyzwanie trwa <b>od {{rules.startDate | date:'yyyy.MM.dd'}} do {{ rules.endDate | date:'yyyy.MM.dd'}}</b>.
     </li>
     <li>
-        Uczestnicy zobowiązani sa wykonywania pomiarów obwodów ciała przynajmniej raz w tygodniu (preferowany weekend) z
-        samego rana po przebudzeniu na czczo i po porannej toalecie.
+        Uczestnicy zobowiązani sa do wykonywania pomiarów obwodów ciała <b>przynajmniej raz w tygodniu</b> (preferowany
+        weekend) z samego rana po przebudzeniu na czczo i po porannej toalecie.
     </li>
     <li>
         Należy wprowadzać pomiary i aktywność fizyczną zgodnie z prawdą. Nie lubimy oszustów a zależy nam na dobrej
@@ -14,14 +14,68 @@
     </li>
 </ul>
 
-<h2>Pomiary</h2>
+<h1>Pomiary</h1>
 
 <p>Pomiary robimy najlepiej taśmą krawiecką. Większość pomiarów można wykonywać przy napiętych mięśniach np. biceps,
-    łydka, uda. Natomiast w pasie, biodra i szyja robimy bez napinania będąc rozluźnionym.
-    Nie wciągamy brzucha grubasy! Taśmę krawiecką przykładamy tak aby nie ściskać mierzonego obwodu. Pamiętaj w jaki
-    sposób się mierzyłeś aby cotygodniowe pomiary były robione w ten sam sposób.
-    Poniżej link do strony na której znajedziecie gdzie mierzymy obdwody. <b>Waist</b> to potocznie pas i mierzymy go
-    około 1cm pod pępkiem.
+    łydka, uda. Natomiast w pasie, biodra i szyja robimy bez napinania będąc rozluźnionym.</p>
+<p> <b>Nie wciągamy brzucha grubasy!</b></p>
+<p style="text-align: justify;">Taśmę krawiecką przykładamy tak aby nie ściskać mierzonego obwodu. Pamiętaj w jaki
+    sposób się mierzyłeś aby cotygodniowe pomiary były robione w ten sam sposób. Poniżej link do strony na której
+    znajedziecie gdzie mierzymy obwody.
+    <b>Waist</b> to potocznie pas i mierzymy go około 1cm pod pępkiem.
 </p>
 <p><a href="https://support.fit3d.com/hc/en-us/articles/115007570947-Core-circumference-measurements">Grafika z
         obwodami</a></p>
+
+
+<h1>Punktacja</h1>
+<h2>Becon Score</h2>
+<p>Pukty nabijamy wykonując aktywność fizyczną. Może to być uprawianie sportu albo siłownia.</p>
+<h3>Aktywność</h3>
+<p style="text-align: justify;">Jeżeli uprawiamy sport to punkciki nabijamy spalając kalorie. Wprowadzając aktywność
+    fizyczną w zakładce FitRecords możecie wprowadzić
+    ilość spalonych kalorii, którą zmierzył Wam zegarek albo opaska. Niestety ile ludzi tyle urządzeń i okazuje się, że
+    różnice pomiędzy pomiarami tej samej aktywności
+    przez urządzenia różnych producentów są bardzo duże. Z tego powodu, aby nikt nie był poszkodowany spalone kalorie
+    obliczane są na podstawie czasu trwania aktywności.
+    Poniżej znajduje się tablica z liczbą kalorii jakie są spalane w ciągu jednej godziny danej aktywności.
+</p>
+
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Calories/hour [kCal]</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of rules.caloriesPerHourActivity | keyvalue">
+            <td>{{item.key}}</td>
+            <td>{{item.value}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Liczbę punktów liczymy z następującego wzoru
+</p>
+<p style="text-align: center;">
+    <b>N = Calories per hour * Time / {{rules.caloriesPerPoint}}</b>
+</p>
+
+<p>
+    Nieco inaczej ma się sprawa jeżeli chodzi o chodzenie (<b>Walking</b>). Tutaj punkty zdobywamy mierząc liczbę kroków. Zapisując tę aktywność należy wpisać ilość 
+    kroków w polu 'Repetitions'. I tak za każde {{rules.stepsPerPoint}} kraków zdobywamy jeden punkt pod warunkiem, że <b>przekroczymy 10 000 kroków w ciągu dnia</b>.
+</p>
+<h3>Siłownia</h3>
+Jeżeli chodzi o siłownię to sprawa jest prosta. Za każdą wykonaną serię wpisaną w zakładce GymRecords dostajemy punkt. Ale nie każdą serię wpisujemy! Nie wpisujemy 
+serii rozgrzewkowych, a każdą serię robimy aż do upadku mięśniowego bądź jednego powtórzenina przed updakiem. Co to znaczy? To znaczy, że robimy tyle powtórzeń w 
+serii ile nasze mięśnie są w stanie wykonać. Nie opierdalamy sie na siłowni!
+
+<h2>Fat Score</h2>
+<p>Będziemy dostawali punkciki za to, że chudniemy. W końcu po to tu jesteś tłuściochu! Ale żeby dostać punkciki trzeba się mierzyć. To dzięki pomiarom wiemy ile mamy
+tłuszczu i czy w ogóle chudniemy.
+</p>
+
+<h2>Total Score</h2>
+<p>Na total score będą się składały punkciki z obu powyższych rankingów</p>

@@ -123,20 +123,10 @@ namespace Challenger.Domain.RankingService
                     return Math.Round(record.Repetitions.Value / _settings.StepsPerPoint, 1);
                 }
             }
-            else
+            else if (record.Duration.HasValue && record.Duration.Value != 0 && record.DurationUnit != null)
             {
-                if (record.BurntCalories != 0)
-                {
-                    return Math.Round(record.BurntCalories / _settings.CaloriesPerPoint, 1);
-                }
-                else
-                {
-                    if (record.Duration.HasValue && record.Duration.Value != 0 && record.DurationUnit != null)
-                    {
-                        var time = TimeHelper.CalculateTimeInMinutes(record.Duration.Value, record.DurationUnit);
-                        return Math.Round((_settings.CaloriesPerHourActivity[record.Excersize] * time / 60.0) / _settings.CaloriesPerPoint, 1);
-                    }
-                }
+                var time = TimeHelper.CalculateTimeInMinutes(record.Duration.Value, record.DurationUnit);
+                return Math.Round((_settings.CaloriesPerHourActivity[record.Excersize] * time / 60.0) / _settings.CaloriesPerPoint, 1);
             }
 
             return 0;

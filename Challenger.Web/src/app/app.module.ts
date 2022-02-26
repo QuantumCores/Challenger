@@ -14,8 +14,8 @@ import { MeasurementsComponent } from './components/measurements/measurements.co
 import { GymRecordItemComponent } from './components/gym-record-item/gym-record-item.component';
 import { FitRecordItemComponent } from './components/fit-record-item/fit-record-item.component';
 import { GymRecordsComponent } from './components/gym-records/gym-records.component';
-import { AddGymRecordComponent } from './components/gym-add-record/add-gym-record.component';
-import { AddFitRecordComponent } from './components/fit-add-record/add-fit-record.component';
+import { AddGymRecordComponent } from './components/gym-add-record/gym-add-record.component';
+import { AddFitRecordComponent } from './components/fit-add-record/fit-add-record.component';
 import { FitRecordsComponent } from './components/fit-records/fit-records.component';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';

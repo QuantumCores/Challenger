@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Challenger.Api.Controllers
 {
-    [ApiController]
-    
+    [ApiController]    
     [Route("[controller]")]
     public class RankingController : Controller
     {

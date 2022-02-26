@@ -4,9 +4,9 @@ import { FitRecordDto } from '../fit-record-item/fitRecordDto';
 import { ActivityEnum } from './ActivityEnum';
 
 @Component({
-  selector: 'app-add-fit-record',
-  templateUrl: './add-fit-record.component.html',
-  styleUrls: ['./add-fit-record.component.css']
+  selector: 'app-fit-add-record',
+  templateUrl: './fit-add-record.component.html',
+  styleUrls: ['./fit-add-record.component.css']
 })
 export class AddFitRecordComponent implements OnInit {
 

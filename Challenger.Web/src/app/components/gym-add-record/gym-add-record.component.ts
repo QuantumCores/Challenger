@@ -4,9 +4,9 @@ import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 import { MuscleGroupsEnum } from './MuscleGroupsEnum';
 
 @Component({
-  selector: 'app-add-gym-record',
-  templateUrl: './add-gym-record.component.html',
-  styleUrls: ['./add-gym-record.component.css']
+  selector: 'app-gym-add-record',
+  templateUrl: './gym-add-record.component.html',
+  styleUrls: ['./gym-add-record.component.css']
 })
 export class AddGymRecordComponent implements OnInit {
 

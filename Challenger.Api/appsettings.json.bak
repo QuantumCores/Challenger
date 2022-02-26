@@ -12,7 +12,7 @@
   "RankingSettings": {
     "StartDate": "2022-02-05",
     "EndDate": "2022-07-01",
-	"CaloriesPerPoint": 50,
+	"CaloriesPerPoint": 45,
 	"CaloriesPerHourActivity": {
       "Snowboard": 422,
       "Jogging": 563,

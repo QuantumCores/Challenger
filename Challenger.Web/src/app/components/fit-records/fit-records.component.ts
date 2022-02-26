@@ -78,7 +78,7 @@ export class FitRecordsComponent implements OnInit {
   }
 
   validate(record: FitRecordDto): boolean {
-    return !(!record.recordDate || !record.excersize || record.burntCalories == null)
+    return !(!record.recordDate || !record.excersize || record.duration == null || record.durationUnit == null )
   }
 
   setDateAndTime(): void {

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddGymRecordComponent } from './add-gym-record.component';
+import { AddFitRecordComponent } from './fit-add-record.component';
 
-describe('AddGymRecordComponent', () => {
-  let component: AddGymRecordComponent;
-  let fixture: ComponentFixture<AddGymRecordComponent>;
+describe('AddFitRecordComponent', () => {
+  let component: AddFitRecordComponent;
+  let fixture: ComponentFixture<AddFitRecordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddGymRecordComponent ]
+      declarations: [ AddFitRecordComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddGymRecordComponent);
+    fixture = TestBed.createComponent(AddFitRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

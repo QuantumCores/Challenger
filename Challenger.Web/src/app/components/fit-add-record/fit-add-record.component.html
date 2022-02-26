@@ -21,10 +21,21 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group first">
-                        <label for="BurntCalories">Burnt calories (kCal)</label>
-                        <input class="form-control" id="BurntCalories" type="number" [(ngModel)]="record.burntCalories" (change)='onChange()' style="border-color: orange;" />
+                        <label for="Duration">Duration</label>
+                        <input class="form-control" id="Duration" type="number" [(ngModel)]="record.duration" (change)='onChange()' style="border-color: orange;" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group first">
+                        <label for="Duration">Duration unit</label>
+                        <select class="form-select" aria-label="Default select example" id="DurationUnit" style="border-color: orange;"
+                            [(ngModel)]="record.durationUnit" (change)='onChange()'>
+                            <option value="h">h</option>
+                            <option value="m">m</option>
+                            <option value="s">s</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -44,23 +55,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group first">
-                        <label for="Duration">Duration</label>
-                        <input class="form-control" id="Duration" type="number" [(ngModel)]="record.duration" (change)='onChange()' />
+                        <label for="BurntCalories">Burnt calories (kCal)</label>
+                        <input class="form-control" id="BurntCalories" type="number" [(ngModel)]="record.burntCalories" (change)='onChange()'/>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group first">
-                        <label for="Duration">Duration unit</label>
-                        <select class="form-select" aria-label="Default select example" id="DurationUnit"
-                            [(ngModel)]="record.durationUnit" (change)='onChange()'>
-                            <option value="h">h</option>
-                            <option value="m">m</option>
-                            <option value="s">s</option>
-                        </select>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
     </div>

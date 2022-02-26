@@ -3,7 +3,7 @@
 <app-button color="green" text="add" (click)="addFitRecord()">
 </app-button>
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
-    <app-add-fit-record [record]="recordToAdd"></app-add-fit-record>
+    <app-fit-add-record [record]="recordToAdd"></app-fit-add-record>
     <div style="margin-bottom: 5px; margin-top: 5px;">
         <div (click)="onCancell()"
             style="display: inline-block; width: 49%; background-color: red; color: white; text-align: center; padding: 5px; border-radius: 2px;">

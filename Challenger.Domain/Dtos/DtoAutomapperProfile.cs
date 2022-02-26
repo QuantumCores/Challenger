@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Challenger.Domain.DbModels;
+using Challenger.Domain.RankingService;
 
 namespace Challenger.Domain.Dtos
 {
@@ -18,6 +19,11 @@ namespace Challenger.Domain.Dtos
 
             CreateMap<UserDto, User>()
                 .ReverseMap();
+
+            CreateMap<KeyValuePair<string, double>, KeyValuePair<string, string>>()
+                .ConstructUsing(x => new KeyValuePair<string, string>(x.Key,x.Value.ToString()));
+
+            CreateMap<RankingSettings, RulesDto>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Challenger.Api.Contracts.V1;
-using Challenger.Domain.Account;
 using Challenger.Domain.Contracts;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;

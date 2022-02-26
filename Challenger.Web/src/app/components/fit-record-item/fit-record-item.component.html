@@ -23,8 +23,8 @@
                 {{record.duration}} ({{record.durationUnit}})</div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: space-evenly; align-content: stretch;">
-            <app-add-fit-record *ngIf="isSelected" [record]="record" (onChangeFitRecord)="onChange()">
-            </app-add-fit-record>
+            <app-fit-add-record *ngIf="isSelected" [record]="record" (onChangeFitRecord)="onChange()">
+            </app-fit-add-record>
         </div>
     </div>
 </div>

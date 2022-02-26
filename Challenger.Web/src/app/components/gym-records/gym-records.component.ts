@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Enumerable } from 'src/app/helpers/Enumerable';
 import { DateHelper } from 'src/app/helpers/DateHelper';
 import { GymRecordService } from 'src/app/services/gym-record.service';
 import { GymRecordDto } from '../gym-record-item/gymRecordDto';
+import { Grouping } from 'src/app/helpers/Grouping';
 
 @Component({
   selector: 'app-gym-records',
@@ -11,6 +13,8 @@ import { GymRecordDto } from '../gym-record-item/gymRecordDto';
 export class GymRecordsComponent implements OnInit {
 
   records: GymRecordDto[];
+  groupedReocords: Grouping<GymRecordDto>;
+  groupedCollapse: any = {};
   isAdding: boolean = false;
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
@@ -27,9 +31,9 @@ export class GymRecordsComponent implements OnInit {
     this.gymRecordService.getGymRecords().subscribe(
       (records) => {
         this.records = records;
-        this.sortByDate();
+        this.records.forEach(x => this.convertDate(x));
+        this.refreshRecords();
       });
-
   }
 
   addGymRecord(): void {
@@ -49,7 +53,7 @@ export class GymRecordsComponent implements OnInit {
     if (this.validate(record)) {
       this.gymRecordService.updateGymRecord(record).subscribe(
         (data) => {
-          this.sortByDate();
+          this.refreshRecords();
         }
       );
     }
@@ -60,8 +64,9 @@ export class GymRecordsComponent implements OnInit {
       this.setDateAndTime();
       this.gymRecordService.addGymRecord(this.recordToAdd).subscribe(
         (record) => {
+          this.convertDate(record);
           this.records.push(record);
-          this.sortByDate();
+          this.refreshRecords();
         })
     }
   }
@@ -74,9 +79,13 @@ export class GymRecordsComponent implements OnInit {
         let index = this.records.indexOf(toDelete);
         if (index > -1) {
           this.records.splice(index, 1);
-          this.sortByDate();
+          this.refreshRecords();
         }
       });
+  }
+
+  onCollapse(key: string): void {
+    this.groupedCollapse[key] = !this.groupedCollapse[key];
   }
 
   validate(record: GymRecordDto): boolean {
@@ -92,11 +101,25 @@ export class GymRecordsComponent implements OnInit {
     }
   }
 
-  compareDates(left: Date, right: Date): boolean {
+  private refreshRecords(): void {
+    this.sortByDate();
+    this.groupedReocords = Enumerable.groupBy(this.records, x => this.dateHelper.getDateOnlyAsNumber(x.recordDate).toString());
+    this.groupedReocords.keys().forEach(x => {
+      if (!this.groupedCollapse[x]) {
+        this.groupedCollapse[x] = false;
+      }
+    });
+  }
+
+  private compareDates(left: Date, right: Date): boolean {
     return this.dateHelper.getDateOnlyAsNumber(left) == this.dateHelper.getDateOnlyAsNumber(right)
   }
 
-  sortByDate(): void {
+  private convertDate(record: GymRecordDto): void {
+    record.recordDate = new Date(record.recordDate);
+  }
+
+  private sortByDate(): void {
     this.records.sort((a: GymRecordDto, b: GymRecordDto) => {
       let bDate = new Date(b.recordDate);
       let aDate = new Date(a.recordDate);

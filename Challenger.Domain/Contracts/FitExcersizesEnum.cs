@@ -8,6 +8,7 @@
         Swimming,
         Yoga,
         Cycling,
-        Fitness
+        Fitness,
+        Hiking
     }
 }
