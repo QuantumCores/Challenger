@@ -18,6 +18,10 @@ export class Enumerable {
         });
         return result;
     };
+
+    static distinct<T>(array: T[]): T[]{
+        return array.filter((x, i, s) => s.indexOf(x) === i);
+    }
 }
 
 

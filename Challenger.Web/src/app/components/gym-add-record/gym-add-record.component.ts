@@ -11,6 +11,7 @@ import { MuscleGroupsEnum } from './MuscleGroupsEnum';
 export class AddGymRecordComponent implements OnInit {
 
   @Input() record: GymRecordDto;
+  @Input() options: string[];
   @Output() onChangeGymRecord: EventEmitter<GymRecordDto> = new EventEmitter<GymRecordDto>();
   original: any;
   muscleGroups: string[];

@@ -5,7 +5,7 @@
 <app-button color="green" text="Add" (click)="addMeasurement()">
 </app-button>
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
-    <app-add-measurement [measurement]="measurementToAdd"></app-add-measurement>
+    <app-measurement-add [measurement]="measurementToAdd"></app-measurement-add>
     <div style="margin-bottom: 5px; margin-top: 5px;">
         <div (click)="onCancell()"
             style="display: inline-block; width: 49%; background-color: red; color: white; text-align: center; padding: 5px; border-radius: 2px;">

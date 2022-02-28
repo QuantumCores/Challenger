@@ -18,6 +18,7 @@ export class GymRecordsComponent implements OnInit {
   isAdding: boolean = false;
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
+  excersiseOptions: string[];
 
   constructor(
     private gymRecordService: GymRecordService,
@@ -31,6 +32,7 @@ export class GymRecordsComponent implements OnInit {
     this.gymRecordService.getGymRecords().subscribe(
       (records) => {
         this.records = records;
+        this.excersiseOptions = Enumerable.distinct(records.map(x => x.excersize)).sort();
         this.records.forEach(x => this.convertDate(x));
         this.refreshRecords();
       });

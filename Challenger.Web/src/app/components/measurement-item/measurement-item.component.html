@@ -23,8 +23,8 @@
                 {{measurement.waist}} cm</div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: space-evenly; align-content: stretch;">
-            <app-add-measurement *ngIf="isSelected" [measurement]="measurement" (onChangeMeasurement)="onChange()">
-            </app-add-measurement>
+            <app-measurement-add *ngIf="isSelected" [measurement]="measurement" (onChangeMeasurement)="onChange()">
+            </app-measurement-add>
         </div>
     </div>
 </div>

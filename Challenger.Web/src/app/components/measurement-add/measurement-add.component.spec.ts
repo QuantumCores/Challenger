@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddMeasurementComponent } from './add-measurement.component';
+import { AddMeasurementComponent } from './measurement-add.component';
 
 describe('AddMeasurementComponent', () => {
   let component: AddMeasurementComponent;

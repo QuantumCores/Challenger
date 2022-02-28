@@ -4,12 +4,13 @@ import { HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms'
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MeasurementItemComponent } from './components/measurement-item/measurement-item.component';
-import { AddMeasurementComponent } from './components/add-measurement/add-measurement.component';
-import { FormsModule } from '@angular/forms';
+import { AddMeasurementComponent } from './components/measurement-add/measurement-add.component';;
 import { MeasurementsComponent } from './components/measurements/measurements.component';
 import { GymRecordItemComponent } from './components/gym-record-item/gym-record-item.component';
 import { FitRecordItemComponent } from './components/fit-record-item/fit-record-item.component';
@@ -19,7 +20,6 @@ import { AddFitRecordComponent } from './components/fit-add-record/fit-add-recor
 import { FitRecordsComponent } from './components/fit-records/fit-records.component';
 import { ButtonComponent } from './components/button/button.component';
 import { HeaderComponent } from './components/header/header.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';

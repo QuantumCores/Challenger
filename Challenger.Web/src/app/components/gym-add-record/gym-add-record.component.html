@@ -16,7 +16,10 @@
                     <div class="form-group first">
                         <label for="Excersize">Excersize</label>
                         <input class="form-control" id="Excersize" [(ngModel)]="record.excersize"
-                            style="border-color: orange;" (change)='onChange()' />
+                            style="border-color: orange;" (change)='onChange()' list="dynmicUserIds"/>
+                            <datalist id="dynmicUserIds">
+                                <option *ngFor="let item of options" [value]="item">{{item}}</option>
+                             </datalist>
                     </div>
                 </div>
                 <div class="col-md-6">

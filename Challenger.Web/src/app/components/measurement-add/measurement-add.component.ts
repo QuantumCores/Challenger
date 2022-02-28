@@ -3,9 +3,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MeasurementDto } from '../measurement-item/measurementDto';
 
 @Component({
-  selector: 'app-add-measurement',
-  templateUrl: './add-measurement.component.html',
-  styleUrls: ['./add-measurement.component.css']
+  selector: 'app-measurement-add',
+  templateUrl: './measurement-add.component.html',
+  styleUrls: ['./measurement-add.component.css']
 })
 export class AddMeasurementComponent implements OnInit {
 

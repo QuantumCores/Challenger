@@ -51,7 +51,7 @@ export class MeasurementsChart {
                 axisTick: { show: true },
                 type: 'value',
                 alignTicks: true,
-                min: 40,
+                min: function (value: any): number { return Math.floor(value.min / 2) * 2; },
                 axisLabel: {
                     formatter: '{value} kg'
                 }
@@ -64,7 +64,7 @@ export class MeasurementsChart {
                 axisTick: { show: true },
                 type: 'value',
                 alignTicks: true,
-                min: 10,
+                min: function (value: any): number { return Math.floor(value.min / 2) * 2; },
                 axisLabel: {
                     formatter: '{value} %'
                 }
@@ -74,7 +74,7 @@ export class MeasurementsChart {
         };
     }
 
-    getFatAndWeightSeries(): any[] {
+    private getFatAndWeightSeries(): any[] {
         let series: any[] = [];
 
         let weightData: any[] = [];
@@ -100,7 +100,7 @@ export class MeasurementsChart {
         return series;
     }
 
-    getSeries(keysToPrint: string[]): any {
+    private getSeries(keysToPrint: string[]): any {
         let series: any[] = [];
 
         for (let i = 0; i < keysToPrint.length; i++) {
@@ -111,7 +111,7 @@ export class MeasurementsChart {
         return series;
     }
 
-    getSerie(name: string): any {
+    private getSerie(name: string): any {
         let data: any[] = [];
         for (let i = 0; i < this.measurements.length; i++) {
             const element = this.measurements[i];
@@ -128,7 +128,7 @@ export class MeasurementsChart {
         };
     }
 
-    getLegend(): string[] {
+    private getLegend(): string[] {
 
         return ['weight', 'fat', 'calcFat'];
         const keys = Object.keys(this.measurements[0]);
