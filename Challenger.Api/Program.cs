@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Challenger.Domain.Account;
+using Challenger.Domain.Contracts.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
     builder.RegisterType<UserRepository>().As<IUserRepository>();
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
+
+    builder.RegisterType<ProductRepository>().As<IProductRepository>();
+    builder.RegisterType<DishRepository>().As<IDishRepository>();
+    builder.RegisterType<IngridientRepository>().As<IIngridientRepository>();
+    builder.RegisterType<DiaryRecordRepository>().As<IDiaryRecordRepository>();
+    builder.RegisterType<MealRecordRepository>().As<IMealRecordRepository>();
+    builder.RegisterType<MealProductRepository>().As<IMealProductRepository>();
+
     builder.RegisterType<RankingService>().As<IRankingService>();
     builder.RegisterType<AccountService>().As<IAccountService>();
     builder.RegisterType<JwtService>().As<IJwtService>();
@@ -37,6 +46,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
+
+builder.Services.AddDbContext<ChallengerFoodContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FoodConnection")));
 
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));

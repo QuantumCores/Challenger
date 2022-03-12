@@ -18,6 +18,7 @@ export class MeasurementsComponent implements OnInit {
   isAdding: boolean = false;
   isValid: boolean = true;
   measurementToAdd: MeasurementDto;
+  errorMessage: string;
 
   constructor(
     private measurementService: MeasurementService,
@@ -71,12 +72,18 @@ export class MeasurementsComponent implements OnInit {
   }
 
   onSave(): void {
+    this.errorMessage = '';
     if (this.validate(this.measurementToAdd)) {
       this.measurementService.addMeasurement(this.measurementToAdd).subscribe(
-        (measurement) => {
-          this.measurements.push(measurement);
-          this.sortByDate();
-          this.measurementsChartOptions = this.chart.setOptions(this.measurements, this.userBasicData);
+        {
+          next: (measurement) => {
+            this.measurements.push(measurement);
+            this.sortByDate();
+            this.measurementsChartOptions = this.chart.setOptions(this.measurements, this.userBasicData);
+          },
+          error: (error) => {
+            this.errorMessage = error.status + ' - ' + error.statusText;
+          }
         });
     }
   }
@@ -94,15 +101,15 @@ export class MeasurementsComponent implements OnInit {
       });
   }
 
-  validate(measurement: MeasurementDto): boolean {
+  private validate(measurement: MeasurementDto): boolean {
     return !(!measurement.measurementDate || !measurement.weight || measurement.weight == 0)
-  } 
+  }
 
-  sortByDate(): void {
+  private sortByDate(): void {
     this.measurements.sort((a: MeasurementDto, b: MeasurementDto) => {
       let bDate = new Date(b.measurementDate);
       let aDate = new Date(a.measurementDate);
       return bDate.getTime() - aDate.getTime();
     })
-  } 
+  }
 }

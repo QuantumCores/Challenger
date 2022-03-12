@@ -1,9 +1,14 @@
-﻿namespace Challenger.Domain.DbModels
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Challenger.Domain.DbModels
 {
     public class GymRecord
     {
         public long Id { get; set; }
 
+        [Required]
+        [ForeignKey("User")]
         public long UserId { get; set; }
 
         public User User { get; set; }

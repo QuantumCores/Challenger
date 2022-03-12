@@ -1,4 +1,5 @@
 ﻿using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 
 namespace Challenger.Domain.RankingService

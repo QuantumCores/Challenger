@@ -4,6 +4,9 @@
 
 <app-button color="green" text="Add" (click)="addMeasurement()">
 </app-button>
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    Error: {{errorMessage}}
+</div>
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
     <app-measurement-add [measurement]="measurementToAdd"></app-measurement-add>
     <div style="margin-bottom: 5px; margin-top: 5px;">
@@ -18,7 +21,7 @@
             style="display: inline-block; width: 49%; background-color: lightskyblue; color: white; text-align: center; padding: 5px; border-radius: 2px;">
             save
         </div>
-    </div>
+    </div>    
 </div>
 
 <app-measurement-item *ngFor="let measurement of measurements; let i=index" [measurement]="measurement"

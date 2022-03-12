@@ -34,8 +34,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls[controlName].invalid && this.registerForm.controls[controlName].touched
   }
 
-  public hasError = (controlName: string, errorName: string) => {
-    let errors = this.registerForm.controls['email'].errors;
+  public hasError = (controlName: string, errorName: string) => {    
     return this.registerForm.controls[controlName].hasError(errorName)
   }
 
@@ -46,15 +45,14 @@ export class RegisterComponent implements OnInit {
   public confirmHeight(): boolean {
     if (this.registerForm.controls['height'].value) {
       const height = parseFloat(this.registerForm.controls['height'].value);
-      return height >= 150 && height <= 200;
+      return height >= 140 && height <= 200;
     }
     
     return true;
   }
 
   registerUser(registerFormValue: any): void {
-
-    let registerModel = registerFormValue;
+    this.errorMessage = '';
     this.accountService.register(registerFormValue).subscribe(
       (result) => {
         if (result.isSuccess) {
@@ -63,6 +61,9 @@ export class RegisterComponent implements OnInit {
         else {
           this.errorMessage = result.errors;
         }
+      },
+      (error) =>{
+        this.errorMessage = error.status + ' - ' + error.statusText;
       })
   }
 }

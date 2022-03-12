@@ -22,6 +22,12 @@
                 <li class="nav-item" *ngIf="isUserAuthenticated()">
                     <a class="nav-link" routerLink="fitRecords">FitRecords</a>
                 </li>
+                <li class="nav-item" *ngIf="isUserAuthenticated()">
+                    <a class="nav-link" routerLink="addProduct">AddProduct</a>
+                </li>
+                <li class="nav-item" *ngIf="isUserAuthenticated()">
+                    <a class="nav-link" routerLink="diaryRecords">DiaryRecords</a>
+                </li>
             </ul>
             <app-login></app-login>
         </div>

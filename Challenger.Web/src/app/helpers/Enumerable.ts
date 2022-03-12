@@ -19,6 +19,12 @@ export class Enumerable {
         return result;
     };
 
+    static sum<T>(array:T[], func: (item: T) => number): number{
+        let sum = 0;
+        array.forEach(x => sum += func(x))
+        return sum;
+    }
+
     static distinct<T>(array: T[]): T[]{
         return array.filter((x, i, s) => s.indexOf(x) === i);
     }

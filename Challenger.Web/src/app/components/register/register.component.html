@@ -1,6 +1,6 @@
 <h1 class="card-title">Register</h1>
 <div *ngIf="showError" class="alert alert-danger" role="alert">
-    {{errorMessage}}
+    Error: {{errorMessage}}
 </div>
 <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
     <div class="form-group row">
@@ -53,7 +53,7 @@
     <div class="form-group row">
         <label for="height" class="col-form-label col-sm-2">Height (cm):</label>
         <div class="col-md-5">
-            <input type="number" id="height" formControlName="height" class="form-control" min="150" max="200" />
+            <input type="number" id="height" formControlName="height" class="form-control" min="140" max="200" />
         </div>
         <div class="col-md-5">
             <em *ngIf="!confirmHeight()">Height has to be in 150-200cm range</em>

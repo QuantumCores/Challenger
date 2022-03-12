@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms'
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 import { MeasurementItemComponent } from './components/measurement-item/measurement-item.component';
 import { AddMeasurementComponent } from './components/measurement-add/measurement-add.component';;
@@ -25,6 +26,17 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { ChallengeRulesComponent } from './components/challenge-rules/challenge-rules.component';
+import { ProductAddComponent } from './components/food/product-add/product-add.component';
+import { FoodAddDishComponent } from './components/food/food-add-dish/food-add-dish.component';
+import { FoodAddIngridientComponent } from './components/food/food-add-ingridient/food-add-ingridient.component';
+import { DiaryAddRecordComponent } from './components/food/diary-add-record/diary-add-record.component';
+import { MealAddRecordComponent } from './components/food/meal-add-record/meal-add-record.component';
+import { DiaryRecordsComponent } from './components/food/diary-records/diary-records.component';
+import { MealRecordItemComponent } from './components/food/meal-record-item/meal-record-item.component';
+import { ProductItemComponent } from './components/food/product-item/product-item.component';
+import { MealProductAddComponent } from './components/food/meal-product-add/meal-product-add.component';
+import { ProductSearchComponent } from './components/food/product-search/product-search.component';
+import { MealProductItemComponent } from './components/food/meal-product-item/meal-product-item.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -48,7 +60,18 @@ export function tokenGetter() {
     RegisterComponent,
     LoginComponent,
     RankingComponent,
-    ChallengeRulesComponent
+    ChallengeRulesComponent,
+    ProductAddComponent,
+    FoodAddDishComponent,
+    FoodAddIngridientComponent,
+    DiaryAddRecordComponent,
+    MealAddRecordComponent,
+    DiaryRecordsComponent,
+    MealRecordItemComponent,
+    ProductItemComponent,
+    MealProductAddComponent,
+    ProductSearchComponent,
+    MealProductItemComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +80,7 @@ export function tokenGetter() {
     HttpClientModule,
     ReactiveFormsModule,
     NoopAnimationsModule,
+    MatTimepickerModule,
     JwtModule.forRoot(
       {
         config: {

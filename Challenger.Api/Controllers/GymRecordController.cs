@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
 using Microsoft.AspNetCore.Authorization;

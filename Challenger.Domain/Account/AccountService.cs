@@ -1,5 +1,5 @@
-﻿using Challenger.Domain.Contracts;
-using Challenger.Domain.Contracts.Account;
+﻿using Challenger.Domain.Contracts.Account;
+using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

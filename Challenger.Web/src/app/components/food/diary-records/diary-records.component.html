@@ -1,0 +1,22 @@
+<div echarts [options]="diaryRecordsChartOptions" class="demo-chart" style="margin: 0px;"></div>
+
+<div class="container">
+    <div class="row seven-cols">
+        <div class="col-md-1 calendar-day" *ngFor="let record of records" (click)="setCurrentWeekDay(record.diaryDate)">{{record.diaryDate | date:'yy.MM.dd'}}</div>        
+    </div>
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    Error: {{errorMessage}}
+</div>
+<app-button color="green" text="Add" (click)="addDiaryRecord()">
+</app-button>
+
+<div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
+    <app-meal-add-record [record]="mealRecordToAdd"></app-meal-add-record>
+
+    <app-button color="lightskyblue" text="Start" (click)="onStart()"></app-button>
+    <app-button color="lightskyblue" text="Save" (click)="onSave()"></app-button>
+</div>
+
+<app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal"></app-meal-record-item>
