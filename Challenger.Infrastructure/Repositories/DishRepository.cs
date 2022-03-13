@@ -6,6 +6,7 @@ namespace Challenger.Infrastructure.Repositories
 {
     public class DishRepository : IDishRepository
     {
+        private const int MaxResultCount = 10;
         private readonly ChallengerFoodContext _context;
 
         public DishRepository(ChallengerFoodContext context)
@@ -31,6 +32,13 @@ namespace Challenger.Infrastructure.Repositories
         public Task<List<Dish>> GetAllForUser(long userId)
         {
             return _context.Dishes.Where(x => x.UserId == userId).ToListAsync();
+        }
+
+        public Task<List<Dish>> Find(string search)
+        {
+            return _context.Dishes.Where(x => x.Name.Contains(search))
+                .Take(MaxResultCount)
+                .ToListAsync();
         }
 
         public void Remove(Dish record)

@@ -14,9 +14,7 @@
 
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
     <app-meal-add-record [record]="mealRecordToAdd"></app-meal-add-record>
-
-    <app-button color="lightskyblue" text="Start" (click)="onStart()"></app-button>
     <app-button color="lightskyblue" text="Save" (click)="onSave()"></app-button>
 </div>
 
-<app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal"></app-meal-record-item>
+<app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal" (onFoodAdded)="reloadChart()"></app-meal-record-item>

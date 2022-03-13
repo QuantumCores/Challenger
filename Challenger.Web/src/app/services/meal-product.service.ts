@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterModel } from '../components/register/RegisterModel';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MealProductDto } from '../components/food/meal-product-add/MealProductDto';

@@ -26,8 +26,9 @@ namespace Challenger.Infrastructure.Repositories
         public Task<List<MealRecord>> GetAll()
         {
             return _context.MealRecords
-                .Include(x => x.Dishes)
+                .Include(x => x.MealDishes)
                 .Include(x => x.MealProducts)
+                .Include(x => x.FastRecords)
                 .ToListAsync();
         }
 

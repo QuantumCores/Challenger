@@ -14,6 +14,8 @@
 
         public List<MealProductDto> MealProducts { get; set; }
 
-        public List<DishDto> Dishes { get; set; }
+        public List<MealDishDto> MealDishes { get; set; }
+
+        public List<FastRecordDto> FastRecords { get; set; }
     }
 }

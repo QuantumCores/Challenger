@@ -22,6 +22,8 @@ namespace Challenger.Domain.DbModels
 
         public List<MealProduct> MealProducts { get; set; }
 
-        public List<Dish> Dishes { get; set; }
+        public List<MealDish> MealDishes { get; set; }
+
+        public List<FastRecord> FastRecords { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Challenger.Domain.DbModels
 {
-    public class Product : Nutrients
+    public class Product : INutrients
     {
         public long Id { get; set; }
 

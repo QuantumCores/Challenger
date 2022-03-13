@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Challenger.Domain.DbModels
 {
-    public class FastRecord : Nutrients
+    public class FastRecord : INutrients
     {
         public long Id { get; set; }
 
@@ -13,6 +13,8 @@ namespace Challenger.Domain.DbModels
         public long MealRecordId { get; set; }
 
         public MealRecord MealRecord { get; set; }
+
+        public string Comment { get; set; }
 
         public int Energy { get; set; }
 

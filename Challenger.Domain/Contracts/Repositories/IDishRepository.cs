@@ -10,6 +10,8 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<Dish>> GetAllForUser(long userId);
 
+        Task<List<Dish>> Find(string search);
+
         void Add(Dish record);
 
         Task Update(Dish record);

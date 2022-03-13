@@ -1,0 +1,27 @@
+<div class="row">
+    <app-button class="col-md-6" color="green" text="Find" (click)="findDish()"></app-button>
+    <app-button class="col-md-6" color="green" text="Add new" (click)="addNewDish()"></app-button>
+</div>
+
+<div *ngIf="isSearchingDish">
+    <app-dish-search (onDishFound)="dishAdded($event)"></app-dish-search>
+</div>
+
+<div *ngIf="isAddingNewDish">
+    <app-dish-add (onDishAdded)="dishAdded($event)"></app-dish-add>
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    Error: {{errorMessage}}
+</div>
+
+<div *ngIf="!isSearchingDish && !isAddingNewDish && mealDish && dish">
+    <div class="row">
+        <div class="col-md-12">
+            <label for="size" class="col-form-label col-sm-2">Servings (dish is for {{dish.servings}} servings):</label>
+            <input type="number" id="size" class="form-control" [(ngModel)]="mealDish.servings" />
+        </div>
+    </div>
+    <div class="btn" [ngClass]="{'btn-primary': validate(), 'btn-secondary': !validate()}" (click)="submit()">Submit
+    </div>
+</div>

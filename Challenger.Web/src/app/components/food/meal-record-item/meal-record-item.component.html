@@ -17,7 +17,15 @@
                 </div>
             </div>
             <div class="row">
-                <app-meal-product-item *ngFor="let product of record.mealProducts" [mealProduct]="product" (onDeleteMealProduct)="onDeleteMealProduct($event)"></app-meal-product-item>
+                <app-fast-record-item *ngFor="let fast of record.fastRecords" [record]="fast"
+                    (onDeleteFastRecord)="onDeleteFastRecord($event)">
+                </app-fast-record-item>
+                <app-meal-product-item *ngFor="let product of record.mealProducts" [mealProduct]="product"
+                    (onDeleteMealProduct)="onDeleteMealProduct($event)">
+                </app-meal-product-item>                
+                <app-meal-dish-item *ngFor="let dish of record.mealDishes" [mealDish]="dish"
+                    (onDeleteMealDish)="onDeleteMealDish($event)">
+                </app-meal-dish-item>
             </div>
             <div class="row">
                 <app-button class="col-md-4" color="green" text="Fast" (click)="addFast()"></app-button>
@@ -25,7 +33,16 @@
                 <app-button class="col-md-4" color="green" text="Dish" (click)="addDish()"></app-button>
             </div>
             <div class="row" *ngIf="isAddingProduct">
-                <app-meal-product-add (onMealProductAdded)="mealProductAdded($event)" [mealRecordId]="record.id"></app-meal-product-add>
+                <app-meal-product-add (onMealProductAdded)="mealProductAdded($event)" [mealRecordId]="record.id">
+                </app-meal-product-add>
+            </div>
+            <div class="row" *ngIf="isAddingFast">
+                <app-fast-record-add (onFastRecordAdded)="fastRecordAdded($event)" [mealRecordId]="record.id">
+                </app-fast-record-add>
+            </div>
+            <div class="row" *ngIf="isAddingDish">
+                <app-meal-dish-add (onMealDishAdded)="mealDishAdded($event)" [mealRecordId]="record.id">
+                </app-meal-dish-add>
             </div>
         </div>
     </div>

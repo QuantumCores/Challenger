@@ -3,7 +3,10 @@ CREATE TABLE [dbo].[Ingridients](
 	[DishId] [bigint] NOT NULL,
 	[ProductId] [bigint] NOT NULL,
 	[Size] [int] NOT NULL,
-
+	[Energy] [int] NOT NULL,
+	[Fats] [int] NOT NULL,
+	[Proteins] [int] NOT NULL,
+	[Carbohydrates] [int] NOT NULL,
  CONSTRAINT [PK_dbo.Ingridients] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -38,6 +38,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<MealRecordRepository>().As<IMealRecordRepository>();
     builder.RegisterType<MealProductRepository>().As<IMealProductRepository>();
 
+    builder.RegisterType<FastRecordRepository>().As<IFastRecordRepository>();
+    builder.RegisterType<MealDishRepository>().As<IMealDishRepository>();
+
     builder.RegisterType<RankingService>().As<IRankingService>();
     builder.RegisterType<AccountService>().As<IAccountService>();
     builder.RegisterType<JwtService>().As<IJwtService>();

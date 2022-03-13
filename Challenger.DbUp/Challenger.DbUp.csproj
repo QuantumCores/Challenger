@@ -5,6 +5,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="DB\Scripts\02\002_dbo.Dish.sql~RF3480653.TMP" />
+    <None Remove="DB\Scripts\02\007_dbo.FastRecord.sql~RF34bd3c6.TMP" />
+    <None Remove="DB\Scripts\02\008_dbo.FastRecord.sql~RF34cbd1c.TMP" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="dbup" Version="4.5.0" />
     <PackageReference Include="dbup-core" Version="4.5.0" />
   </ItemGroup>

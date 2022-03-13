@@ -1,6 +1,6 @@
 ﻿namespace Challenger.Domain.Food
 {
-    public interface Nutrients
+    public interface INutrients
     {
         public int Energy { get; set; }
 

@@ -34,6 +34,13 @@ namespace Challenger.Api.Controllers
             return _mapper.Map<DishDto[]>(all);
         }
 
+        [HttpGet("Find")]
+        public async Task<DishDto[]> Find(string search)
+        {
+            var all = await _dishRepository.Find(search);
+            return _mapper.Map<DishDto[]>(all);
+        }
+
         [HttpPost]
         public async Task<DishDto> Add([FromBody] DishDto record)
         {

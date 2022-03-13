@@ -59,7 +59,11 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y + z.mealProducts.reduce((a,b) => a + b.carbohydrates, 0), 0))
+      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+          + z.mealProducts.reduce((a,b) => a + b.carbohydrates, 0)
+          + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
+          + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
+            , 0))
     },
     {
       name: 'Proteins',
@@ -68,7 +72,11 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y + z.mealProducts.reduce((a,b) => a + b.proteins, 0), 0))
+      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+          + z.mealProducts.reduce((a,b) => a + b.proteins, 0)
+          + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
+          + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
+          , 0))
     },
     {
       name: 'Fats',
@@ -77,7 +85,11 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y + z.mealProducts.reduce((a,b) => a + b.fats, 0), 0))
+      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+          + z.mealProducts.reduce((a,b) => a + b.fats, 0)
+          + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
+          + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
+          , 0))
     }];
   }
 }

@@ -40,13 +40,16 @@ namespace Challenger.Api.Controllers
         {
             var entity = _mapper.Map<DiaryRecord>(record);
             entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
-            var exists = await _diaryRecordRepository.GetByDate(entity.UserId, record.DiaryDate);
-            if (exists == null)
+            var exists = await _diaryRecordRepository.GetByDate(entity.UserId, record.DiaryDate.Date);
+
+            if (exists != null)
             {
-                _diaryRecordRepository.Add(entity);
-                await _diaryRecordRepository.SaveChanges();
-                record = _mapper.Map<DiaryRecordDto>(entity);
+                throw new ArgumentException($"Diary record with date {record.DiaryDate.Date} already exists.");
             }
+
+            _diaryRecordRepository.Add(entity);
+            await _diaryRecordRepository.SaveChanges();
+            record = _mapper.Map<DiaryRecordDto>(entity);
 
             return record;
         }

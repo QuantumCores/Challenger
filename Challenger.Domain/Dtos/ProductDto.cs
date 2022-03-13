@@ -2,7 +2,7 @@
 
 namespace Challenger.Domain.Dtos
 {
-    public  class ProductDto : Nutrients
+    public  class ProductDto : INutrients
     {
         public long Id { get; set; }
         

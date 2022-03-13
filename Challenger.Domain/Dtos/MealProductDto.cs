@@ -1,6 +1,8 @@
-﻿namespace Challenger.Domain.Dtos
+﻿using Challenger.Domain.Food;
+
+namespace Challenger.Domain.Dtos
 {
-    public class MealProductDto
+    public class MealProductDto : INutrients
     {
         public long Id { get; set; }
 

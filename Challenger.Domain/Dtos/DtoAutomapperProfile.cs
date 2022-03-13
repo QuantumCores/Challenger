@@ -27,10 +27,19 @@ namespace Challenger.Domain.Dtos
                 .ReverseMap();
 
             CreateMap<IngridientDto, Ingridient>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(x => x.ProductName, y => y.MapFrom(src => src.Product.Name)); ;
 
             CreateMap<MealRecordDto, MealRecord>()
                 .ReverseMap();
+
+            CreateMap<FastRecordDto, FastRecord>()
+                .ReverseMap();
+
+            CreateMap<MealDishDto, MealDish>()
+                .ForMember(x => x.Dish, y => y.Ignore())
+                .ReverseMap()
+                .ForMember(x => x.DishName, y => y.MapFrom(src => src.Dish.Name));
 
             CreateMap<MealProductDto, MealProduct>()
                 .ForMember(x => x.Product, y => y.Ignore())

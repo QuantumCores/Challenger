@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Challenger.Domain.DbModels
 {
-    public class MealDish : Nutrients
+    public class MealDish : INutrients
     {
         public long Id { get; set; }
 
@@ -17,6 +17,8 @@ namespace Challenger.Domain.DbModels
         [Required]
         [ForeignKey("Dish")]
         public long DishId { get; set; }
+
+        public double Servings { get; set; }
 
         public Dish Dish { get; set; }
 

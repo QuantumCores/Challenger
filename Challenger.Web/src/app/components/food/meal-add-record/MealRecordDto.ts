@@ -1,4 +1,5 @@
-import { DishDto } from "../food-add-dish/DishDto";
+import { FastRecordDto } from "../fast-record-add/FastRecordDto";
+import { MealDishDto } from "../meal-dish-add/MealDishDto";
 import { MealProductDto } from "../meal-product-add/MealProductDto";
 
 export class MealRecordDto {
@@ -9,5 +10,6 @@ export class MealRecordDto {
     recordTime: number;
     diaryRecordId: number;
     mealProducts: MealProductDto[];
-    dishes: DishDto[];
+    mealDishes: MealDishDto[];
+    fastRecords: FastRecordDto[];
 }

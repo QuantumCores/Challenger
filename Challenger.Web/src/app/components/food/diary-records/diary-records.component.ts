@@ -41,15 +41,16 @@ export class DiaryRecordsComponent implements OnInit {
     this.isAdding = !this.isAdding;
 
     if (this.isAdding) {
-      this.mealRecordToAdd = new MealRecordDto();
-      this.mealRecordToAdd.dishes = [];
+      this.mealRecordToAdd = new MealRecordDto();      
       this.mealRecordToAdd.mealProducts = [];
+      this.mealRecordToAdd.mealDishes = [];
+      this.mealRecordToAdd.fastRecords = [];
       this.mealRecordToAdd.isNextDay = false;
     }
   }
 
   onStart() {
-    let record = this.records[this.currentWeekDay];
+    let record = this.records[this.currentWeekDay - 1];
     if (!record.id || record.id == 0) {
       this.addNewDiaryRecord(record);
     }
@@ -59,9 +60,10 @@ export class DiaryRecordsComponent implements OnInit {
     this.errorMessage = '';
     if (this.validate(this.mealRecordToAdd)) {
 
-      let record = this.records[this.currentWeekDay];
+      let record = this.records[this.currentWeekDay - 1];
 
       if (!record.id || record.id == 0) {
+        record.mealRecords.push(this.mealRecordToAdd);
         this.addNewDiaryRecord(record);
       }
       else {
@@ -73,6 +75,10 @@ export class DiaryRecordsComponent implements OnInit {
 
   setCurrentWeekDay(diaryDate: Date) {
     this.currentWeekDay = this.dateHelper.getWeekDay(diaryDate);
+  }
+
+  reloadChart(): void{
+    this.diaryRecordsChartOptions = this.chart.setOptions(this.records);
   }
 
   private setWeekStartDate(date: Date) {
@@ -89,7 +95,10 @@ export class DiaryRecordsComponent implements OnInit {
     this.diaryRecordService.addDiaryRecord(record).subscribe(
       {
         next: (record) => {
-          this.records[this.currentWeekDay] = record;
+          record.diaryDate = new Date(record.diaryDate);
+          const weekDay = this.dateHelper.getWeekDay(record.diaryDate);
+          this.records[weekDay - 1] = record;
+          this.isAdding = false;
         },
         error: (error) => {
           this.errorMessage = error.status + ' - ' + error.statusText;
@@ -101,8 +110,9 @@ export class DiaryRecordsComponent implements OnInit {
     this.mealRecordService.addMealRecord(this.mealRecordToAdd).subscribe(
       {
         next: (record) => {
-          this.records[this.currentWeekDay].mealRecords.push(record);
+          this.records[this.currentWeekDay - 1].mealRecords.push(record);
           this.diaryRecordsChartOptions = this.chart.setOptions(this.records);
+          this.isAdding = false;
         },
         error: (error) => {
           this.errorMessage = error.status + ' - ' + error.statusText;
@@ -126,14 +136,14 @@ export class DiaryRecordsComponent implements OnInit {
   private prepareRecords(): void {
     this.records = [];
     for (let i = 0; i < this.daysInWeek; i++) {
-      let recordDate = new Date(this.weekStartDate.getTime() + i * this.milisecondsInDay);
+      let recordDate = this.dateHelper.getDateOnly(new Date(this.weekStartDate.getTime() + i * this.milisecondsInDay));
       this.records.push(this.getEmptyRecord(recordDate));
     }
   }
 
   private updateRecords(records: DiaryRecordDto[]): void {
 
-    records.forEach(x => x.diaryDate = new Date(x.diaryDate));
+    records.forEach(x => x.diaryDate = this.dateHelper.getDateOnly(new Date(x.diaryDate)));
     this.dateHelper.sortByDateAscending(records, x => x.diaryDate, x => x.diaryDate);
 
     for (let i = 0; i < records.length; i++) {

@@ -21,6 +21,10 @@ namespace Challenger.Infrastructure
 
         public DbSet<MealProduct> MealProducts { get; set; }
 
+        public DbSet<MealDish> MealDishes { get; set; }
+
+        public DbSet<FastRecord>  FastRecords { get; set; }
+
         public DbSet<DiaryRecord> DiaryRecords { get; set; }
     }
 }

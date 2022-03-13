@@ -27,8 +27,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { ChallengeRulesComponent } from './components/challenge-rules/challenge-rules.component';
 import { ProductAddComponent } from './components/food/product-add/product-add.component';
-import { FoodAddDishComponent } from './components/food/food-add-dish/food-add-dish.component';
-import { FoodAddIngridientComponent } from './components/food/food-add-ingridient/food-add-ingridient.component';
+import { DishAddComponent } from './components/food/dish-add/dish-add.component';
+import { IngridientAddComponent } from './components/food/ingridient-add/ingridient-add.component';
 import { DiaryAddRecordComponent } from './components/food/diary-add-record/diary-add-record.component';
 import { MealAddRecordComponent } from './components/food/meal-add-record/meal-add-record.component';
 import { DiaryRecordsComponent } from './components/food/diary-records/diary-records.component';
@@ -37,6 +37,12 @@ import { ProductItemComponent } from './components/food/product-item/product-ite
 import { MealProductAddComponent } from './components/food/meal-product-add/meal-product-add.component';
 import { ProductSearchComponent } from './components/food/product-search/product-search.component';
 import { MealProductItemComponent } from './components/food/meal-product-item/meal-product-item.component';
+import { MealDishAddComponent } from './components/food/meal-dish-add/meal-dish-add.component';
+import { FastRecordAddComponent } from './components/food/fast-record-add/fast-record-add.component';
+import { FastRecordItemComponent } from './components/food/fast-record-item/fast-record-item.component';
+import { DishSearchComponent } from './components/food/dish-search/dish-search.component';
+import { IngridientItemComponent } from './components/food/ingridient-item/ingridient-item.component';
+import { MealDishItemComponent } from './components/food/meal-dish-item/meal-dish-item.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -62,8 +68,8 @@ export function tokenGetter() {
     RankingComponent,
     ChallengeRulesComponent,
     ProductAddComponent,
-    FoodAddDishComponent,
-    FoodAddIngridientComponent,
+    DishAddComponent,
+    IngridientAddComponent,
     DiaryAddRecordComponent,
     MealAddRecordComponent,
     DiaryRecordsComponent,
@@ -71,7 +77,13 @@ export function tokenGetter() {
     ProductItemComponent,
     MealProductAddComponent,
     ProductSearchComponent,
-    MealProductItemComponent
+    MealProductItemComponent,
+    MealDishAddComponent,
+    FastRecordAddComponent,
+    FastRecordItemComponent,
+    DishSearchComponent,
+    IngridientItemComponent,
+    MealDishItemComponent
   ],
   imports: [
     BrowserModule,

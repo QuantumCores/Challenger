@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FastRecordDto } from '../fast-record-add/FastRecordDto';
 import { MealRecordDto } from '../meal-add-record/MealRecordDto';
+import { MealDishDto } from '../meal-dish-add/MealDishDto';
 import { MealProductDto } from '../meal-product-add/MealProductDto';
-import { ProductDto } from '../product-add/ProductDto';
 
 @Component({
   selector: 'app-meal-record-item',
@@ -15,6 +16,7 @@ export class MealRecordItemComponent implements OnInit {
   isAddingDish: boolean = false;
 
   @Input() record: MealRecordDto;
+  @Output() onFoodAdded: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor() { }
 
   ngOnInit(): void {
@@ -41,19 +43,56 @@ export class MealRecordItemComponent implements OnInit {
   }
 
   addDish() {
-    this.isAddingDish != this.isAddingDish;
-    this.isAddingDish = false;
+    this.isAddingDish = !this.isAddingDish;
+    this.isAddingFast = false;
     this.isAddingProduct = false;
   }
 
   mealProductAdded(product: MealProductDto) {
     this.record.mealProducts.push(product);
+    this.resetAndEmitEvent()
+  }
+
+  fastRecordAdded(fastRecord: FastRecordDto) {
+    this.record.fastRecords.push(fastRecord);
+    this.resetAndEmitEvent()
+  }
+
+  mealDishAdded(mealDish: MealDishDto) {
+    this.record.mealDishes.push(mealDish);
+    this.resetAndEmitEvent()
   }
 
   onDeleteMealProduct(mealProduct: MealProductDto) {
     let index = this.record.mealProducts.indexOf(mealProduct);
     if (index > -1) {
       this.record.mealProducts.splice(index, 1);
+      this.onFoodAdded.emit(true);
     }
+  }
+
+  onDeleteFastRecord(fastRecord: FastRecordDto) {
+    let index = this.record.fastRecords.indexOf(fastRecord);
+    if (index > -1) {
+      this.record.fastRecords.splice(index, 1);
+      this.onFoodAdded.emit(true);
+    }
+  }
+
+  onDeleteMealDish(mealDish: MealDishDto) {
+    let index = this.record.mealDishes.indexOf(mealDish);
+    if (index > -1) {
+      this.record.mealDishes.splice(index, 1);
+      this.onFoodAdded.emit(true);
+    }
+  }
+
+  private resetAndEmitEvent()
+  {
+    this.isAddingDish = false;
+    this.isAddingFast = false;
+    this.isAddingProduct = false;
+
+    this.onFoodAdded.emit(true);
   }
 }

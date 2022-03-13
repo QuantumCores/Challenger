@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Challenger.Domain.Food;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Challenger.Domain.DbModels
 {
-    public class MealProduct
+    public class MealProduct : INutrients
     {
         public long Id { get; set; }
 

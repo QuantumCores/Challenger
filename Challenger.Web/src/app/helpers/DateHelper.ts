@@ -20,7 +20,7 @@ export class DateHelper {
         let month = dateTime.getMonth();
         let day = dateTime.getDate();
 
-        return new Date(year, month, day);
+        return new Date(Date.UTC(year, month, day));
     }
 
     getDateOnlyAsNumber(dateTime: Date): number {
