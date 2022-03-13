@@ -6,11 +6,52 @@
     </div>
 </div>
 
+<div class="row" *ngIf="summary">
+    <div class="col-md-2 col-sm-10">
+        <div class="form-group first">
+            <label for="MealName"></label>
+            <div></div>
+        </div>
+    </div>
+    <div class="col-md-1 col-sm-2">
+        <div class="form-group first">
+            <label></label>
+            <div></div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-3">
+        <div class="form-group first">
+            <label>Energy (kCal)</label>
+            <div class="form-control">{{summary.energy}}</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-3">
+        <div class="form-group first">
+            <label>Carbs (g)</label>
+            <div class="form-control">{{summary.carbohydrates}}</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-3">
+        <div class="form-group first">
+            <label>Proteins (g)</label>
+            <div class="form-control">{{summary.proteins}}</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-2">
+        <div class="form-group first">
+            <label>Fats (g)</label>
+            <div class="form-control">{{summary.fats}}</div>
+        </div>
+    </div>
+    <div class="col-md-1 col-sm-1">        
+    </div>
+</div>
+
 <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
     Error: {{errorMessage}}
 </div>
-<app-button color="green" text="Add" (click)="addDiaryRecord()">
-</app-button>
+
+<app-button color="green" text="Add meal" (click)="addDiaryRecord()"></app-button>
 
 <div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
     <app-meal-add-record [record]="mealRecordToAdd"></app-meal-add-record>

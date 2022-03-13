@@ -7,13 +7,13 @@ import { DiaryRecordDto } from "../diary-add-record/DiaryRecordDto";
 })
 export class DiaryRecordChart {
 
-  private reocrds: DiaryRecordDto[];
+  private records: DiaryRecordDto[];
 
   constructor() {
   }
 
   setOptions(reocrds: DiaryRecordDto[]) {
-    this.reocrds = reocrds;
+    this.records = reocrds;
 
     return {
       grid: {
@@ -59,7 +59,7 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
           + z.mealProducts.reduce((a,b) => a + b.carbohydrates, 0)
           + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
           + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
@@ -72,7 +72,7 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
           + z.mealProducts.reduce((a,b) => a + b.proteins, 0)
           + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
           + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
@@ -85,7 +85,7 @@ export class DiaryRecordChart {
       emphasis: {
         focus: 'series'
       },
-      data: this.reocrds.map(x => x.mealRecords.reduce((y,z) => y 
+      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
           + z.mealProducts.reduce((a,b) => a + b.fats, 0)
           + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
           + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)

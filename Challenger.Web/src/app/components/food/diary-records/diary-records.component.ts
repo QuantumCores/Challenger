@@ -4,6 +4,7 @@ import { DiaryRecordService } from 'src/app/services/diary-record.service';
 import { MealRecordService } from 'src/app/services/meal-record.service';
 import { DiaryRecordDto } from '../diary-add-record/DiaryRecordDto';
 import { MealRecordDto } from '../meal-add-record/MealRecordDto';
+import { DaySummary } from './DaySummary';
 import { DiaryRecordChart } from './diaryRecords.chart';
 
 @Component({
@@ -22,6 +23,7 @@ export class DiaryRecordsComponent implements OnInit {
   records: DiaryRecordDto[];
   diaryRecordsChartOptions: any;
   mealRecordToAdd: MealRecordDto;
+  summary: DaySummary;
   errorMessage: string;
 
   constructor(
@@ -41,7 +43,7 @@ export class DiaryRecordsComponent implements OnInit {
     this.isAdding = !this.isAdding;
 
     if (this.isAdding) {
-      this.mealRecordToAdd = new MealRecordDto();      
+      this.mealRecordToAdd = new MealRecordDto();
       this.mealRecordToAdd.mealProducts = [];
       this.mealRecordToAdd.mealDishes = [];
       this.mealRecordToAdd.fastRecords = [];
@@ -77,8 +79,39 @@ export class DiaryRecordsComponent implements OnInit {
     this.currentWeekDay = this.dateHelper.getWeekDay(diaryDate);
   }
 
-  reloadChart(): void{
+  reloadChart(): void {
+    this.summary = this.recalculate();
     this.diaryRecordsChartOptions = this.chart.setOptions(this.records);
+  }
+
+  private recalculate(): DaySummary {
+    let summary = new DaySummary();
+
+    summary.energy = this.records.reduce((v, x) => v + x.mealRecords.reduce((y, z) => y
+      + z.mealProducts.reduce((a, b) => a + b.energy, 0)
+      + z.fastRecords.reduce((a, b) => a + b.energy, 0)
+      + z.mealDishes.reduce((a, b) => a + b.energy, 0)
+      , 0), 0);
+
+    summary.carbohydrates = this.records.reduce((v, x) => v + x.mealRecords.reduce((y, z) => y
+      + z.mealProducts.reduce((a, b) => a + b.carbohydrates, 0)
+      + z.fastRecords.reduce((a, b) => a + b.carbohydrates, 0)
+      + z.mealDishes.reduce((a, b) => a + b.carbohydrates, 0)
+      , 0), 0);
+
+    summary.proteins = this.records.reduce((v, x) => v + x.mealRecords.reduce((y, z) => y
+      + z.mealProducts.reduce((a, b) => a + b.proteins, 0)
+      + z.fastRecords.reduce((a, b) => a + b.proteins, 0)
+      + z.mealDishes.reduce((a, b) => a + b.proteins, 0)
+      , 0), 0);
+
+    summary.fats = this.records.reduce((v, x) => v + x.mealRecords.reduce((y, z) => y
+      + z.mealProducts.reduce((a, b) => a + b.fats, 0)
+      + z.fastRecords.reduce((a, b) => a + b.fats, 0)
+      + z.mealDishes.reduce((a, b) => a + b.fats, 0)
+      , 0), 0);
+
+    return summary;
   }
 
   private setWeekStartDate(date: Date) {
@@ -129,7 +162,7 @@ export class DiaryRecordsComponent implements OnInit {
     this.diaryRecordService.getDiaryRecords(this.weekStartDate).subscribe(
       (records) => {
         this.updateRecords(records);
-        this.diaryRecordsChartOptions = this.chart.setOptions(this.records);
+        this.reloadChart();
       });
   }
 
@@ -159,7 +192,7 @@ export class DiaryRecordsComponent implements OnInit {
       carbohydrates: 0,
       proteins: 0,
       fats: 0,
-      mealRecords: [] as MealRecordDto[],
+      mealRecords: [] as MealRecordDto[],      
     } as DiaryRecordDto;
   }
 }
