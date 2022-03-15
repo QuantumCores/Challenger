@@ -19,13 +19,15 @@
     </div>
 </div>
 
-<div *ngFor="let key of groupedReocords.keys()">
-    <app-button color="gray" text="{{groupedReocords.get(key)[0].recordDate | date:'yyyy.MM.dd' }}"
-        data-toggle="collapse" [attr.href]="'#' + key" aria-expanded="false" [attr.aria-controls]="key"
-        (click)="onCollapse(key)"></app-button>
-    <div class="collapse" [ngClass]="{'show' : groupedCollapse[key]}" [id]="key">
-        <app-gym-record-item *ngFor="let record of groupedReocords.get(key)" [record]="record"
-            (onDeleteGymRecord)="onDelete(record.id)" (onChangeGymRecord)="onChange(record)">
-        </app-gym-record-item>
+<div *ngIf="groupedReocords">
+    <div *ngFor="let key of groupedReocords.keys()">
+        <app-button color="gray" text="{{groupedReocords.get(key)[0].recordDate | date:'yyyy.MM.dd' }}"
+            data-toggle="collapse" [attr.href]="'#' + key" aria-expanded="false" [attr.aria-controls]="key"
+            (click)="onCollapse(key)"></app-button>
+        <div class="collapse" [ngClass]="{'show' : groupedCollapse[key]}" [id]="key">
+            <app-gym-record-item *ngFor="let record of groupedReocords.get(key)" [record]="record"
+                (onDeleteGymRecord)="onDelete(record.id)" (onChangeGymRecord)="onChange(record)">
+            </app-gym-record-item>
+        </div>
     </div>
 </div>

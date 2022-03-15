@@ -1,15 +1,25 @@
 <div echarts [options]="diaryRecordsChartOptions" class="demo-chart" style="margin: 0px;"></div>
 
-<div class="container">
-    <div class="row seven-cols">
-        <div class="col-md-1 calendar-day" *ngFor="let record of records" (click)="setCurrentWeekDay(record.diaryDate)">{{record.diaryDate | date:'yy.MM.dd'}}</div>        
-    </div>
+<div class="row">
+    <div class="col-md-1 col-sm-1" (click)="changeWeek(-1)"
+    style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">&lt;</div>
+    <div class="col-md-10 col-sm-10" style="padding: 5px; text-align: center; font-size: xx-large;">{{weekNumber}}</div>
+    <div class="col-md-1 col-sm-1" (click)="changeWeek(1)"
+    style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">&gt;</div>
 </div>
+<!-- <div class="container"> -->
+    <div class="row seven-cols">
+        <div class="col-md-1 calendar-day" *ngFor="let record of records" style="cursor: pointer;"
+            [ngStyle]="{'background-color': dateHelper.getWeekDay(record.diaryDate) == currentWeekDay ? 'orange' : null}"
+            (click)="setCurrentWeekDay(record.diaryDate); recalculate();">
+            {{record.diaryDate | date:'yy.MM.dd'}}</div>
+    </div>
+<!-- </div> -->
 
 <div class="row" *ngIf="summary">
     <div class="col-md-2 col-sm-10">
         <div class="form-group first">
-            <label for="MealName"></label>
+            <label></label>
             <div></div>
         </div>
     </div>
@@ -43,7 +53,7 @@
             <div class="form-control">{{summary.fats}}</div>
         </div>
     </div>
-    <div class="col-md-1 col-sm-1">        
+    <div class="col-md-1 col-sm-1">
     </div>
 </div>
 
@@ -58,4 +68,5 @@
     <app-button color="lightskyblue" text="Save" (click)="onSave()"></app-button>
 </div>
 
-<app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal" (onFoodAdded)="reloadChart()"></app-meal-record-item>
+<app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal"
+    (onFoodAdded)="reloadChart()"></app-meal-record-item>

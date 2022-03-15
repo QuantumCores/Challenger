@@ -1,5 +1,6 @@
 <h1>Regulamin</h1>
 
+<div *ngIf="rules">
 <ul>
     <li>
         Wyzwanie trwa <b>od {{rules.startDate | date:'yyyy.MM.dd'}} do {{ rules.endDate | date:'yyyy.MM.dd'}}</b>.
@@ -79,3 +80,4 @@ tłuszczu i czy w ogóle chudniemy.
 
 <h2>Total Score</h2>
 <p>Na total score będą się składały punkciki z obu powyższych rankingów</p>
+</div>

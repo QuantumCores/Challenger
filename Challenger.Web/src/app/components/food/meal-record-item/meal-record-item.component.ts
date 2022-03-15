@@ -30,6 +30,11 @@ export class MealRecordItemComponent implements OnInit {
     // }
   }
 
+  getTime(): string {
+    const minutes = this.record.recordTime % 60;
+    return this.withZero((this.record.recordTime - minutes) / 60) + ':' + this.withZero(minutes);
+  }
+
   addFast() {
     this.isAddingFast = !this.isAddingFast;
     this.isAddingProduct = false;
@@ -87,12 +92,19 @@ export class MealRecordItemComponent implements OnInit {
     }
   }
 
-  private resetAndEmitEvent()
-  {
+  private resetAndEmitEvent() {
     this.isAddingDish = false;
     this.isAddingFast = false;
     this.isAddingProduct = false;
 
     this.onFoodAdded.emit(true);
+  }
+
+  private withZero(n: number): string {
+    if (n < 10 && n >= 0) {
+      return '0' + n;
+    }
+
+    return '' + n;
   }
 }
