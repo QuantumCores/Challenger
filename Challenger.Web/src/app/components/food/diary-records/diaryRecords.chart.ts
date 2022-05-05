@@ -52,44 +52,62 @@ export class DiaryRecordChart {
 
   private getCaloriesSeries(): any[] {
 
+    const carbohydrates: number[] = this.getData(this.records, b => b.carbohydrates, 4);
+    const proteins: number[] = this.getData(this.records, b => b.proteins, 4);
+    const fats: number[] = this.getData(this.records, b => b.fats, 9);
+    const energy: number[] = this.getData(this.records, b => b.energy, 1);
+
+    // for (let i = 0; i < energy.length; i++) {
+    //   energy[i] = energy[i] - (carbohydrates[i] + proteins[i] + fats[i]);
+    // }
+
+
     return [{
       name: 'Carbohydrates',
       type: 'bar',
-      stack: 'calories',
+      stack: 'carbohydrates',
       emphasis: {
         focus: 'series'
       },
-      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
-          + z.mealProducts.reduce((a,b) => a + b.carbohydrates, 0)
-          + z.fastRecords.reduce((a,b) => a + b.carbohydrates, 0)
-          + z.mealDishes.reduce((a,b) => a + b.carbohydrates, 0)
-            , 0))
+      data: carbohydrates
     },
     {
       name: 'Proteins',
       type: 'bar',
-      stack: 'calories',
+      stack: 'proteins',
       emphasis: {
         focus: 'series'
       },
-      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
-          + z.mealProducts.reduce((a,b) => a + b.proteins, 0)
-          + z.fastRecords.reduce((a,b) => a + b.proteins, 0)
-          + z.mealDishes.reduce((a,b) => a + b.proteins, 0)
-          , 0))
+      data: proteins
     },
     {
       name: 'Fats',
       type: 'bar',
-      stack: 'calories',
+      stack: 'fats',
       emphasis: {
         focus: 'series'
       },
-      data: this.records.map(x => x.mealRecords.reduce((y,z) => y 
-          + z.mealProducts.reduce((a,b) => a + b.fats, 0)
-          + z.fastRecords.reduce((a,b) => a + b.fats, 0)
-          + z.mealDishes.reduce((a,b) => a + b.fats, 0)
-          , 0))
+      data: fats
+    },
+    {
+      name: 'Energy',
+      type: 'bar',
+      stack: 'energy',
+      // barGap: '-100%',
+      // barCategoryGap: '10%',
+      emphasis: {
+        focus: 'series'
+      },
+      data: energy
     }];
+  }
+
+  private getData(records: DiaryRecordDto[], selector: (model: any) => number, gramToCalMultiplier: number): number[] {
+
+    return records.map(x => gramToCalMultiplier * x.mealRecords.reduce((y, z) => y
+      + z.mealProducts.reduce((a, b) => a + selector(b), 0)
+      + z.fastRecords.reduce((a, b) => a + selector(b), 0)
+      + z.mealDishes.reduce((a, b) => a + selector(b), 0)
+      , 0));
   }
 }

@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" style="padding: 0px;">
     <div class="row align-items-center justify-content-center">
         <div class="col-md-12 py-12">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8 col-sm-8">
                     <div class="form-group first">
                         <label for="MealName">Meal name</label>
                         <input class="form-control" id="MealName" [(ngModel)]="record.mealName"
@@ -12,7 +12,7 @@
                         </datalist>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2 col-sm-2">
                     <div class="form-group first">
                         <label for="RecordTime">Time</label>
                         <input class="form-control" matTimepicker #t="matTimepicker" #time="ngModel" [strict]="false"
@@ -20,7 +20,7 @@
                             (timeChange)="onTimeChange($event)">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-sm-2">
                     <div class="form-group first">
                         <p style="margin: 0px;">Next day?</p>
                         <input type="checkbox" class="btn-check" id="IsNextDay" autocomplete="off" name="IsNextDay"

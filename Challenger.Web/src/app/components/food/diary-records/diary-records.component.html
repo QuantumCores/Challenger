@@ -2,18 +2,20 @@
 
 <div class="row">
     <div class="col-md-1 col-sm-1" (click)="changeWeek(-1)"
-    style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">&lt;</div>
+        style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">
+        &lt;</div>
     <div class="col-md-10 col-sm-10" style="padding: 5px; text-align: center; font-size: xx-large;">{{weekNumber}}</div>
     <div class="col-md-1 col-sm-1" (click)="changeWeek(1)"
-    style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">&gt;</div>
+        style="padding: 10px; text-align: center; font-size:xx-large; color:white; background-color:black; border-radius: 5px; cursor: pointer;">
+        &gt;</div>
 </div>
 <!-- <div class="container"> -->
-    <div class="row seven-cols">
-        <div class="col-md-1 calendar-day" *ngFor="let record of records" style="cursor: pointer;"
-            [ngStyle]="{'background-color': dateHelper.getWeekDay(record.diaryDate) == currentWeekDay ? 'orange' : null}"
-            (click)="setCurrentWeekDay(record.diaryDate); recalculate();">
-            {{record.diaryDate | date:'yy.MM.dd'}}</div>
-    </div>
+<div class="row seven-cols">
+    <div class="col-md-1 calendar-day" *ngFor="let record of records" style="cursor: pointer;"
+        [ngStyle]="{'background-color': dateHelper.getWeekDay(record.diaryDate) == currentWeekDay ? 'orange' : null}"
+        (click)="setCurrentWeekDay(record.diaryDate); recalculate();">
+        {{record.diaryDate | date:'yy.MM.dd'}}</div>
+</div>
 <!-- </div> -->
 
 <div class="row" *ngIf="summary">
@@ -61,12 +63,11 @@
     Error: {{errorMessage}}
 </div>
 
-<app-button color="green" text="Add meal" (click)="addDiaryRecord()"></app-button>
+<!-- <app-button color="green" text="Add meal" (click)="addDiaryRecord()"></app-button> -->
 
-<div *ngIf="isAdding" style="margin-bottom: 5px; margin-top: 5px;">
-    <app-meal-add-record [record]="mealRecordToAdd"></app-meal-add-record>
-    <app-button color="lightskyblue" text="Save" (click)="onSave()"></app-button>
-</div>
+
+<app-meal-add-record [record]="mealRecordToAdd"></app-meal-add-record>
+<app-button color="green" text="Save" (click)="onSave()"></app-button>
 
 <app-meal-record-item *ngFor="let meal of records[currentWeekDay-1].mealRecords" [record]="meal"
     (onFoodAdded)="reloadChart()"></app-meal-record-item>

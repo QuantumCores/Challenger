@@ -51,8 +51,6 @@ namespace Challenger.Infrastructure.Repositories
                 .Include(x => x.MealRecords)
                     .ThenInclude(x => x.MealDishes)
                     .ThenInclude(x => x.Dish)
-                //.Include(x => x.MealRecords)
-                //.ThenInclude(x => x.Dishes)
                 .Where(x => x.UserId == userId && x.DiaryDate >= startDate && x.DiaryDate <= endDate)
                 .ToListAsync();
         }

@@ -5,10 +5,10 @@ CREATE TABLE [dbo].[Dishes](
 	[IsPublic] [bit] DEFAULT 0,
 	[PreparationTime] [int] NULL,
 	[Servings] [int] NULL,
-	[Energy] [int] NOT NULL,
-	[Fats] [int] NOT NULL,
-	[Proteins] [int] NOT NULL,
-	[Carbohydrates] [int] NOT NULL,
+	[Energy] [float] NOT NULL,
+	[Fats] [float] NOT NULL,
+	[Proteins] [float] NOT NULL,
+	[Carbohydrates] [float] NOT NULL,
  CONSTRAINT [PK_dbo.Dishes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

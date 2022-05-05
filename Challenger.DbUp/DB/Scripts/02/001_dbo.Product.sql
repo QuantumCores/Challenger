@@ -5,10 +5,10 @@ CREATE TABLE [dbo].[Products](
 	[Barcode] [bigint] NULL,
 	[Size] [int] NOT NULL,
 	[SizeUnit] [char](1) NOT NULL,
-	[Energy] [int] NOT NULL,
-	[Fats] [int] NOT NULL,
-	[Proteins] [int] NOT NULL,
-	[Carbohydrates] [int] NOT NULL,
+	[Energy] [float] NOT NULL,
+	[Fats] [float] NOT NULL,
+	[Proteins] [float] NOT NULL,
+	[Carbohydrates] [float] NOT NULL,
  CONSTRAINT [PK_dbo.Products] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

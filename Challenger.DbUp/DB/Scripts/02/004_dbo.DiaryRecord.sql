@@ -2,11 +2,10 @@ CREATE TABLE [dbo].[DiaryRecords](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[UserId] [bigint] NOT NULL,
 	[DiaryDate] [DateTime] NOT NULL,
-	[Energy] [int] NOT NULL,
-	[Fats] [int] NOT NULL,
-	[Proteins] [int] NOT NULL,
-	[Carbohydrates] [int] NOT NULL,
-
+	[Energy] [float] NOT NULL,
+	[Fats] [float] NOT NULL,
+	[Proteins] [float] NOT NULL,
+	[Carbohydrates] [float] NOT NULL,
  CONSTRAINT [PK_dbo.DiaryRecords] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

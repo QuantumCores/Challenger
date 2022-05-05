@@ -3,10 +3,10 @@ CREATE TABLE [dbo].[MealDishes](
 	[DishId] [bigint] NOT NULL,	
 	[MealRecordId] [bigint] NOT NULL,	
 	[Servings] [float] NOT NULL,	
-	[Energy] [int] NOT NULL,
-	[Fats] [int] NOT NULL,
-	[Proteins] [int] NOT NULL,
-	[Carbohydrates] [int] NOT NULL,
+	[Energy] [float] NOT NULL,
+	[Fats] [float] NOT NULL,
+	[Proteins] [float] NOT NULL,
+	[Carbohydrates] [float] NOT NULL,
  CONSTRAINT [PK_dbo.MealDishes] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

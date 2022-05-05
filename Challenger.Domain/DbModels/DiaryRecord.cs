@@ -17,12 +17,12 @@ namespace Challenger.Domain.DbModels
 
         public List<MealRecord> MealRecords { get; set; }
 
-        public int Energy { get; set; }
+        public double Energy { get; set; }
 
-        public int Fats { get; set; }
+        public double Fats { get; set; }
 
-        public int Proteins { get; set; }
+        public double Proteins { get; set; }
 
-        public int Carbohydrates { get; set; }
+        public double Carbohydrates { get; set; }
     }
 }

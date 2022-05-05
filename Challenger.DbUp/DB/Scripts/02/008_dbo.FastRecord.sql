@@ -2,10 +2,10 @@ CREATE TABLE [dbo].[FastRecords](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,	
 	[MealRecordId] [bigint] NOT NULL,
 	[Comment] [nvarchar](64) NULL,
-	[Energy] [int] NOT NULL,
-	[Fats] [int] NOT NULL,
-	[Proteins] [int] NOT NULL,
-	[Carbohydrates] [int] NOT NULL,
+	[Energy] [float] NOT NULL,
+	[Fats] [float] NOT NULL,
+	[Proteins] [float] NOT NULL,
+	[Carbohydrates] [float] NOT NULL,
  CONSTRAINT [PK_dbo.FastRecords] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
