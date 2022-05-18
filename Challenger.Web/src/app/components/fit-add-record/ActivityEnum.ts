@@ -8,5 +8,6 @@ export enum ActivityEnum{
     Cycling,
     Fitness,
     Squash,
-    Hiking
+    Hiking,
+    Rollerblading
 }
