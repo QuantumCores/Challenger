@@ -1,17 +1,19 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Challenger.Domain.Account;
 using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Dtos;
 using Challenger.Domain.RankingService;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Challenger.Domain.Account;
-using Challenger.Domain.Contracts.Repositories;
+
+// to be removed
+using Microsoft.AspNetCore.Identity;
+using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,43 +55,53 @@ builder.Services.AddDbContext<ChallengerContext>(options =>
 builder.Services.AddDbContext<ChallengerFoodContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FoodConnection")));
 
+// to be removed
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
+// to be removed
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<IdentityContext>();
-
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddSingleton(jwtSettings);
 
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}
-).AddJwtBearer(x =>
-{
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
+//builder.Services.AddAuthentication(x =>
+//{
+//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}
+//).AddJwtBearer(x =>
+//{
+//    //x.SaveToken = true;
+//    x.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        //ValidateIssuer = true,
+//        ValidateAudience = false,        
+//        //RequireExpirationTime = false,
+//        //ValidateLifetime = true,
+//        //ValidateIssuerSigningKey = true,
+
+//        //ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+//        //ValidAudience = jwtSettings.GetSection("validAudience").Value,
+//        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.GetSection("securityKey").Value)),
+//    };    
+//    x.Authority = jwtSettings.GetSection("identityUrl").Value;    
+//    x.RequireHttpsMetadata = builder.Environment.IsDevelopment() ? false : true; // PROD TRUE
+//    x.Audience = "challenger"; //This value has to be the same as the one provided in the authorization server configuration for the API resource
+//});
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", opt =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        RequireExpirationTime = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-        ValidAudience = jwtSettings.GetSection("validAudience").Value,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.GetSection("securityKey").Value)),
-    };
-});
+        opt.RequireHttpsMetadata = false;
+        opt.Authority = jwtSettings.GetSection("identityUrl").Value;
+        opt.Audience = "challenger";
+    });
 
 
-builder.Services.AddAutoMapper(
-    typeof(Program).Assembly,
-    typeof(FitRecordDto).Assembly);
+builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(FitRecordDto).Assembly);
 
 builder.Services.AddCors(options =>
 {
@@ -110,6 +122,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// APP MIDDLEWARES HERE
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

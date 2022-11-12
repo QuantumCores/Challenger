@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountHelper } from 'src/app/helpers/AccountHelper';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-header',
@@ -8,12 +8,14 @@ import { AccountHelper } from 'src/app/helpers/AccountHelper';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private accountHelper: AccountHelper) { }
+  isUserAuthenticated: boolean = false;
+
+  constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
-  } 
-  
-  isUserAuthenticated(): boolean {    
-    return this.accountHelper.isUserAuthenticated();
+    this.accountService.loginChanged
+      .subscribe(res => {
+        this.isUserAuthenticated = res;
+      });
   }
 }

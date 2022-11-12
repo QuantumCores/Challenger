@@ -1,16 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Remove="DB\Scripts\02\002_dbo.Dish.sql~RF3480653.TMP" />
-    <None Remove="DB\Scripts\02\007_dbo.FastRecord.sql~RF34bd3c6.TMP" />
-    <None Remove="DB\Scripts\02\008_dbo.FastRecord.sql~RF34cbd1c.TMP" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="dbup" Version="4.5.0" />
-    <PackageReference Include="dbup-core" Version="4.5.0" />
+    <EmbeddedResource Include="DB\Identity\001_AspNetUsers.sql" />
+    <EmbeddedResource Include="DB\Scripts\01\001_dbo.User.sql" />
+    <EmbeddedResource Include="DB\Scripts\01\002_dbo.Measurement.sql" />
+    <EmbeddedResource Include="DB\Scripts\01\003_dbo.GymRecord.sql" />
+    <EmbeddedResource Include="DB\Scripts\01\004_dbo.FitRecord.sql" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QuantumCore.DbUp" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.DbUp.Abstraction" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>

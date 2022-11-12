@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,10 +43,13 @@ import { FastRecordItemComponent } from './components/food/fast-record-item/fast
 import { DishSearchComponent } from './components/food/dish-search/dish-search.component';
 import { IngridientItemComponent } from './components/food/ingridient-item/ingridient-item.component';
 import { MealDishItemComponent } from './components/food/meal-dish-item/meal-dish-item.component';
+import { SigninRedirectCallbackComponent } from './components/signin-redirect-callback/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './components/signout-redirect-callback/signout-redirect-callback.component';
+import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 
-export function tokenGetter() {
-  return localStorage.getItem("jwt");
-}
+// export function tokenGetter(): string | null{
+//   return localStorage.getItem("jwt");
+// }
 
 @NgModule({
   declarations: [
@@ -83,7 +86,9 @@ export function tokenGetter() {
     FastRecordItemComponent,
     DishSearchComponent,
     IngridientItemComponent,
-    MealDishItemComponent
+    MealDishItemComponent,
+    SigninRedirectCallbackComponent,
+    SignoutRedirectCallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -93,19 +98,21 @@ export function tokenGetter() {
     ReactiveFormsModule,
     NoopAnimationsModule,
     MatTimepickerModule,
-    JwtModule.forRoot(
-      {
-        config: {
-          tokenGetter: tokenGetter,
-          allowedDomains: ['localhost', 'localhost:7099', 'localhost:80', '54.37.137.86', '54.37.137.86:81'],
-          disallowedRoutes: []
-        }
-      }),
+    // JwtModule.forRoot(
+    //   {
+    //     config: {
+    //       tokenGetter: tokenGetter,
+    //       allowedDomains: ['localhost', 'localhost:7099', 'localhost:5001', 'localhost:5002', 'https://localhost:5001', 'localhost:80', '54.37.137.86', '54.37.137.86:81'],
+    //       disallowedRoutes: []
+    //     }
+    //   }),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

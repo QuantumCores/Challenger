@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountHelper } from 'src/app/helpers/AccountHelper';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +8,15 @@ import { AccountHelper } from 'src/app/helpers/AccountHelper';
 })
 export class HomeComponent implements OnInit {
 
+  isUserAuthenticated: boolean = false;
   title = 'Challenger';
   
-  constructor(private accountHelper: AccountHelper) { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
-  }
-
-  isUserAuthenticated(): boolean {    
-    return this.accountHelper.isUserAuthenticated();
+    this.accountService.loginChanged
+      .subscribe(res => {
+        this.isUserAuthenticated = res;
+      });
   }
 }

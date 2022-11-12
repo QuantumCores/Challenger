@@ -253,3 +253,4 @@ TheGame/Graphics/MiniMaps/*
 
 # Game logs
 *_Log.json
+/Challenger.Identity/tempkey.jwk

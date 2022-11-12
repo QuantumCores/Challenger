@@ -10,7 +10,7 @@ namespace Challenger.Identity.Extensions
 {
     public static class MigrationManager
     {
-        public static IHost MigrateDatabase(this IHost host)
+        public static IHost MigrateConfigurationDatabase(this IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {

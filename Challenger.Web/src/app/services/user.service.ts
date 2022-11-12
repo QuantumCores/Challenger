@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserBasicDto } from '../components/measurements/UserBasicDto';
-import { AccountHelper } from '../helpers/AccountHelper';
+//import { AccountHelper } from '../helpers/AccountHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +16,15 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private accountHelper: AccountHelper) { }
+    //private accountHelper: AccountHelper
+    ) { }
 
   public getUserBasic(): Observable<UserBasicDto> {
     let subject = new Subject<UserBasicDto>();
 
     if (this.userBasic) {
-      let email = this.accountHelper.getUserEmail();
+      //TODO
+      let email = ""; //this.accountHelper.getUserEmail();
       if (email && this.userBasic.email == email) {
         return of(this.userBasic);
       }

@@ -38,7 +38,7 @@ namespace Challenger.Identity
                 Log.Information("Starting host...");
                 CreateHostBuilder(args)
                     .Build()
-                    .MigrateDatabase()
+                    .MigrateConfigurationDatabase()
                     .Run();
 
                 return 0;

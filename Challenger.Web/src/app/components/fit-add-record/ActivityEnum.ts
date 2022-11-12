@@ -9,5 +9,8 @@ export enum ActivityEnum{
     Fitness,
     Squash,
     Hiking,
-    Rollerblading
+    Rollerblading,
+    Badminton,
+    Trail_Running,
+    Footbal
 }

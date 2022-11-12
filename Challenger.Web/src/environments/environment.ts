@@ -3,8 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  httpDomain: 'https://localhost:7099',
-  production: false
+  production: false,
+  httpDomain: 'https://localhost:5002',
+  httpGateway: 'https://localhost:5001',
+  clientRoot: "http://localhost:4200",
+  idpAuthority: "https://localhost:5001",
+  clientId: "challenger_web"
 };
 
 /*

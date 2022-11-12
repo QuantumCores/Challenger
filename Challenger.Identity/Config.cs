@@ -115,7 +115,7 @@ namespace Challenger.Identity
                     ClientName = "Challenger_web",
                     ClientId = "challenger_web",
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string>{ "http://localhost:4200" },
+                    RedirectUris = new List<string>{ "http://localhost:4200/signin-callback", "http://localhost:4200/assets/silent-callback.html" },
                     RequirePkce = true,
                     AllowAccessTokensViaBrowser = true,
                     AllowedScopes =
@@ -126,7 +126,7 @@ namespace Challenger.Identity
                     },
                     AllowedCorsOrigins = { "http://localhost:4200" },
                     RequireClientSecret = false,
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200" },
+                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/signout-callback" },                    
                     RequireConsent = false,
                     AccessTokenLifetime = 600
                 }

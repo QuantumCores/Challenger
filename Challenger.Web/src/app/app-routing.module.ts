@@ -9,6 +9,8 @@ import { HomeComponent } from './components/home/home.component';
 import { MeasurementsComponent } from './components/measurements/measurements.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SigninRedirectCallbackComponent } from './components/signin-redirect-callback/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './components/signout-redirect-callback/signout-redirect-callback.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +21,9 @@ const routes: Routes = [
   { path: 'addProduct', component: ProductAddComponent },
   { path: 'diaryRecords', component: DiaryRecordsComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'rules', component: ChallengeRulesComponent }
+  { path: 'rules', component: ChallengeRulesComponent },
+  { path: 'signin-callback', component: SigninRedirectCallbackComponent },
+  { path: 'signout-callback', component: SignoutRedirectCallbackComponent }  
 ];
 
 @NgModule({

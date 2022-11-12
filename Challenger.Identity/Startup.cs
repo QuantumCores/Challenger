@@ -29,8 +29,6 @@ namespace Challenger.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
@@ -45,6 +43,8 @@ namespace Challenger.Identity
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
+                options.UserInteraction.LoginUrl = "/Account/Login";
+                options.UserInteraction.LogoutUrl = "/Account/Logout";
 
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
@@ -69,7 +69,10 @@ namespace Challenger.Identity
             else
             {
                 builder.AddDeveloperSigningCredential();
-            }            
+            }
+
+
+            services.AddControllersWithViews();
 
             //builder.Services.AddCors(options =>
             //{
@@ -86,8 +89,10 @@ namespace Challenger.Identity
             //});
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IdentityContext identityContext)
         {
+            identityContext.Database.Migrate();
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -97,7 +102,7 @@ namespace Challenger.Identity
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseIdentityServer();            
+            app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
