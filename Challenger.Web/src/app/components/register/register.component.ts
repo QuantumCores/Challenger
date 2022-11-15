@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   public confirmHeight(): boolean {
     if (this.registerForm.controls['height'].value) {
       const height = parseFloat(this.registerForm.controls['height'].value);
-      return height >= 140 && height <= 200;
+      return height >= 120 && height <= 240;
     }
     
     return true;

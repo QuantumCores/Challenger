@@ -1,7 +1,6 @@
 export class UserBasicDto {
 
-    userName: string;
-    email: string;
+    correlationId: string;
     dateOfBirth: Date;
     height: number;
     sex: string;

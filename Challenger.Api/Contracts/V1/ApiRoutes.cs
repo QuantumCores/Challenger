@@ -21,6 +21,7 @@
         public static class User
         {
             public const string Basic = Base + "/basic";
+            public const string Create = Base + "/create";
         }
     }
 }

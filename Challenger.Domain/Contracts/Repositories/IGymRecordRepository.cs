@@ -19,5 +19,7 @@ namespace Challenger.Domain.Contracts.Repositories
         void Remove(GymRecord record);
 
         Task SaveChanges();
+        
+        Task<List<GymRecord>> Dynamic();
     }
 }

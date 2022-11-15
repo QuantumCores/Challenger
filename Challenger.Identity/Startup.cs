@@ -32,7 +32,7 @@ namespace Challenger.Identity
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()//options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                             .AddEntityFrameworkStores<IdentityContext>()
                             .AddDefaultTokenProviders();
 
@@ -45,6 +45,11 @@ namespace Challenger.Identity
                 options.Events.RaiseSuccessEvents = true;
                 options.UserInteraction.LoginUrl = "/Account/Login";
                 options.UserInteraction.LogoutUrl = "/Account/Logout";
+                //options.Authentication = new AuthenticationOptions()
+                //{
+                //    CookieLifetime = TimeSpan.FromHours(10), // ID server cookie timeout set to 10 hours
+                //    CookieSlidingExpiration = true
+                //};
 
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
@@ -71,22 +76,7 @@ namespace Challenger.Identity
                 builder.AddDeveloperSigningCredential();
             }
 
-
             services.AddControllersWithViews();
-
-            //builder.Services.AddCors(options =>
-            //{
-            //    options.AddPolicy(name: "AllowAnyOrigin",
-            //                      builder =>
-            //                      {
-            //                          builder//.WithOrigins("http://54.37.137.86", "https://54.37.137.86", "http://localhost:4200")
-            //                          .AllowAnyOrigin()
-            //                          .AllowAnyMethod()
-            //                          .AllowAnyHeader();
-            //                          //.WithHeaders("content-type")
-            //                          //.AllowCredentials();
-            //                      });
-            //});
         }
 
         public void Configure(IApplicationBuilder app, IdentityContext identityContext)
@@ -98,7 +88,6 @@ namespace Challenger.Identity
                 app.UseDeveloperExceptionPage();
             }
 
-            // uncomment if you want to add MVC
             app.UseStaticFiles();
 
             app.UseRouting();

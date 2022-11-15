@@ -24,10 +24,10 @@ export class UserService {
 
     if (this.userBasic) {
       //TODO
-      let email = ""; //this.accountHelper.getUserEmail();
-      if (email && this.userBasic.email == email) {
-        return of(this.userBasic);
-      }
+      let userId = ""; //this.accountHelper.getUserId();
+      // if (userId && this.userBasic.correlationId == userId) {
+      //   return of(this.userBasic);
+      // }
     }
     else {
       const url = `${this.apiUrl}/api/v1/basic`;

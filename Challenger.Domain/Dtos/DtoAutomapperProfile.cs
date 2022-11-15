@@ -18,7 +18,17 @@ namespace Challenger.Domain.Dtos
                 .ReverseMap();
 
             CreateMap<UserDto, User>()
-                .ReverseMap();
+                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.CorrelationId))
+                .ForMember(x => x.Height, opt => opt.MapFrom(y => y.Height))
+                .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
+                .ForMember(x => x.Sex, opt => opt.MapFrom(y => y.Sex))
+                .ForMember(x => x.Id, opt => opt.Ignore());
+
+            CreateMap<User, UserDto>()
+                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.CorrelationId))
+                .ForMember(x => x.Height, opt => opt.MapFrom(y => y.Height))
+                .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
+                .ForMember(x => x.Sex, opt => opt.MapFrom(y => y.Sex));
 
             CreateMap<ProductDto, Product>()
                 .ReverseMap();

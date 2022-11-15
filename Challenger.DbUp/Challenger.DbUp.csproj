@@ -26,9 +26,11 @@
     <EmbeddedResource Include="DB\Scripts\01\002_dbo.Measurement.sql" />
     <EmbeddedResource Include="DB\Scripts\01\003_dbo.GymRecord.sql" />
     <EmbeddedResource Include="DB\Scripts\01\004_dbo.FitRecord.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\001_dbo.AddUserIdentityGuid.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.6.3" />
     <PackageReference Include="QuantumCore.DbUp" Version="1.0.0" />
     <PackageReference Include="QuantumCore.DbUp.Abstraction" Version="1.0.0" />
   </ItemGroup>

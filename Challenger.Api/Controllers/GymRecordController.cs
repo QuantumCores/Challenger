@@ -2,6 +2,7 @@
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +13,18 @@ namespace Challenger.Api.Controllers
     [Route("[controller]")]
     public class GymRecordController : Controller
     {
+        private readonly ITokenProvider _tokenProvider;
         private readonly IGymRecordRepository _gymRecordRepository;
         private readonly IUserRepository _userRepository;
         private IMapper _mapper;
 
         public GymRecordController(
+            ITokenProvider tokenProvider,
             IGymRecordRepository gymRecordRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
+            _tokenProvider = tokenProvider;
             _gymRecordRepository = gymRecordRepository;
             _userRepository = userRepository;
             _mapper = mapper;
@@ -29,7 +33,7 @@ namespace Challenger.Api.Controllers
         [HttpGet]
         public async Task<GymRecordDto[]> Get()
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             var all = await _gymRecordRepository.GetAllForUser(userId);
             return _mapper.Map<GymRecordDto[]>(all);
         }
@@ -38,7 +42,7 @@ namespace Challenger.Api.Controllers
         public async Task<GymRecordDto> Add([FromBody] GymRecordDto record)
         {
             var entity = _mapper.Map<GymRecord>(record);
-            entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            entity.UserId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             _gymRecordRepository.Add(entity);
             await _gymRecordRepository.SaveChanges();
             record = _mapper.Map<GymRecordDto>(entity);
@@ -49,7 +53,7 @@ namespace Challenger.Api.Controllers
         [HttpPatch]
         public async Task<JsonResult> Update([FromBody] GymRecordDto record)
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             if (userId != record.UserId)
             {
                 return Json(new { IsSuccess = false });
@@ -65,7 +69,7 @@ namespace Challenger.Api.Controllers
         public async Task<JsonResult> Delete(long id)
         {
             var toDelete = await _gymRecordRepository.Get(id);
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             if (userId != toDelete.UserId)
             {
                 return Json(new { IsSuccess = false });
@@ -75,6 +79,14 @@ namespace Challenger.Api.Controllers
             await _gymRecordRepository.SaveChanges();
 
             return Json(new { IsSuccess = true });
+        }
+
+        [HttpGet("dynamic")]
+        public async Task<List<GymRecord>> Dynamic()
+        {
+            var result = await _gymRecordRepository.Dynamic();
+
+            return result;
         }
     }
 }

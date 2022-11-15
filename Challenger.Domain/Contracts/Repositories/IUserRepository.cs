@@ -1,16 +1,17 @@
 ﻿using Challenger.Domain.DbModels;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Challenger.Domain.Contracts.Repositories
 {
     public interface IUserRepository
     {
-        void Add(User user);
+        ValueTask<EntityEntry<User>> Add(User user);
 
         ValueTask<User> Get(long id);
 
-        Task<User> GetByEmail(string email);
+        Task<User> GetByCorrelationId(string v);
 
-        Task<long> GetIdByEmail(string email);
+        Task<long> GetIdByCorrelationId(string email);
 
         Task<List<User>> GetAll();
 

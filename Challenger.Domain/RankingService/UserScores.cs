@@ -2,7 +2,7 @@
 {
     public class UserScores
     {
-        public string UserName { get; set; }
+        public Guid CorrelationId { get; set; }
 
         public double TotalScore { get; set; }
 

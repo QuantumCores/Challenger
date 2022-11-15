@@ -2,6 +2,7 @@
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +14,18 @@ namespace Challenger.Api.Controllers
     public class DiaryRecordController : Controller
     {
         private const int daysSpan = 7;
+        private readonly ITokenProvider _tokenProvider;
         private readonly IDiaryRecordRepository _diaryRecordRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public DiaryRecordController(
+            ITokenProvider tokenProvider,
             IDiaryRecordRepository diaryRecordRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
+            _tokenProvider = tokenProvider;
             _diaryRecordRepository = diaryRecordRepository;
             _userRepository = userRepository;
             _mapper = mapper;
@@ -30,7 +34,7 @@ namespace Challenger.Api.Controllers
         [HttpGet]
         public async Task<DiaryRecordDto[]> Get(DateTime startDate)
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(User.Identity.Name);
             var all = await _diaryRecordRepository.GetAllForUser(userId, startDate, startDate.AddDays(daysSpan));
             return _mapper.Map<DiaryRecordDto[]>(all);
         }
@@ -39,7 +43,7 @@ namespace Challenger.Api.Controllers
         public async Task<DiaryRecordDto> Add([FromBody] DiaryRecordDto record)
         {
             var entity = _mapper.Map<DiaryRecord>(record);
-            entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            entity.UserId = await _userRepository.GetIdByCorrelationId(User.Identity.Name);
             var exists = await _diaryRecordRepository.GetByDate(entity.UserId, record.DiaryDate.Date);
 
             if (exists != null)
@@ -57,7 +61,7 @@ namespace Challenger.Api.Controllers
         [HttpPatch]
         public async Task<JsonResult> Update([FromBody] DiaryRecordDto record)
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(User.Identity.Name);
             if (userId != record.UserId)
             {
                 return Json(new { IsSuccess = false });
@@ -73,7 +77,7 @@ namespace Challenger.Api.Controllers
         public async Task<JsonResult> Delete(long id)
         {
             var toDelete = await _diaryRecordRepository.Get(id);
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(User.Identity.Name);
             if (userId != toDelete.UserId)
             {
                 return Json(new { IsSuccess = false });

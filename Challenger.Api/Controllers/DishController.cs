@@ -2,6 +2,7 @@
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +13,18 @@ namespace Challenger.Api.Controllers
     [Route("[controller]")]
     public class DishController : Controller
     {
+        private readonly ITokenProvider _tokenProvider;
         private readonly IDishRepository _dishRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public DishController(
+            ITokenProvider tokenProvider,
             IDishRepository dishRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
+            _tokenProvider = tokenProvider;
             _dishRepository = dishRepository;
             _userRepository = userRepository;
             _mapper = mapper;
@@ -29,7 +33,7 @@ namespace Challenger.Api.Controllers
         [HttpGet]
         public async Task<DishDto[]> Get()
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             var all = await _dishRepository.GetAllForUser(userId);
             return _mapper.Map<DishDto[]>(all);
         }
@@ -45,7 +49,7 @@ namespace Challenger.Api.Controllers
         public async Task<DishDto> Add([FromBody] DishDto record)
         {
             var entity = _mapper.Map<Dish>(record);
-            entity.UserId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            entity.UserId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             _dishRepository.Add(entity);
             await _dishRepository.SaveChanges();
             record = _mapper.Map<DishDto>(entity);
@@ -56,7 +60,7 @@ namespace Challenger.Api.Controllers
         [HttpPatch]
         public async Task<JsonResult> Update([FromBody] DishDto record)
         {
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             if (userId != record.UserId)
             {
                 return Json(new { IsSuccess = false });
@@ -72,7 +76,7 @@ namespace Challenger.Api.Controllers
         public async Task<JsonResult> Delete(long id)
         {
             var toDelete = await _dishRepository.Get(id);
-            var userId = await _userRepository.GetIdByEmail(User.Identity.Name);
+            var userId = await _userRepository.GetIdByCorrelationId(_tokenProvider.GetUserId());
             if (userId != toDelete.UserId)
             {
                 return Json(new { IsSuccess = false });

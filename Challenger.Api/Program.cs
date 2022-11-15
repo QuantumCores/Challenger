@@ -1,19 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Challenger.Domain.Account;
 using Challenger.Domain.Contracts;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Dtos;
 using Challenger.Domain.RankingService;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Heimdal.Token;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-
-// to be removed
-using Microsoft.AspNetCore.Identity;
-using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,24 +38,17 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<MealDishRepository>().As<IMealDishRepository>();
 
     builder.RegisterType<RankingService>().As<IRankingService>();
-    builder.RegisterType<AccountService>().As<IAccountService>();
-    builder.RegisterType<JwtService>().As<IJwtService>();
-
 });
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTokenProvider(builder.Configuration);
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
 
 builder.Services.AddDbContext<ChallengerFoodContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FoodConnection")));
-
-// to be removed
-builder.Services.AddDbContext<IdentityContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
-
-// to be removed
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<IdentityContext>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddSingleton(jwtSettings);
@@ -101,7 +88,7 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(FitRecordDto).Assembly);
+builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(UserDto).Assembly);
 
 builder.Services.AddCors(options =>
 {
@@ -127,7 +114,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
