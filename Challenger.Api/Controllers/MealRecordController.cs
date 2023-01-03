@@ -4,6 +4,7 @@ using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
 {

@@ -1,4 +1,6 @@
-﻿namespace Challenger.Domain.Dtos
+﻿using System.Collections.Generic;
+
+namespace Challenger.Domain.Dtos
 {
     public class MealRecordDto
     {

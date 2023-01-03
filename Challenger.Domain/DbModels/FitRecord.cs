@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Challenger.Domain.DbModels
@@ -19,7 +20,7 @@ namespace Challenger.Domain.DbModels
 
         public int? Duration { get; set; }
 
-        public string? DurationUnit { get; set; }
+        public string DurationUnit { get; set; }
 
         public double? Distance { get; set; }
 

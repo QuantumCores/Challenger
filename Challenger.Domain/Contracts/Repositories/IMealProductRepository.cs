@@ -1,4 +1,6 @@
 ﻿using Challenger.Domain.DbModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Challenger.Domain.Contracts.Repositories
 {

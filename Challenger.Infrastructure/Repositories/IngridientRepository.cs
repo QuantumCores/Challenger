@@ -1,6 +1,8 @@
 ﻿using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Challenger.Infrastructure.Repositories
 {

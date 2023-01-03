@@ -1,4 +1,7 @@
-﻿namespace Challenger.Domain.Dtos
+﻿using System;
+using System.Collections.Generic;
+
+namespace Challenger.Domain.Dtos
 {
     public class DiaryRecordDto
     {

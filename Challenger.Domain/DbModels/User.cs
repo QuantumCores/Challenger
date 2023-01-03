@@ -1,4 +1,7 @@
-﻿namespace Challenger.Domain.DbModels
+﻿using System;
+using System.Collections.Generic;
+
+namespace Challenger.Domain.DbModels
 {
     public class User
     {

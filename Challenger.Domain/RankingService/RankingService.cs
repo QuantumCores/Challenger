@@ -1,6 +1,10 @@
 ﻿using Challenger.Domain.Contracts;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Challenger.Domain.RankingService
 {

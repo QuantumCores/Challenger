@@ -1,4 +1,5 @@
 ﻿using Challenger.Domain.Food;
+using System.Collections.Generic;
 
 namespace Challenger.Domain.Dtos
 {

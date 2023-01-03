@@ -1,6 +1,8 @@
 ﻿using Challenger.Domain.Contracts;
 using Challenger.Domain.RankingService;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
 {

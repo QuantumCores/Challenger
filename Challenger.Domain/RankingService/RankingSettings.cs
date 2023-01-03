@@ -1,4 +1,7 @@
-﻿namespace Challenger.Domain.RankingService
+﻿using System;
+using System.Collections.Generic;
+
+namespace Challenger.Domain.RankingService
 {
     public class RankingSettings
     {

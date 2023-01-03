@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.RankingService;
+using System.Collections.Generic;
 
 namespace Challenger.Domain.Dtos
 {

@@ -5,6 +5,8 @@ using Challenger.Domain.Dtos;
 using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
 {
