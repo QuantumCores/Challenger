@@ -12,15 +12,16 @@
             public const string Login = Base + "/login";
         }
 
-        public static class User
-        {
-            public const string Basic = Base + "/basic";
-        }
-
         public static class Migrator
         {   
             public const string CreateAppDatabase = Base + "/createAppDatabase";
             public const string CreateIdentityDatabase = Base + "/createIdentityDatabase";
+        }
+
+        public static class User
+        {
+            public const string Basic = Base + "/basic";
+            public const string Create = Base + "/create";
         }
     }
 }

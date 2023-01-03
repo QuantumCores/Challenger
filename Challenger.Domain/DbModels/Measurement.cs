@@ -1,9 +1,15 @@
-﻿namespace Challenger.Domain.DbModels
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Challenger.Domain.DbModels
 {
     public class Measurement
     {
         public long Id { get; set; }
 
+        [Required]
+        [ForeignKey("User")]
         public long UserId { get; set; }
 
         public User User { get; set; }

@@ -1,0 +1,45 @@
+<h1 class="card-title">Add new dish</h1>
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    Error: {{errorMessage}}
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group first">
+            <label for="DishName">Dish name</label>
+            <input class="form-control" id="DishName" [(ngModel)]="dish.name" style="border-color: orange;" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group first">
+            <label for="servings">Servings:</label>
+            <input type="number" id="servings" class="form-control" [(ngModel)]="dish.servings" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group first">
+            <label for="PreparationTime">Prep time (min):</label>
+            <input type="number" id="PreparationTime" class="form-control" [(ngModel)]="dish.preparationTime" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group first">
+            <p style="margin: 0px;">Public?</p>
+            <input type="checkbox" class="btn-check" id="IsPublic" autocomplete="off" name="IsPublic"
+                [(ngModel)]="dish.isPublic">
+            <label class="btn btn-outline-primary" for="IsPublic">Public?</label>
+        </div>
+    </div>
+</div>
+
+<app-ingridient-item *ngFor="let ingridient of dish.ingridients" [ingridient]="ingridient"
+    (onDeleteIngridient)="onDeleteIngridient($event)"></app-ingridient-item>
+
+<app-button text="Add ingridient" (btnClick)="addIngridient()" color="green"></app-button>
+
+<app-ingridient-add *ngIf="isAddingIngridient" (onIngridientAdded)="onIngridientAdded($event)"></app-ingridient-add>
+
+<app-button text="Save dish" (btnClick)="addNewDish()" *ngIf="dish.ingridients && dish.ingridients.length > 1"
+    color="green"></app-button>

@@ -1,4 +1,6 @@
-﻿namespace Challenger.Domain.RankingService
+﻿using System;
+
+namespace Challenger.Domain.RankingService
 {
     public class RankingScore
     {

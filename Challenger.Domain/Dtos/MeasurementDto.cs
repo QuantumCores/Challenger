@@ -1,4 +1,6 @@
-﻿namespace Challenger.Domain.Dtos
+﻿using System;
+
+namespace Challenger.Domain.Dtos
 {
     public class MeasurementDto
     {

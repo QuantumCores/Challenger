@@ -1,8 +1,11 @@
-﻿namespace Challenger.Domain.RankingService
+﻿using System;
+using System.Collections.Generic;
+
+namespace Challenger.Domain.RankingService
 {
     public class UserScores
     {
-        public string UserName { get; set; }
+        public Guid CorrelationId { get; set; }
 
         public double TotalScore { get; set; }
 

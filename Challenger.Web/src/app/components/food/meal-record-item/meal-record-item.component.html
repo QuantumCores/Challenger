@@ -1,0 +1,51 @@
+<!-- <div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-12 py-12"> -->
+<div style="margin: 5px; margin-top: 20px; border-bottom: 1px solid darkgray;"></div>
+<div class="row">
+    <div class="col-md-9">
+        <div class="form-group first">
+            <label for="MealName">Meal name</label>
+            <div class="form-control" style="background-color: gray; color: white;" list="mealNames">{{record.mealName}}</div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="form-group first">
+            <label for="RecordTime">Time</label>
+            <div class="form-control">
+                {{getTime()}}</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <app-fast-record-item *ngFor="let fast of record.fastRecords" [record]="fast"
+        (onDeleteFastRecord)="onDeleteFastRecord($event)">
+    </app-fast-record-item>
+    <app-meal-product-item *ngFor="let product of record.mealProducts" [mealProduct]="product"
+        (onDeleteMealProduct)="onDeleteMealProduct($event)">
+    </app-meal-product-item>
+    <app-meal-dish-item *ngFor="let dish of record.mealDishes" [mealDish]="dish"
+        (onDeleteMealDish)="onDeleteMealDish($event)">
+    </app-meal-dish-item>
+</div>
+<div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+    <app-button class="col-md-4" color="green" text="Fast" (click)="addFast()"></app-button>
+    <app-button class="col-md-4" color="green" text="Product" (click)="addProduct()"></app-button>
+    <app-button class="col-md-4" color="green" text="Dish" (click)="addDish()"></app-button>
+</div>
+<div class="row" *ngIf="isAddingProduct">
+    <app-meal-product-add (onMealProductAdded)="mealProductAdded($event)" [mealRecordId]="record.id">
+    </app-meal-product-add>
+</div>
+<div class="row" *ngIf="isAddingFast">
+    <app-fast-record-add (onFastRecordAdded)="fastRecordAdded($event)" [mealRecordId]="record.id">
+    </app-fast-record-add>
+</div>
+<div class="row" *ngIf="isAddingDish">
+    <app-meal-dish-add (onMealDishAdded)="mealDishAdded($event)" [mealRecordId]="record.id">
+    </app-meal-dish-add>
+</div>
+<div style="margin-bottom: 20px; border-bottom: 1px white solid;"></div>
+<!-- </div>
+    </div>
+</div> -->

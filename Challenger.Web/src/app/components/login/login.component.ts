@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
-import { AccountHelper } from 'src/app/helpers/AccountHelper';
+import { environment } from 'src/environments/environment';
+//import { AccountHelper } from 'src/app/helpers/AccountHelper';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,11 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   showError: boolean;
+  isUserAuthenticated: boolean = false;
 
   constructor(
     private accountService: AccountService,
-    private accountHelper: AccountHelper,
+    //private accountHelper: AccountHelper,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -26,6 +28,11 @@ export class LoginComponent implements OnInit {
       email: new FormControl("", [Validators.required]),
       password: new FormControl("", [Validators.required])
     });
+
+    this.accountService.loginChanged
+      .subscribe(res => {
+        this.isUserAuthenticated = res;
+      });
   }
 
   public validateControl = (controlName: string) => {
@@ -38,18 +45,30 @@ export class LoginComponent implements OnInit {
   loginUser(registerFormValue: any): void {
 
     let registerModel = registerFormValue;
-    this.accountService.login(registerFormValue).subscribe(
-      (result) => {
-        if (result.isSuccess) {
-          localStorage.setItem("jwt", result.token);
-          this.router.navigate(['']);
-        }
-        else {
+    this.accountService.login();
+    // this.accountService.login(registerFormValue).subscribe(
+    //   (result) => {
+    //     if (result.isSuccess) {
+    //       localStorage.setItem("jwt", result.token);
+    //       this.router.navigate(['']);
+    //     }
+    //     else {
 
-          this.errorMessage = 'Unable to login';
-          this.showError = true;
-        }
-      })
+    //       this.errorMessage = 'Unable to login';
+    //       this.showError = true;
+    //     }
+    //   })
+  }
+
+  registerUser(): void {
+
+    const reidrectUrl = `${environment.clientRoot}/signin-callback`;
+    const registerUrl = `${environment.idpAuthority}\\Register`;
+    window.location.href= `${registerUrl}\\?returnUrl=${reidrectUrl}`;
+  }
+
+  public logout = () => {
+    this.accountService.logout();
   }
 
   logoutUser() {
@@ -57,7 +76,7 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  isUserAuthenticated(): boolean {    
-    return this.accountHelper.isUserAuthenticated();
-  }
+  // isUserAuthenticated(): boolean {    
+  //   return this.accountHelper.isUserAuthenticated();
+  // }
 }

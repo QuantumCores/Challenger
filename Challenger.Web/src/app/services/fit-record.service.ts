@@ -15,7 +15,6 @@ const httpOptions = {
 })
 export class FitRecordService {
 
-  //private apiUrl = 'https://localhost:7099/FitRecord'
   private apiUrl = `${environment.httpDomain}/FitRecord`;
 
   constructor(private http: HttpClient) { }

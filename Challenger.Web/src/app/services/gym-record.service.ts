@@ -15,7 +15,6 @@ const httpOptions = {
 })
 export class GymRecordService {
 
-  //private apiUrl = 'https://localhost:7099/GymRecord'
   private apiUrl = `${environment.httpDomain}/GymRecord`;
 
   constructor(private http: HttpClient) { }

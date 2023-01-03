@@ -1,5 +1,10 @@
 ﻿using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Challenger.Domain.RankingService
 {
@@ -27,8 +32,8 @@ namespace Challenger.Domain.RankingService
             var fitRecords = await _fitRecordRepository.GetAllByTimeRange(_settings.StartDate, _settings.EndDate);
             var gymrecords = await _gymRecordRepository.GetAllByTimeRange(_settings.StartDate, _settings.EndDate);
 
-            var userFitRecords = fitRecords.ToLookup(x => x.User.UserName);
-            var userGymRecords = gymrecords.ToLookup(x => x.User.UserName);
+            var userFitRecords = fitRecords.ToLookup(x => x.User.CorrelationId);
+            var userGymRecords = gymrecords.ToLookup(x => x.User.CorrelationId);
 
             var users = userFitRecords.Select(x => x.Key).ToList();
             users.AddRange(userGymRecords.Select(x => x.Key));
@@ -38,7 +43,7 @@ namespace Challenger.Domain.RankingService
             var result = new List<UserScores>();
             foreach (var userKey in usersDictionary.Keys)
             {
-                var userScore = new UserScores { UserName = userKey };
+                var userScore = new UserScores { CorrelationId = userKey };
 
                 if (userFitRecords.Contains(userKey))
                 {
@@ -93,6 +98,11 @@ namespace Challenger.Domain.RankingService
         {
             var measurements = await _measurementRepository.GetAll();
 
+            if (!measurements.Any() || !measurements[0].User.Height.HasValue)
+            {
+                return new List<double?> { 0.0 };
+            }
+
             return measurements.Select(x => x.Fat.HasValue ? x.Fat : CalculateFat(x))
                                .ToList();
         }
@@ -103,12 +113,12 @@ namespace Challenger.Domain.RankingService
             {
                 if (measurement.Waist.HasValue && measurement.Neck.HasValue)
                 {
-                    return 495.0 / (1.0324 - 0.19077 * Math.Log10(measurement.Waist.Value - measurement.Neck.Value) + 0.15456 * Math.Log10(measurement.User.Height)) - 450;
+                    return 495.0 / (1.0324 - 0.19077 * Math.Log10(measurement.Waist.Value - measurement.Neck.Value) + 0.15456 * Math.Log10(measurement.User.Height.Value)) - 450;
                 }
             }
             else
             {
-                return 495.0 / (1.29579 - 0.35004 * Math.Log10(measurement.Waist.Value + measurement.Hips.Value - measurement.Neck.Value) + 0.22100 * Math.Log10(measurement.User.Height)) - 450;
+                return 495.0 / (1.29579 - 0.35004 * Math.Log10(measurement.Waist.Value + measurement.Hips.Value - measurement.Neck.Value) + 0.22100 * Math.Log10(measurement.User.Height.Value)) - 450;
             }
 
             return null;

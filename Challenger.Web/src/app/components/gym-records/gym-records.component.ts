@@ -19,6 +19,7 @@ export class GymRecordsComponent implements OnInit {
   isValid: boolean = true;
   recordToAdd: GymRecordDto;
   excersiseOptions: string[];
+  errorMessage: string;
 
   constructor(
     private gymRecordService: GymRecordService,
@@ -62,6 +63,7 @@ export class GymRecordsComponent implements OnInit {
   }
 
   onSave(): void {
+    this.errorMessage = '';
     if (this.validate(this.recordToAdd)) {
       this.setDateAndTime();
       this.gymRecordService.addGymRecord(this.recordToAdd).subscribe(
@@ -69,6 +71,9 @@ export class GymRecordsComponent implements OnInit {
           this.convertDate(record);
           this.records.push(record);
           this.refreshRecords();
+        },
+        (error) => {
+          this.errorMessage = error.status + ' - ' + error.statusText;
         })
     }
   }
@@ -97,7 +102,7 @@ export class GymRecordsComponent implements OnInit {
 
   setDateAndTime(): void {
 
-    let now = new Date();
+    let now = new Date();    
     if (this.compareDates(now, this.recordToAdd.recordDate)) {
       this.recordToAdd.recordDate = now;
     }

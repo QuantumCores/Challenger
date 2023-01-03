@@ -1,6 +1,10 @@
-﻿using Challenger.Domain.Contracts;
+﻿using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Challenger.Infrastructure.Repositories
 {
@@ -13,24 +17,24 @@ namespace Challenger.Infrastructure.Repositories
             _context = context;
         }
 
-        public void Add(User user)
+        public ValueTask<EntityEntry<User>> Add(User user)
         {
-            _context.Users.Add(user);
+            return _context.Users.AddAsync(user);
         }
 
-        public ValueTask<User> Get(long id)
+        public ValueTask<User?> Get(long id)
         {
             return _context.Users.FindAsync(id);
         }
 
-        public Task<User> GetByEmail(string email)
+        public Task<User> GetByCorrelationId(string correlationId)
         {
-            return _context.Users.SingleAsync(x => x.Email == email);
+            return _context.Users.SingleAsync(x => x.CorrelationId == Guid.Parse(correlationId));
         }
 
-        public async Task<long> GetIdByEmail(string email)
+        public async Task<long> GetIdByCorrelationId(string correlationId)
         {
-            var user = await _context.Users.SingleAsync(x => x.Email == email);
+            var user = await _context.Users.SingleAsync(x => x.CorrelationId == Guid.Parse(correlationId));
             return user.Id;
         }
 
