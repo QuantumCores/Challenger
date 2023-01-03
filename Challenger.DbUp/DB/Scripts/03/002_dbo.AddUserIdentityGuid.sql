@@ -8,6 +8,7 @@ UPDATE [dbo].[Users]
 SET [CorrelationId] = [ANU].[Id]
 FROM [ChallengerIdentity].[dbo].[AspNetUsers] [ANU]
 JOIN [dbo].[Users] [U] ON [ANU].[Email] = [U].[Email]
+GO
 
 -- CHANGE DATA TYPE
 ALTER TABLE [dbo].[Users]

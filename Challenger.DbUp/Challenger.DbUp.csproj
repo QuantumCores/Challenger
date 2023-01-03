@@ -26,7 +26,8 @@
     <EmbeddedResource Include="DB\Scripts\01\002_dbo.Measurement.sql" />
     <EmbeddedResource Include="DB\Scripts\01\003_dbo.GymRecord.sql" />
     <EmbeddedResource Include="DB\Scripts\01\004_dbo.FitRecord.sql" />
-    <EmbeddedResource Include="DB\Scripts\03\001_dbo.AddUserIdentityGuid.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\001_dbo.FixIdentityData.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\002_dbo.AddUserIdentityGuid.sql" />
   </ItemGroup>
 
   <ItemGroup>
