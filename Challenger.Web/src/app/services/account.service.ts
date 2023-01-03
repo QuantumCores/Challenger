@@ -101,7 +101,7 @@ export class AccountService {
 
   private get idpSettings(): UserManagerSettings {
     return {
-      authority: environment.httpGateway,
+      authority: environment.idpAuthority,
       client_id: environment.clientId,
       redirect_uri: `${environment.clientRoot}/signin-callback`,
       scope: "openid profile challenger",

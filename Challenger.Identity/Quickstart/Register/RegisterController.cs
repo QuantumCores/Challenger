@@ -121,7 +121,8 @@ namespace Challenger.Identity.Quickstart.Register
 
             var vm = new RegisterConfirmationViewModel
             {
-                Email = email,                
+                Email = email,
+                ReturnUrl = returnUrl,
                 DisplayConfirmAccountLink = true,
             };
 
@@ -138,7 +139,7 @@ namespace Challenger.Identity.Quickstart.Register
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string returnUrl = null)
         {
             if (userId == null || code == null)
             {
@@ -153,6 +154,12 @@ namespace Challenger.Identity.Quickstart.Register
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded && !string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
             var vm = new ConfirmEmailViewModel
             {
                 StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.",

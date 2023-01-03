@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 //import { AccountHelper } from 'src/app/helpers/AccountHelper';
 
 @Component({
@@ -57,6 +58,13 @@ export class LoginComponent implements OnInit {
     //       this.showError = true;
     //     }
     //   })
+  }
+
+  registerUser(): void {
+
+    const reidrectUrl = `${environment.clientRoot}/signin-callback`;
+    const registerUrl = `${environment.idpAuthority}\\Register`;
+    window.location.href= `${registerUrl}\\?returnUrl=${reidrectUrl}`;
   }
 
   public logout = () => {

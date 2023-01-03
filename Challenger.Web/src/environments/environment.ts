@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   httpDomain: 'https://localhost:5002',
-  httpGateway: 'https://localhost:5001',
   clientRoot: "http://localhost:4200",
   idpAuthority: "https://localhost:5001",
   clientId: "challenger_web"
