@@ -97,10 +97,20 @@ namespace IdentityServerHost.Quickstart.UI
                         return this.LoadingPage("Redirect", model.ReturnUrl);
                     }
 
+                    if (button == "reset")
+                    {
+                        return RedirectToAction("Index","ResetPassword");
+                    }
+
                     return Redirect(model.ReturnUrl);
                 }
                 else
                 {
+                    if (button == "reset")
+                    {
+                        return RedirectToAction("Index", "ResetPassword");
+                    }
+
                     // since we don't have a valid context, then we just go back to the home page
                     return Redirect("~/");
                 }
