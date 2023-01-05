@@ -19,13 +19,13 @@ namespace Challenger.Identity.Quickstart.Register
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<RegisterViewModel> _logger;
+        private readonly ILogger<RegisterController> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterViewModel> logger,
+            ILogger<RegisterController> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
