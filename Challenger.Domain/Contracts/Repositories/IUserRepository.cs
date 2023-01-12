@@ -1,5 +1,6 @@
 ﻿using Challenger.Domain.DbModels;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +12,9 @@ namespace Challenger.Domain.Contracts.Repositories
 
         ValueTask<User> Get(long id);
 
-        Task<User> GetByCorrelationId(string v);
+        Task<User> GetByCorrelationId(Guid guid);
+
+        Task<List<User>> GetManyByCorrelationId(Guid[] guid);
 
         Task<long> GetIdByCorrelationId(string email);
 

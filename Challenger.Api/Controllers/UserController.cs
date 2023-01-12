@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Challenger.Api.Contracts.V1;
+using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
@@ -19,17 +20,20 @@ namespace Challenger.Api.Controllers
     {
         private readonly ITokenProvider _tokenProvider;
         private readonly IUserRepository _userRepository;
+        private readonly IIdentityApi _identityApi;
         private readonly IMapper _mapper;
         private readonly ILogger<UserController> _logger;
 
         public UserController(
             ITokenProvider tokenProvider,
             IUserRepository userRepository,
+            IIdentityApi identityApi,
             IMapper mapper,
             ILogger<UserController> logger)
         {
             _tokenProvider = tokenProvider;
             _userRepository = userRepository;
+            _identityApi = identityApi;
             _mapper = mapper;
             _logger = logger;
         }
@@ -40,11 +44,17 @@ namespace Challenger.Api.Controllers
             return _userRepository.GetAll();
         }
 
+        [HttpGet(ApiRoutes.User.Search)]
+        public Task<List<IdentityUser>> Search(string name)
+        {
+            return  _identityApi.SearchUsersByName(name);
+        }
+
         [Authorize]
         [HttpGet(ApiRoutes.User.Basic)]
         public async Task<UserDto> Get()
         {
-            var user = await _userRepository.GetByCorrelationId(_tokenProvider.GetUserId());
+            var user = await _userRepository.GetByCorrelationId(Guid.Parse(_tokenProvider.GetUserId()));
             return _mapper.Map<UserDto>(user);
         }
 

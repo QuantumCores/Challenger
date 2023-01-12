@@ -21,13 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="DB\Identity\001_AspNetUsers.sql" />
+    <!--001-->
     <EmbeddedResource Include="DB\Scripts\01\001_dbo.User.sql" />
     <EmbeddedResource Include="DB\Scripts\01\002_dbo.Measurement.sql" />
     <EmbeddedResource Include="DB\Scripts\01\003_dbo.GymRecord.sql" />
     <EmbeddedResource Include="DB\Scripts\01\004_dbo.FitRecord.sql" />
+    <!--003-->
     <EmbeddedResource Include="DB\Scripts\03\001_dbo.FixIdentityData.sql" />
     <EmbeddedResource Include="DB\Scripts\03\002_dbo.AddUserIdentityGuid.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\003_dbo.AddChallenge.sql" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,11 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Heimdal.Token" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Logging" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Logging.Abstractions" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Network" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Network.Abstraction" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Repository" Version="1.0.0" />
+    <PackageReference Include="QuantumCore.Repository.Abstraction" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

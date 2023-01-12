@@ -1,8 +1,11 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Challenger.Domain.ChallengeService;
 using Challenger.Domain.Contracts;
+using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Dtos;
+using Challenger.Domain.IdentityApi;
 using Challenger.Domain.RankingService;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
@@ -12,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuantumCore.Logging.Abstractions;
+using QuantumCore.Logging.Api;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,15 +27,29 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 var rankingSettings = new RankingSettings();
 builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
 
+var challengeSettings = new ChallengeSettings();
+builder.Configuration.GetSection(nameof(ChallengeSettings)).Bind(challengeSettings);
+
+var discoverySettings = new DiscoverySettings();
+builder.Configuration.GetSection(nameof(DiscoverySettings)).Bind(discoverySettings);
+
 // Register services directly with Autofac here. Don't
 // call builder.Populate(), that happens in AutofacServiceProviderFactory.
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterInstance(rankingSettings);
+    builder.RegisterInstance(challengeSettings);
+    builder.RegisterInstance(discoverySettings);
+
+    builder.RegisterType<IdentityApi>().As<IIdentityApi>();
+    builder.RegisterType<CorrelationIdProvider>().As<ICorrelationIdProvider>();
+
     builder.RegisterType<FitRecordRepository>().As<IFitRecordRepository>();
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
     builder.RegisterType<UserRepository>().As<IUserRepository>();
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
+    builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>();    
+    builder.RegisterType<UserChallengeRepository>().As<IUserChallengeRepository>();    
 
     builder.RegisterType<ProductRepository>().As<IProductRepository>();
     builder.RegisterType<DishRepository>().As<IDishRepository>();
@@ -42,9 +62,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<MealDishRepository>().As<IMealDishRepository>();
 
     builder.RegisterType<RankingService>().As<IRankingService>();
+    builder.RegisterType<ChallengeService>().As<IChallengeService>();
+
 });
 
-
+builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTokenProvider(builder.Configuration);
 
@@ -108,7 +130,11 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                //.AddNewtonsoftJson()
+                .AddJsonOptions(options =>
+                                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

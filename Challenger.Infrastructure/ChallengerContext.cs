@@ -18,5 +18,9 @@ namespace Challenger.Infrastructure
         public DbSet<FitRecord> FitRecords { get; set; }
 
         public DbSet<Measurement> Measurements { get; set; }
+
+        public DbSet<Challenge> Challenges { get; set; }
+
+        public DbSet<UserChallenge> UserChallenges { get; set; }
     }
 }
