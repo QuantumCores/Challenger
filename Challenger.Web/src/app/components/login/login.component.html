@@ -1,8 +1,0 @@
-
-    <button class="btn btn-outline-success" type="submit" (click)="registerUser()" *ngIf="!isUserAuthenticated" style="margin-right: 10px;">Register</button>
-    <button class="btn btn-outline-success" type="submit" (click)="loginUser('')" *ngIf="!isUserAuthenticated">Login</button>
-<!-- <form class="d-flex" *ngIf="!isUserAuthenticated" [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
-    <input type="text" id="email" placeholder="email" formControlName="email" class="form-control" style="margin-right: 5px;" />
-    <input type="password" id="password" placeholder="password" formControlName="password" class="form-control" style="margin-right: 5px;" />
-</form> -->
-<button class="btn btn-outline-success" *ngIf="isUserAuthenticated" type="submit" (click)="logout()">Logout</button>

@@ -9,6 +9,12 @@ namespace Challenger.Domain.Dtos
     {
         public DtoAutomapperProfile()
         {
+            CreateMap<ChallengeDto, Challenge>()
+                .ReverseMap();
+
+            CreateMap<UserChallengeDto, UserChallenge>()
+                .ReverseMap();
+
             CreateMap<FitRecordDto, FitRecord>()
                 .ReverseMap();
 

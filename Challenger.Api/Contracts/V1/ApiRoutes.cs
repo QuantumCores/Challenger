@@ -22,6 +22,7 @@
         {
             public const string Basic = Base + "/basic";
             public const string Create = Base + "/create";
+            public const string Search = Base + "/search";
         }
     }
 }

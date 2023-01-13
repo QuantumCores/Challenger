@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Challenger.Infrastructure.Repositories
@@ -27,9 +28,15 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Users.FindAsync(id);
         }
 
-        public Task<User> GetByCorrelationId(string correlationId)
+        public Task<User> GetByCorrelationId(Guid correlationId)
         {
-            return _context.Users.SingleAsync(x => x.CorrelationId == Guid.Parse(correlationId));
+            return _context.Users.SingleAsync(x => x.CorrelationId == correlationId);
+        }
+
+        public Task<List<User>> GetManyByCorrelationId(Guid[] guids)
+        {
+            return _context.Users.Where(x => guids.Contains(x.CorrelationId))
+                                 .ToListAsync();
         }
 
         public async Task<long> GetIdByCorrelationId(string correlationId)
