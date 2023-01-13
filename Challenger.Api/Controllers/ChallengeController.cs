@@ -3,16 +3,19 @@ using Challenger.Domain.Contracts;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using Challenger.Domain.FormulaParser;
+using Challenger.Domain.FormulaParser.Contracts;
 using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("[controller]")]
     public class ChallengeController : Controller
     {
@@ -80,6 +83,16 @@ namespace Challenger.Api.Controllers
             await _challengeRepository.SaveChanges();
 
             return Json(new { IsSuccess = true });
+        }
+
+        [HttpPost("ValidateFormula")]
+        public string ValidateFormula(string formula)
+        {
+            var rpn = RPNParser.Parse(formula);
+            var expr = ExpressionBuilder.Build<FitRecord>(rpn.Output);
+            var par = new FitRecord { Distance = 12 };
+            var comp = expr.Compile();
+            return expr.ToString() + " = " + comp(par).ToString();
         }
     }
 }
