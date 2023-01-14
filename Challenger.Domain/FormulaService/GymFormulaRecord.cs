@@ -10,8 +10,8 @@ namespace Challenger.Domain.FormulaService
 
         public double Weight { get; set; }
 
-        public int Repetitions { get; set; }
+        public double Repetitions { get; set; }
 
-        public string MuscleGroup { get; set; }
+        public string Muscle { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace Challenger.Domain.FormulaService
 {
     public class FormulaService : IFormulaService
     {
-        private readonly Dictionary<string, ChallengeFormulaStore> _defaultFormulaCache = new Dictionary<string, ChallengeFormulaStore>();
-        private readonly Dictionary<long, ChallengeFormulaStore> _formulaCache = new Dictionary<long, ChallengeFormulaStore>();
+        private static readonly Dictionary<string, ChallengeFormulaStore> _defaultFormulaCache = new Dictionary<string, ChallengeFormulaStore>();
+        private static readonly Dictionary<long, ChallengeFormulaStore> _formulaCache = new Dictionary<long, ChallengeFormulaStore>();
         private readonly DefaultForumulaSetting[] _settings;
         private readonly IChallengeRepository _challengeRepository;
         private readonly ILogger<FormulaService> _logger;
@@ -27,14 +27,19 @@ namespace Challenger.Domain.FormulaService
             _logger = logger;
         }
 
-        public async Task<ChallengeFormulaStore> GetFormulas(long challengeId)
+        public async Task<ChallengeFormulaStore> GetFormulas(Challenge challenge)
         {
             if (_defaultFormulaCache.Count == 0)
             {
                 await CacheFormulas();
             }
 
-            return _formulaCache[challengeId];
+            if (!_formulaCache.ContainsKey(challenge.Id))
+            {
+                CacheFormulas(challenge);
+            }
+
+            return _formulaCache[challenge.Id];
         }
 
         private async Task CacheFormulas()
@@ -45,19 +50,24 @@ namespace Challenger.Domain.FormulaService
 
             foreach (var challenge in customFormulas)
             {
-                var fit = !challenge.IsUsingFitDefaultFormula ? CompileFormula<FitFormulaRecord>(challenge.FitFormula) : _defaultFormulaCache[challenge.FitFormula].FitFormula;
-                var gym = !challenge.IsUsingGymDefaultFormula ? CompileFormula<GymFormulaRecord>(challenge.GymFormula) : _defaultFormulaCache[challenge.GymFormula].GymFormula;
-                var mes = !challenge.IsUsingMeasurementDefaultFormula ? CompileFormula<MeasurementFormulaRecord>(challenge.MeasurementFormula) : _defaultFormulaCache[challenge.MeasurementFormula].MeasurementFormula;
-
-                var tmp = new ChallengeFormulaStore
-                {
-                    FitFormula = fit,
-                    GymFormula = gym,
-                    MeasurementFormula = mes,
-                };
-
-                _formulaCache.Add(challenge.Id, tmp);
+                CacheFormulas(challenge);
             }
+        }
+
+        private void CacheFormulas(Challenge challenge)
+        {
+            var fit = !challenge.IsUsingFitDefaultFormula ? CompileFormula<FitFormulaRecord>(challenge.FitFormula) : _defaultFormulaCache[challenge.FitFormula].FitFormula;
+            var gym = !challenge.IsUsingGymDefaultFormula ? CompileFormula<GymFormulaRecord>(challenge.GymFormula) : _defaultFormulaCache[challenge.GymFormula].GymFormula;
+            var mes = !challenge.IsUsingMeasurementDefaultFormula ? CompileFormula<MeasurementFormulaRecord>(challenge.MeasurementFormula) : _defaultFormulaCache[challenge.MeasurementFormula].MeasurementFormula;
+
+            var tmp = new ChallengeFormulaStore
+            {
+                FitFormula = fit,
+                GymFormula = gym,
+                MeasurementFormula = mes,
+            };
+
+            _formulaCache.Add(challenge.Id, tmp);
         }
 
         private void CacheDefaultFormulas(DefaultForumulaSetting[] settings)
@@ -65,8 +75,8 @@ namespace Challenger.Domain.FormulaService
             foreach (var setting in settings)
             {
                 var fit = setting.Type == FormulaTypeEnum.Fit ? CompileFormula<FitFormulaRecord>(setting.Formula) : null;
-                var gym = setting.Type == FormulaTypeEnum.Fit ? CompileFormula<GymFormulaRecord>(setting.Formula) : null;
-                var mes = setting.Type == FormulaTypeEnum.Fit ? CompileFormula<MeasurementFormulaRecord>(setting.Formula) : null;
+                var gym = setting.Type == FormulaTypeEnum.Gym ? CompileFormula<GymFormulaRecord>(setting.Formula) : null;
+                var mes = setting.Type == FormulaTypeEnum.Measurement ? CompileFormula<MeasurementFormulaRecord>(setting.Formula) : null;
 
                 var tmp = new ChallengeFormulaStore
                 {

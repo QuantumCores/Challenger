@@ -11,7 +11,7 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<GymRecord>> GetAll();
 
-        Task<List<GymRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate);
+        Task<List<GymRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users);
 
         Task<List<GymRecord>> GetAllForUser(long userId);
 

@@ -1,11 +1,12 @@
-﻿using Challenger.Domain.FormulaService;
+﻿using Challenger.Domain.DbModels;
+using Challenger.Domain.FormulaService;
 using System.Threading.Tasks;
 
 namespace Challenger.Domain.Contracts.Services
 {
     public interface IFormulaService
     {
-        Task<ChallengeFormulaStore> GetFormulas(long challengeId);
+        Task<ChallengeFormulaStore> GetFormulas(Challenge challenge);
 
         FormulaValidationResult ValidateFitFormula(string formula);
 

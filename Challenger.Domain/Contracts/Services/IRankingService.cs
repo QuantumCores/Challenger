@@ -6,6 +6,6 @@ namespace Challenger.Domain.Contracts.Services
 {
     public interface IRankingService
     {
-        Task<List<UserScores>> GetScores();
+        Task<List<UserScores>> GetScores(long challengeId);
     }
 }

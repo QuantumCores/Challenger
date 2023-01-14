@@ -81,7 +81,7 @@ namespace Challenger.Infrastructure.Repositories
             return _context.GymRecords.Include(x => x.User).ToListAsync();
         }
 
-        public Task<List<GymRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate)
+        public Task<List<GymRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users)
         {
             var records = (IQueryable<GymRecord>)_context.GymRecords;
             if (startDate != default(DateTime))
@@ -93,6 +93,8 @@ namespace Challenger.Infrastructure.Repositories
             {
                 records = records.Where(y => y.RecordDate <= endDate);
             }
+
+            records.Where(x => users.Contains(x.User.CorrelationId));
 
             return records.Include(x => x.User).ToListAsync();
         }

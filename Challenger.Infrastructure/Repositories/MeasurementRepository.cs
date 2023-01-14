@@ -1,6 +1,7 @@
 ﻿using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,24 @@ namespace Challenger.Infrastructure.Repositories
         public Task<List<Measurement>> GetAll()
         {
             return _context.Measurements.Include(x => x.User).ToListAsync();
+        }
+
+        public Task<List<Measurement>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users)
+        {
+            var records = (IQueryable<Measurement>)_context.Measurements;
+            if (startDate != default(DateTime))
+            {
+                records = records.Where(x => x.MeasurementDate.Date >= startDate);
+            }
+
+            if (endDate != default(DateTime))
+            {
+                records = records.Where(y => y.MeasurementDate.Date <= endDate);
+            }
+
+            records.Where(x => users.Contains(x.User.CorrelationId));
+
+            return records.Include(x => x.User).ToListAsync();
         }
 
         public Task<List<Measurement>> GetAllForUser(long userId)

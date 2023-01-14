@@ -1,7 +1,8 @@
-﻿using Challenger.Domain.Contracts;
+﻿using AutoMapper;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
+using Challenger.Domain.FormulaService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,35 +12,45 @@ namespace Challenger.Domain.RankingService
 {
     public class RankingService : IRankingService
     {
-        private readonly RankingSettings _settings;
+        private readonly IChallengeRepository _challengeRepository;
         private readonly IGymRecordRepository _gymRecordRepository;
         private readonly IFitRecordRepository _fitRecordRepository;
         private readonly IMeasurementRepository _measurementRepository;
+        private readonly IFormulaService _formulaService;
+        private readonly IMapper _mapper;
 
         public RankingService(
-            RankingSettings settings,
+            IChallengeRepository challengeRepository,
             IGymRecordRepository gymRecordRepository,
             IFitRecordRepository fitRecordRepository,
-            IMeasurementRepository measurementRepository)
+            IMeasurementRepository measurementRepository,
+            IFormulaService formulaService,
+            IMapper mapper)
         {
-            _settings = settings;
+            _challengeRepository = challengeRepository;
             _gymRecordRepository = gymRecordRepository;
             _fitRecordRepository = fitRecordRepository;
             _measurementRepository = measurementRepository;
+            _formulaService = formulaService;
+            _mapper = mapper;
         }
 
-        public async Task<List<UserScores>> GetScores()
+        public async Task<List<UserScores>> GetScores(long challengeId)
         {
-            var fitRecords = await _fitRecordRepository.GetAllByTimeRange(_settings.StartDate, _settings.EndDate);
-            var gymrecords = await _gymRecordRepository.GetAllByTimeRange(_settings.StartDate, _settings.EndDate);
+            var challenge = await _challengeRepository.Get(challengeId);
+            var formulas = await _formulaService.GetFormulas(challenge);
 
-            var userFitRecords = fitRecords.ToLookup(x => x.User.CorrelationId);
-            var userGymRecords = gymrecords.ToLookup(x => x.User.CorrelationId);
+            var usersIds = challenge.Participants.Select(x => x.UserCorrelationId).ToArray();
 
-            var users = userFitRecords.Select(x => x.Key).ToList();
-            users.AddRange(userGymRecords.Select(x => x.Key));
+            var fitRecords = await _fitRecordRepository.GetAllByTimeRange(challenge.StartDate, challenge.EndDate, usersIds);
+            var gymRecords = await _gymRecordRepository.GetAllByTimeRange(challenge.StartDate, challenge.EndDate, usersIds);
+            var mesRecords = await _measurementRepository.GetAllByTimeRange(challenge.StartDate, challenge.EndDate, usersIds);
 
-            var usersDictionary = users.ToHashSet().ToDictionary(x => x, x => new Dictionary<DateTime, RankingScore>());
+            var userFitRecords = fitRecords.ToLookup(x => x.User.CorrelationId, x => _mapper.Map<FitFormulaRecord>(x));
+            var userGymRecords = gymRecords.ToLookup(x => x.User.CorrelationId, x => _mapper.Map<GymFormulaRecord>(x));
+            var userMesRecords = mesRecords.ToLookup(x => x.User.CorrelationId, x => _mapper.Map<MeasurementFormulaRecord>(x));
+
+            var usersDictionary = usersIds.ToHashSet().ToDictionary(x => x, x => new Dictionary<DateTime, RankingScore>());
 
             var result = new List<UserScores>();
             foreach (var userKey in usersDictionary.Keys)
@@ -48,11 +59,12 @@ namespace Challenger.Domain.RankingService
 
                 if (userFitRecords.Contains(userKey))
                 {
-                    var byDate = userFitRecords[userKey].GroupBy(x => x.RecordDate.Date);
+                    var fitArray = userFitRecords[userKey].ToArray();
+                    var byDate = fitArray.GroupBy(x => x.RecordDate.Date);
 
                     foreach (var dateGroup in byDate)
                     {
-                        var dateSum = dateGroup.Sum(x => CalculateScore(x));
+                        var dateSum = dateGroup.Sum(x => formulas.FitFormula(x, fitArray));
 
                         if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
                         {
@@ -65,18 +77,36 @@ namespace Challenger.Domain.RankingService
 
                 if (userGymRecords.Contains(userKey))
                 {
-                    var byDate = userGymRecords[userKey].GroupBy(x => x.RecordDate.Date);
-                    var fullSum = 0.0;
+                    var gymArray = userGymRecords[userKey].ToArray();
+                    var byDate = gymArray.GroupBy(x => x.RecordDate.Date);
+
                     foreach (var dateGroup in byDate)
                     {
-                        var dateSum = dateGroup.Sum(x => CalculateScore(x));
+                        var dateSum = dateGroup.Sum(x => formulas.GymFormula(x, gymArray));
 
                         if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
                         {
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
                         }
 
-                        fullSum += dateSum;
+                        usersDictionary[userKey][dateGroup.Key].Score += dateSum;
+                    }
+                }
+
+                if (userMesRecords.Contains(userKey))
+                {
+                    var mesArray = userMesRecords[userKey].ToArray();
+                    var byDate = mesArray.GroupBy(x => x.MeasurementDate.Date);
+
+                    foreach (var dateGroup in byDate)
+                    {
+                        var dateSum = dateGroup.Sum(x => formulas.MeasurementFormula(x, mesArray));
+
+                        if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
+                        {
+                            usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
+                        }
+
                         usersDictionary[userKey][dateGroup.Key].Score += dateSum;
                     }
                 }
@@ -123,29 +153,6 @@ namespace Challenger.Domain.RankingService
             }
 
             return null;
-        }
-
-        private double CalculateScore(FitRecord record)
-        {
-            if (record.Excersize == nameof(FitExcersizesEnum.Walking))
-            {
-                if (record.Repetitions.HasValue && record.Repetitions >= 10000)
-                {
-                    return Math.Round(record.Repetitions.Value / _settings.StepsPerPoint, 1);
-                }
-            }
-            else if (record.Duration.HasValue && record.Duration.Value != 0 && record.DurationUnit != null)
-            {
-                var time = TimeHelper.CalculateTimeInMinutes(record.Duration.Value, record.DurationUnit);
-                return Math.Round((_settings.CaloriesPerHourActivity[record.Excersize] * time / 60.0) / _settings.CaloriesPerPoint, 1);
-            }
-
-            return 0;
-        }
-
-        private double CalculateScore(GymRecord record)
-        {
-            return 1;
         }
     }
 }

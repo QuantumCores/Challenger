@@ -8,14 +8,12 @@ namespace Challenger.Domain.FormulaService
 
         public string Excersize { get; set; }
 
-        public int Duration { get; set; }
-
-        public string DurationUnit { get; set; }
+        public double Duration { get; set; }
 
         public double Distance { get; set; }
 
         public double Repetitions { get; set; }
 
-        public double BurntCalories { get; set; }
+        public double Calories { get; set; }
     }
 }

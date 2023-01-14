@@ -11,7 +11,7 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<FitRecord>> GetAll();
 
-        Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate);
+        Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users);
 
         Task<List<FitRecord>> GetAllForUser(long userId);
 

@@ -32,7 +32,7 @@ namespace Challenger.Infrastructure.Repositories
             return _context.FitRecords.Include(x => x.User).ToListAsync();
         }
 
-        public Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate)
+        public Task<List<FitRecord>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users)
         {
             var records = (IQueryable<FitRecord>)_context.FitRecords;
             if (startDate != default(DateTime))
@@ -44,6 +44,8 @@ namespace Challenger.Infrastructure.Repositories
             {
                 records = records.Where(y => y.RecordDate <= endDate);
             }
+
+            records.Where(x => users.Contains(x.User.CorrelationId));
 
             return records.Include(x => x.User).ToListAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using Challenger.Domain.DbModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace Challenger.Domain.Contracts.Repositories
         ValueTask<Measurement> Get(long id);
 
         Task<List<Measurement>> GetAll();
+
+        Task<List<Measurement>> GetAllByTimeRange(DateTime startDate, DateTime endDate, Guid[] users);
 
         Task<List<Measurement>> GetAllForUser(long userId);
 
