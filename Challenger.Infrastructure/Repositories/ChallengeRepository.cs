@@ -38,9 +38,19 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Challenges.Where(x => x.CreatorId == userId).ToListAsync();
         }
 
+        public Task<List<Challenge>> GetWithCustomFormulas()
+        {
+            return Active().Where(x =>                                           
+                                !x.IsUsingFitDefaultFormula || 
+                                !x.IsUsingGymDefaultFormula || 
+                                !x.IsUsingMeasurementDefaultFormula)
+                           .ToListAsync();
+        }
+
         public Task<List<Challenge>> Find(string search)
         {
-            return _context.Challenges.Where(x => x.Name.Contains(search))
+            return _context.Challenges
+                .Where(x => x.Name.Contains(search))
                 .Take(MaxResultCount)
                 .ToListAsync();
         }
@@ -59,6 +69,12 @@ namespace Challenger.Infrastructure.Repositories
         {
             var dbRecord = await _context.Challenges.FindAsync(record.Id);
             _context.Entry(dbRecord).CurrentValues.SetValues(record);
+        }
+
+        private IQueryable<Challenge> Active()
+        {
+            var now = DateTime.UtcNow.Date;
+            return this._context.Challenges.Where(x => x.StartDate.Date <= now && x.EndDate.Date >= now);
         }
     }
 }

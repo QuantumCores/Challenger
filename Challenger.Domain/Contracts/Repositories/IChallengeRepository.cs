@@ -13,6 +13,8 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<Challenge>> GetAllForUser(Guid userId);
 
+        Task<List<Challenge>> GetWithCustomFormulas();
+
         Task<List<Challenge>> Find(string search);
 
         void Add(Challenge record);
@@ -22,5 +24,6 @@ namespace Challenger.Domain.Contracts.Repositories
         void Remove(Challenge record);
 
         Task SaveChanges();
+
     }
 }

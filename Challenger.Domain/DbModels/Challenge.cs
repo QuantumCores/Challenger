@@ -18,7 +18,17 @@ namespace Challenger.Domain.DbModels
 
         public DateTime EndDate { get; set; }
 
-        public string Formula { get; set; }
+        public bool IsUsingFitDefaultFormula { get; set; }
+
+        public string FitFormula { get; set; }
+
+        public bool IsUsingGymDefaultFormula { get; set; }
+
+        public string GymFormula { get; set; }
+
+        public bool IsUsingMeasurementDefaultFormula { get; set; }
+
+        public string MeasurementFormula { get; set; }
 
         public List<UserChallenge> Participants { get; set; }
     }

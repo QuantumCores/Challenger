@@ -2,7 +2,7 @@
 using Challenger.Domain.Dtos;
 using System.Threading.Tasks;
 
-namespace Challenger.Domain.Contracts
+namespace Challenger.Domain.Contracts.Services
 {
     public interface IChallengeService
     {

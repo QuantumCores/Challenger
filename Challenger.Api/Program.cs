@@ -4,7 +4,9 @@ using Challenger.Domain.ChallengeService;
 using Challenger.Domain.Contracts;
 using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.Contracts.Repositories;
+using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.Dtos;
+using Challenger.Domain.FormulaService;
 using Challenger.Domain.IdentityApi;
 using Challenger.Domain.RankingService;
 using Challenger.Infrastructure;
@@ -17,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuantumCore.Logging.Abstractions;
 using QuantumCore.Logging.Api;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +36,9 @@ builder.Configuration.GetSection(nameof(ChallengeSettings)).Bind(challengeSettin
 var discoverySettings = new DiscoverySettings();
 builder.Configuration.GetSection(nameof(DiscoverySettings)).Bind(discoverySettings);
 
+var challengeDefaultFormulas = new List<DefaultForumulaSetting>();
+builder.Configuration.GetSection("ChallengeDefaultFormulas").Bind(challengeDefaultFormulas);
+
 // Register services directly with Autofac here. Don't
 // call builder.Populate(), that happens in AutofacServiceProviderFactory.
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
@@ -40,6 +46,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterInstance(rankingSettings);
     builder.RegisterInstance(challengeSettings);
     builder.RegisterInstance(discoverySettings);
+    builder.RegisterInstance(challengeDefaultFormulas.ToArray());
 
     builder.RegisterType<IdentityApi>().As<IIdentityApi>();
     builder.RegisterType<CorrelationIdProvider>().As<ICorrelationIdProvider>();
@@ -62,6 +69,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<MealDishRepository>().As<IMealDishRepository>();
 
     builder.RegisterType<RankingService>().As<IRankingService>();
+    builder.RegisterType<FormulaService>().As<IFormulaService>();
     builder.RegisterType<ChallengeService>().As<IChallengeService>();
 
 });

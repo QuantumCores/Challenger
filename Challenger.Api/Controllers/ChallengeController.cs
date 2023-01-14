@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using Challenger.Domain.Contracts;
 using Challenger.Domain.Contracts.Repositories;
+using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
-using Challenger.Domain.FormulaParser;
-using Challenger.Domain.FormulaParser.Contracts;
+using Challenger.Domain.FormulaService;
 using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
@@ -22,18 +20,23 @@ namespace Challenger.Api.Controllers
         private readonly ITokenProvider _tokenProvider;
         private readonly IChallengeRepository _challengeRepository;
         private readonly IChallengeService _challengeService;
+        private readonly IFormulaService _formulaService;
+        private readonly DefaultForumulaSetting[] _defaultForumulaSettings;
         private readonly IMapper _mapper;
 
         public ChallengeController(
             ITokenProvider tokenProvider,
             IChallengeRepository challengeRepository,
             IChallengeService challengeService,
+            IFormulaService formulaService,
+            DefaultForumulaSetting[] defaultForumulaSettings,
             IMapper mapper)
         {
             _tokenProvider = tokenProvider;
             _challengeRepository = challengeRepository;
             _challengeService = challengeService;
-
+            _formulaService = formulaService;
+            _defaultForumulaSettings = defaultForumulaSettings;
             _mapper = mapper;
         }
 
@@ -42,6 +45,12 @@ namespace Challenger.Api.Controllers
         {
             var all = await _challengeRepository.GetAllForUser(Guid.Parse(_tokenProvider.GetUserId()));
             return _mapper.Map<ChallengeDto[]>(all);
+        }
+
+        [HttpGet("DefaultFormulas")]
+        public DefaultForumulaSetting[] GetDefaultFormulas()
+        {   
+            return _defaultForumulaSettings;
         }
 
         [HttpPost]
@@ -86,13 +95,19 @@ namespace Challenger.Api.Controllers
         }
 
         [HttpPost("ValidateFormula")]
-        public string ValidateFormula(string formula)
+        public FormulaValidationResult ValidateFormula(FormulaValidationDto challengeFormulaStore)
         {
-            var rpn = RPNParser.Parse(formula);
-            var expr = ExpressionBuilder.Build<FitRecord>(rpn.Output);
-            var par = new FitRecord { Distance = 12 };
-            var comp = expr.Compile();
-            return expr.ToString() + " = " + comp(par).ToString();
+            var result = new FormulaValidationResult();
+            var fit = _formulaService.ValidateFitFormula(challengeFormulaStore.FitFormula);
+            var gym = _formulaService.ValidateGymFormula(challengeFormulaStore.GymFormula);
+            var mes = _formulaService.ValidateMeasurementFormula(challengeFormulaStore.MeasurementFormula);
+
+            result.IsValid = fit.IsValid && gym.IsValid && mes.IsValid;
+            result.FitValidationMesage = fit.FitValidationMesage;
+            result.GymValidationMesage = gym.FitValidationMesage;
+            result.MeasurementValidationMesage = mes.FitValidationMesage;
+
+            return result;
         }
     }
 }

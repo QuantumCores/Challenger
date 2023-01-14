@@ -1,4 +1,4 @@
-﻿using Challenger.Domain.Contracts;
+﻿using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.RankingService;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
