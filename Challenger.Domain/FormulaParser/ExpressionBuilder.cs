@@ -10,9 +10,10 @@ namespace Challenger.Domain.FormulaParser
 {
     public static class ExpressionBuilder
     {
-        public static Expression<Func<T, double>> Build<T>(List<ISymbol> RPNStack)
+        public static Expression<Func<T, T[], double>> Build<T>(List<ISymbol> RPNStack)
         {
             ParameterExpression arg = Expression.Parameter(typeof(T), "arg");
+            ParameterExpression argT = Expression.Parameter(typeof(T[]), "argT");
 
             List<Expression> stack = new List<Expression>();
             var i = 0;
@@ -51,18 +52,40 @@ namespace Challenger.Domain.FormulaParser
                             }
                             else
                             {
-                                var tmp = Functions.Get(s.Value, stack[stack.Count - 1]);
+                                var tmp = Functions.Get(s.Value, stack[^1]);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);
                             }
                         }
                         else if (s.Type == SymbolTypes.Variable)
                         {
-                            var propName = s.Value.Split('.').Last().FirstToUpper();
-                            var tmp = Expression.Property(arg, propName);
-                            if (IsNullable<T>(propName))
+                            var props = s.Value.Split('.');
+                            props.Last();
+                            Expression tmp = null;
+                            foreach (var propName in props)
                             {
-                                tmp = Expression.PropertyOrField(tmp, "Value");
+                                if (propName.Contains('['))
+                                {
+                                    if (Array.IndexOf(props, propName) == 0)
+                                    {
+                                        tmp = GetArrayValue<T>(argT, propName.FirstToUpper());
+                                    }
+                                    else
+                                    {
+                                        tmp = GetArrayValue<T>(tmp, propName.FirstToUpper());
+                                    }
+                                }
+                                else
+                                {
+                                    if (Array.IndexOf(props, propName) == 0)
+                                    {
+                                        tmp = GetProperty<T>(arg, propName.FirstToUpper());
+                                    }
+                                    else
+                                    {
+                                        tmp = GetProperty<T>(tmp, propName.FirstToUpper());
+                                    }
+                                }
                             }
 
                             stack.Add(tmp);
@@ -80,7 +103,29 @@ namespace Challenger.Domain.FormulaParser
                 throw new WrongSyntaxException(msg, ex);
             }
 
-            return Expression.Lambda<Func<T, double>>(stack[0], new[] { arg });
+            return Expression.Lambda<Func<T, T[], double>>(stack[0], new[] { arg, argT });
+        }
+
+        private static Expression GetProperty<T>(Expression arg, string propName)
+        {
+            var tmp = Expression.Property(arg, propName);
+            if (IsNullable<T>(propName))
+            {
+                tmp = Expression.PropertyOrField(tmp, "Value");
+            }
+            return tmp;
+        }
+
+        private static Expression GetArrayValue<T>(Expression array, string value)
+        {
+            var indexString = value.Substring(value.IndexOf('[') + 1, value.IndexOf(']') - value.IndexOf('[') - 1);
+            
+            if (indexString == "n")
+            {
+                return Expression.Call(typeof(Enumerable), nameof(Enumerable.Last), new Type[] { typeof(T) }, array);
+            }
+
+            return Expression.ArrayIndex(array, Expression.Constant(int.Parse(indexString) - 1));
         }
 
         private static bool IsNullable<T>(string propName)

@@ -11,8 +11,8 @@ namespace Challenger.Domain.FormulaService
 {
     public class FormulaService : IFormulaService
     {
-        private readonly Dictionary<string, ChallengeFormulaStore> _defaultFormulaCache;
-        private readonly Dictionary<long, ChallengeFormulaStore> _formulaCache;
+        private readonly Dictionary<string, ChallengeFormulaStore> _defaultFormulaCache = new Dictionary<string, ChallengeFormulaStore>();
+        private readonly Dictionary<long, ChallengeFormulaStore> _formulaCache = new Dictionary<long, ChallengeFormulaStore>();
         private readonly DefaultForumulaSetting[] _settings;
         private readonly IChallengeRepository _challengeRepository;
         private readonly ILogger<FormulaService> _logger;
@@ -29,7 +29,7 @@ namespace Challenger.Domain.FormulaService
 
         public async Task<ChallengeFormulaStore> GetFormulas(long challengeId)
         {
-            if (_defaultFormulaCache == null)
+            if (_defaultFormulaCache.Count == 0)
             {
                 await CacheFormulas();
             }
@@ -81,35 +81,53 @@ namespace Challenger.Domain.FormulaService
 
         public FormulaValidationResult ValidateFitFormula(string formula)
         {
+            if (string.IsNullOrWhiteSpace(formula))
+            {
+                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+            }
+
             var arg = new FitFormulaRecord();
-            var result = ValidateFormula(formula, arg);
+            var argT = new FitFormulaRecord[] { arg };
+            var result = ValidateFormula(formula, arg, argT);
 
             return new FormulaValidationResult { IsValid = result.IsValid, FitValidationMesage = result.Message };
         }
 
         public FormulaValidationResult ValidateGymFormula(string formula)
         {
+            if (string.IsNullOrWhiteSpace(formula))
+            {
+                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+            }
+
             var arg = new GymFormulaRecord();
-            var result = ValidateFormula(formula, arg);
+            var argT = new GymFormulaRecord[] { arg };
+            var result = ValidateFormula(formula, arg, argT);
 
             return new FormulaValidationResult { IsValid = result.IsValid, GymValidationMesage = result.Message };
         }
 
         public FormulaValidationResult ValidateMeasurementFormula(string formula)
         {
+            if (string.IsNullOrWhiteSpace(formula))
+            {
+                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+            }
+
             var arg = new MeasurementFormulaRecord();
-            var result = ValidateFormula(formula, arg);
+            var argT = new MeasurementFormulaRecord[] { arg };
+            var result = ValidateFormula(formula, arg, argT);
 
             return new FormulaValidationResult { IsValid = result.IsValid, MeasurementValidationMesage = result.Message };
         }
 
-        private (bool IsValid, string Message) ValidateFormula<T>(string formula, T argument)
+        private (bool IsValid, string Message) ValidateFormula<T>(string formula, T argument, T[] argumentT)
             where T : class, new()
         {
             try
             {
                 var comp = CompileFormula<T>(formula);
-                var result = comp(argument);
+                var result = comp(argument, argumentT);
             }
             catch (Exception ex)
             {
@@ -120,7 +138,7 @@ namespace Challenger.Domain.FormulaService
             return (true, null);
         }
 
-        private Func<T, double> CompileFormula<T>(string formula)
+        private Func<T, T[], double> CompileFormula<T>(string formula)
         {
             var rpn = RPNParser.Parse(formula);
             var expr = ExpressionBuilder.Build<T>(rpn.Output);
