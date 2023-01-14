@@ -23,6 +23,7 @@ namespace Challenger.Domain.FormulaParser.Models
             result.Add(FunctionTypes.ACos.ToString().ToLower(), typeof(Math).GetMethod("ACos", new[] { typeof(double) }));
             result.Add(FunctionTypes.ATan.ToString().ToLower(), typeof(Math).GetMethod("ATan", new[] { typeof(double) }));
             result.Add(FunctionTypes.ACot.ToString().ToLower(), typeof(Math).GetMethod("ACot", new[] { typeof(double) }));
+            result.Add(FunctionTypes.If.ToString().ToLower(), null);
 
             return result;
         }

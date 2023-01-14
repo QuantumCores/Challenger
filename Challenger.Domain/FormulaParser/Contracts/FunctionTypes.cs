@@ -12,5 +12,6 @@
         ACos = 8,
         ATan = 9,
         ACot = 10,
+        If = 11,
     }
 }

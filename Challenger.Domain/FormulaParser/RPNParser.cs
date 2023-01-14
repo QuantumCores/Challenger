@@ -29,7 +29,12 @@ namespace Challenger.Domain.FormulaParser
                 {
                     if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
                     {
-                        if (symbol.Type == SymbolTypes.Number)
+                        if (Symbols.TryGetValue(previousSymbol.Value, out var tmp))
+                        {
+                            symbol = tmp;
+                            i--;
+                        }
+                        else if (symbol.Type == SymbolTypes.Number)
                         {
                             previousSymbol.Value += symbol.Value;
                             continue;
@@ -67,6 +72,16 @@ namespace Challenger.Domain.FormulaParser
                             if (operators[operators.Count - 1].Type == SymbolTypes.LeftParenthesis)
                             {
                                 operators.RemoveAt(operators.Count - 1);
+                            }
+                        }
+                    }
+                    else if (symbol.Type == SymbolTypes.Coma)
+                    {
+                        if (operators.Count > 0)
+                        {
+                            while (operators.Count > 0 && operators[^1].Type != SymbolTypes.LeftParenthesis)
+                            {
+                                Pop(output, operators);
                             }
                         }
                     }

@@ -10,6 +10,7 @@
         RightParenthesis = 5,
         Function = 6,
         Variable = 7,
-        Imaginary = 8
+        Imaginary = 8,
+        Coma = 9
     }
 }

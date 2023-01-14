@@ -1,4 +1,5 @@
 ﻿using Challenger.Domain.FormulaParser.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -25,7 +26,19 @@ namespace Challenger.Domain.FormulaParser.Models
             result.Add(new Operator(OperatorTypes.Sign.ToString(), ExpressionType.Switch, OperatorTypes.Sign, 4, AssociativityTypes.Right, OperationTypes.Unary));
             result.Add(new Operator("^", ExpressionType.Power, OperatorTypes.Power, 5, AssociativityTypes.Right, OperationTypes.Binary));
 
+            result.Add(new Operator("<", ExpressionType.LessThan, OperatorTypes.LessThan, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator(">", ExpressionType.GreaterThan, OperatorTypes.GreaterThan, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("<=", ExpressionType.LessThanOrEqual, OperatorTypes.LessThanOrEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator(">=", ExpressionType.GreaterThanOrEqual, OperatorTypes.GreaterThanOrEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("==", ExpressionType.Equal, OperatorTypes.Equal, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("!=", ExpressionType.NotEqual, OperatorTypes.NotEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
+
             return result;
+        }
+
+        internal static bool IsBoolean(string value)
+        {
+            return AllByString.ContainsKey(value) && (int)AllByString[value].Type > 10 && (int)AllByString[value].Type < 36;
         }
 
         public static Operator Get(string op)

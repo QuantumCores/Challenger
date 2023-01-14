@@ -41,9 +41,20 @@ namespace Challenger.Domain.FormulaParser
                         }
                         else if (s.Type == SymbolTypes.Function)
                         {
-                            var tmp = Functions.Get(s.Value, stack[stack.Count - 1]);
-                            stack.RemoveAt(stack.Count - 1);
-                            stack.Add(tmp);
+                            if (s.Value == "if")
+                            {
+                                var tmp = Expression.Condition(stack[^3], stack[^2], stack[^1]);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
+                            }
+                            else
+                            {
+                                var tmp = Functions.Get(s.Value, stack[stack.Count - 1]);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
+                            }
                         }
                         else if (s.Type == SymbolTypes.Variable)
                         {
@@ -53,7 +64,7 @@ namespace Challenger.Domain.FormulaParser
                             {
                                 tmp = Expression.PropertyOrField(tmp, "Value");
                             }
-                            
+
                             stack.Add(tmp);
                         }
                     }
