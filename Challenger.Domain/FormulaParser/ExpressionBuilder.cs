@@ -59,14 +59,18 @@ namespace Challenger.Domain.FormulaParser
                         }
                         else if (s.Type == SymbolTypes.Variable)
                         {
-                            var props = s.Value.Split('.');
-                            props.Last();
+                            var props = s.Value.Split('.').ToList();
+                            if (props[0] == "f" || props[0] == "g" || props[0] == "m")
+                            {
+                                props.RemoveAt(0);
+                            }
+
                             Expression tmp = null;
                             foreach (var propName in props)
                             {
                                 if (propName.Contains('['))
                                 {
-                                    if (Array.IndexOf(props, propName) == 0)
+                                    if (props.IndexOf(propName) == 0)
                                     {
                                         tmp = GetArrayValue<T>(argT, propName.FirstToUpper());
                                     }
@@ -77,7 +81,7 @@ namespace Challenger.Domain.FormulaParser
                                 }
                                 else
                                 {
-                                    if (Array.IndexOf(props, propName) == 0)
+                                    if (props.IndexOf(propName) == 0)
                                     {
                                         tmp = GetProperty<T>(arg, propName.FirstToUpper());
                                     }
@@ -119,7 +123,7 @@ namespace Challenger.Domain.FormulaParser
         private static Expression GetArrayValue<T>(Expression array, string value)
         {
             var indexString = value.Substring(value.IndexOf('[') + 1, value.IndexOf(']') - value.IndexOf('[') - 1);
-            
+
             if (indexString == "n")
             {
                 return Expression.Call(typeof(Enumerable), nameof(Enumerable.Last), new Type[] { typeof(T) }, array);

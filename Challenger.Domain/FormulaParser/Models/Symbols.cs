@@ -38,6 +38,8 @@ namespace Challenger.Domain.FormulaParser.Models
             res.Add(">=", new Symbol(">=", SymbolTypes.BinaryOperator));
             res.Add("==", new Symbol("==", SymbolTypes.BinaryOperator));
             res.Add("!=", new Symbol("!=", SymbolTypes.BinaryOperator));
+            res.Add("||", new Symbol("||", SymbolTypes.BinaryOperator));
+            res.Add("&&", new Symbol("&&", SymbolTypes.BinaryOperator));
 
             res.Add("(", new Symbol("(", SymbolTypes.LeftParenthesis));
             res.Add(")", new Symbol(")", SymbolTypes.RightParenthesis));

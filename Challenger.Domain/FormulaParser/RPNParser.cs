@@ -19,14 +19,37 @@ namespace Challenger.Domain.FormulaParser
             for (int i = 0; i < calc.Length; i++)
             {
                 var c = calc[i];
+                Symbol symbol = null;
 
                 if (c == 32)
                 {
-                    continue;
+                    if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
+                    {
+                        if (Symbols.TryGetValue(previousSymbol.Value, out var tmp))
+                        {
+                            previousSymbol = tmp;
+                            symbol = tmp;
+                            i--;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
-                if (Symbols.TryGetValue(c.ToString(), out var symbol))
+                if (symbol != null || Symbols.TryGetValue(c.ToString(), out symbol))
                 {
+                    if ((symbol.Value == ">" || symbol.Value == "<") && calc[i + 1] == '=')
+                    {
+                        symbol.Value += "=";
+                        i++;
+                    }
+
                     if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
                     {
                         if (Symbols.TryGetValue(previousSymbol.Value, out var tmp))

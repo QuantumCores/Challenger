@@ -26,12 +26,14 @@ namespace Challenger.Domain.FormulaParser.Models
             result.Add(new Operator(OperatorTypes.Sign.ToString(), ExpressionType.Switch, OperatorTypes.Sign, 4, AssociativityTypes.Right, OperationTypes.Unary));
             result.Add(new Operator("^", ExpressionType.Power, OperatorTypes.Power, 5, AssociativityTypes.Right, OperationTypes.Binary));
 
-            result.Add(new Operator("<", ExpressionType.LessThan, OperatorTypes.LessThan, 5, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator(">", ExpressionType.GreaterThan, OperatorTypes.GreaterThan, 5, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator("<=", ExpressionType.LessThanOrEqual, OperatorTypes.LessThanOrEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator(">=", ExpressionType.GreaterThanOrEqual, OperatorTypes.GreaterThanOrEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator("==", ExpressionType.Equal, OperatorTypes.Equal, 5, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator("!=", ExpressionType.NotEqual, OperatorTypes.NotEqual, 5, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("<", ExpressionType.LessThan, OperatorTypes.LessThan, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator(">", ExpressionType.GreaterThan, OperatorTypes.GreaterThan, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("<=", ExpressionType.LessThanOrEqual, OperatorTypes.LessThanOrEqual, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator(">=", ExpressionType.GreaterThanOrEqual, OperatorTypes.GreaterThanOrEqual, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("==", ExpressionType.Equal, OperatorTypes.Equal, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("!=", ExpressionType.NotEqual, OperatorTypes.NotEqual, 8, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("&&", ExpressionType.And, OperatorTypes.And, 7, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add(new Operator("||", ExpressionType.Or, OperatorTypes.Or, 6, AssociativityTypes.Left, OperationTypes.Binary));
 
             return result;
         }

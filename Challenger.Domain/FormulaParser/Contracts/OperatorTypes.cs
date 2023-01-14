@@ -18,5 +18,7 @@
         GreaterThanOrEqual = 14,
         Equal = 15,
         NotEqual = 16,
+        And = 17,
+        Or = 18,
     }
 }
