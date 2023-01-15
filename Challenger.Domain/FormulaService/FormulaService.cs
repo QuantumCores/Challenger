@@ -93,7 +93,7 @@ namespace Challenger.Domain.FormulaService
         {
             if (string.IsNullOrWhiteSpace(formula))
             {
-                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+                return new FormulaValidationResult { IsValid = true };
             }
 
             var arg = new FitFormulaRecord();
@@ -107,7 +107,7 @@ namespace Challenger.Domain.FormulaService
         {
             if (string.IsNullOrWhiteSpace(formula))
             {
-                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+                return new FormulaValidationResult { IsValid = true };
             }
 
             var arg = new GymFormulaRecord();
@@ -121,7 +121,7 @@ namespace Challenger.Domain.FormulaService
         {
             if (string.IsNullOrWhiteSpace(formula))
             {
-                return new FormulaValidationResult { IsValid = false, FitValidationMesage = "Formula can't be empty" };
+                return new FormulaValidationResult { IsValid = true };
             }
 
             var arg = new MeasurementFormulaRecord();
@@ -150,6 +150,11 @@ namespace Challenger.Domain.FormulaService
 
         private Func<T, T[], double> CompileFormula<T>(string formula)
         {
+            if (string.IsNullOrWhiteSpace(formula))
+            {
+                return null;
+            }
+
             var rpn = RPNParser.Parse(formula);
             var expr = ExpressionBuilder.Build<T>(rpn.Output);
             var par = new FitRecord { Distance = 12 };

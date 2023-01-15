@@ -27,5 +27,10 @@ namespace Challenger.Domain.FormulaParser.Models
             this.AssociativityType = associativity;
             this.OperationType = operationType;
         }
+
+        public override string ToString()
+        {
+            return Symbol;
+        }
     }
 }

@@ -13,5 +13,10 @@ namespace Challenger.Domain.FormulaParser.Models
         public string Value { get; set; }
 
         public SymbolTypes Type { get; set; }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }

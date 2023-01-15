@@ -14,5 +14,10 @@ namespace Challenger.Domain.FormulaParser
         public List<ISymbol> Output { get; set; } = new List<ISymbol>();
 
         public List<string> Variables { get; set; } = new List<string>();
+
+        public override string ToString()
+        {
+            return string.Join("|", Output);
+        }
     }
 }

@@ -57,7 +57,7 @@ namespace Challenger.Domain.RankingService
             {
                 var userScore = new UserScores { CorrelationId = userKey };
 
-                if (userFitRecords.Contains(userKey))
+                if (userFitRecords.Contains(userKey) && formulas.FitFormula != null)
                 {
                     var fitArray = userFitRecords[userKey].ToArray();
                     var byDate = fitArray.GroupBy(x => x.RecordDate.Date);
@@ -75,7 +75,7 @@ namespace Challenger.Domain.RankingService
                     }
                 }
 
-                if (userGymRecords.Contains(userKey))
+                if (userGymRecords.Contains(userKey) && formulas.GymFormula != null)
                 {
                     var gymArray = userGymRecords[userKey].ToArray();
                     var byDate = gymArray.GroupBy(x => x.RecordDate.Date);
@@ -93,7 +93,7 @@ namespace Challenger.Domain.RankingService
                     }
                 }
 
-                if (userMesRecords.Contains(userKey))
+                if (userMesRecords.Contains(userKey) && formulas.MeasurementFormula != null)
                 {
                     var mesArray = userMesRecords[userKey].ToArray();
                     var byDate = mesArray.GroupBy(x => x.MeasurementDate.Date);
