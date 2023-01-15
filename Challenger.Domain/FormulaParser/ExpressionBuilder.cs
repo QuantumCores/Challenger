@@ -22,7 +22,7 @@ namespace Challenger.Domain.FormulaParser
                 for (i = 0; i < RPNStack.Count; i++)
                 {
                     var s = RPNStack[i];
-                    if (s.Type != SymbolTypes.Number)
+                    if (s.Type != SymbolTypes.Number && s.Type != SymbolTypes.Text)
                     {
                         if (s.Type == SymbolTypes.BinaryOperator)
                         {
@@ -97,7 +97,14 @@ namespace Challenger.Domain.FormulaParser
                     }
                     else
                     {
-                        stack.Add(Expression.Constant(double.Parse(s.Value), typeof(double)));
+                        if (s.Type == SymbolTypes.Number)
+                        {
+                            stack.Add(Expression.Constant(double.Parse(s.Value), typeof(double)));
+                        }
+                        else if (s.Type == SymbolTypes.Text)
+                        {
+                            stack.Add(Expression.Constant(s.Value, typeof(string)));
+                        }
                     }
                 }
             }

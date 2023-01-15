@@ -1,6 +1,5 @@
 ﻿using Challenger.Domain.FormulaParser.Contracts;
 using Challenger.Domain.FormulaParser.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,17 +23,33 @@ namespace Challenger.Domain.FormulaParser
 
                 if (c == 32)
                 {
-                    if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "" &&
-                        Symbols.TryGetValue(previousSymbol.Value, out var tmp))
+                    if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
                     {
-                        previousSymbol = tmp;
-                        symbol = tmp;
-                        i--;
+                        if (Symbols.TryGetValue(previousSymbol.Value, out var tmp))
+                        {
+                            previousSymbol = tmp;
+                            symbol = tmp;
+                            i--;
+                        }
+                        else
+                        {
+                            FindSymbolForUndefined(ref previousSymbol, operators, output, variables);
+                            continue;
+                        }
                     }
                     else
                     {
                         continue;
                     }
+                }
+                else if (c == '"')
+                {
+                    var end = calc.IndexOf('"', i + 1);
+                    symbol = new Symbol(calc.Substring(i + 1, end - i - 1), SymbolTypes.Text);
+                    previousSymbol = symbol;
+                    output.Add(symbol);
+                    i = end;
+                    continue;
                 }
 
                 if (symbol != null || Symbols.TryGetValue(c.ToString(), out symbol))

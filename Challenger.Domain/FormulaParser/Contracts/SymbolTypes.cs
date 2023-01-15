@@ -11,6 +11,7 @@
         Function = 6,
         Variable = 7,
         Imaginary = 8,
-        Coma = 9
+        Coma = 9,
+        Text = 10,
     }
 }
