@@ -71,7 +71,7 @@ namespace Challenger.Domain.RankingService
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
                         }
 
-                        usersDictionary[userKey][dateGroup.Key].Score += dateSum;
+                        usersDictionary[userKey][dateGroup.Key].FitScore += dateSum;
                     }
                 }
 
@@ -89,7 +89,7 @@ namespace Challenger.Domain.RankingService
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
                         }
 
-                        usersDictionary[userKey][dateGroup.Key].Score += dateSum;
+                        usersDictionary[userKey][dateGroup.Key].GymScore += dateSum;
                     }
                 }
 
@@ -107,15 +107,39 @@ namespace Challenger.Domain.RankingService
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
                         }
 
-                        usersDictionary[userKey][dateGroup.Key].Score += dateSum;
+                        usersDictionary[userKey][dateGroup.Key].MeasurementScore += dateSum;
                     }
                 }
 
                 var ordered = usersDictionary[userKey].OrderBy(x => x.Key);
-                var fullScore = 0.0;
                 foreach (var scoreByDate in ordered)
                 {
-                    scoreByDate.Value.FullScore = fullScore += scoreByDate.Value.Score;
+                    if (challenge.AggregateFitFormula)
+                    {
+                        scoreByDate.Value.FullFitScore += scoreByDate.Value.FitScore;
+                    }
+                    else
+                    {
+                        scoreByDate.Value.FullFitScore = scoreByDate.Value.FitScore;
+                    }
+
+                    if (challenge.AggregateGymFormula)
+                    {
+                        scoreByDate.Value.FullGymScore += scoreByDate.Value.GymScore;
+                    }
+                    else
+                    {
+                        scoreByDate.Value.FullGymScore = scoreByDate.Value.GymScore;
+                    }
+
+                    if (challenge.AggregateMeasurementFormula)
+                    {
+                        scoreByDate.Value.FullMeasurementScore += scoreByDate.Value.MeasurementScore;
+                    }
+                    else
+                    {
+                        scoreByDate.Value.FullMeasurementScore = scoreByDate.Value.MeasurementScore;
+                    }
                 }
 
                 userScore.Scores = ordered.Select(x => x.Value).ToList();

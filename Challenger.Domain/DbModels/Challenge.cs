@@ -22,13 +22,19 @@ namespace Challenger.Domain.DbModels
 
         public string FitFormula { get; set; }
 
+        public bool AggregateFitFormula { get; set; }
+
         public bool IsUsingGymDefaultFormula { get; set; }
 
         public string GymFormula { get; set; }
 
+        public bool AggregateGymFormula { get; set; }
+
         public bool IsUsingMeasurementDefaultFormula { get; set; }
 
         public string MeasurementFormula { get; set; }
+
+        public bool AggregateMeasurementFormula { get; set; }
 
         public List<UserChallenge> Participants { get; set; }
     }
