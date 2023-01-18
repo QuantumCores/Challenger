@@ -14,6 +14,7 @@ namespace Challenger.Domain.ChallengeService
         private readonly IChallengeRepository _challengeRepository;
         private readonly IUserChallengeRepository _userChallengeRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IFormulaService _formulaService;
         private readonly IMapper _mapper;
 
         public ChallengeService(
@@ -21,6 +22,7 @@ namespace Challenger.Domain.ChallengeService
             IChallengeRepository challengeRepository,
             IUserChallengeRepository userChallengeRepository,
             IUserRepository userRepository,
+            IFormulaService formulaService,
             IMapper mapper)
         {
 
@@ -28,6 +30,7 @@ namespace Challenger.Domain.ChallengeService
             _challengeRepository = challengeRepository;
             _userChallengeRepository = userChallengeRepository;
             _userRepository = userRepository;
+            _formulaService = formulaService;
             _mapper = mapper;
         }
 
@@ -40,6 +43,15 @@ namespace Challenger.Domain.ChallengeService
                 _challengeSettings.MaxChallengesAsParticipantForRegular <= userParticipatedChallenges.Count)
             {
                 throw new System.Exception();
+            }
+
+            var fit = _formulaService.ValidateFitFormula(record.FitFormula);
+            var gym = _formulaService.ValidateGymFormula(record.GymFormula);
+            var mes = _formulaService.ValidateMeasurementFormula(record.MeasurementFormula);
+
+            if (!(fit.IsValid && gym.IsValid && mes.IsValid))
+            {
+                throw new System.Exception("One of the formulas is invalid");
             }
 
             var entity = _mapper.Map<Challenge>(record);

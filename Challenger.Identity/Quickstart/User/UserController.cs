@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Challenger.Identity.Quickstart.User
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("[controller]")]
     public class UserController : Controller
     {
@@ -27,9 +27,9 @@ namespace Challenger.Identity.Quickstart.User
         }
 
         [HttpGet("search")]
-        public Task<List<IdentityUserSimple>> Search(string name)
+        public Task<List<IdentityUserSimple>> Search(string name, string userId)
         {
-            return _identityContext.Users.Where(x => x.UserName.Contains(name) && x.EmailConfirmed)
+            return _identityContext.Users.Where(x => x.UserName.Contains(name) && x.EmailConfirmed && x.Id != userId)
                                          .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName })
                                          .OrderBy(x => x.UserName)
                                          .Take(5)

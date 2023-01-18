@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Challenger.Api.Controllers
 {
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [Route("[controller]")]
     public class ChallengeController : Controller
     {
@@ -104,8 +104,8 @@ namespace Challenger.Api.Controllers
 
             result.IsValid = fit.IsValid && gym.IsValid && mes.IsValid;
             result.FitValidationMesage = fit.FitValidationMesage;
-            result.GymValidationMesage = gym.FitValidationMesage;
-            result.MeasurementValidationMesage = mes.FitValidationMesage;
+            result.GymValidationMesage = gym.GymValidationMesage;
+            result.MeasurementValidationMesage = mes.MeasurementValidationMesage;
 
             return result;
         }

@@ -110,8 +110,14 @@ namespace Challenger.Domain.FormulaParser
             }
             catch (Exception ex)
             {
-                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' before " + string.Join("", stack);
-                throw new WrongSyntaxException(msg, ex);
+                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "'";
+
+                if (stack.Count != 0)
+                {
+                    msg += " after " + string.Join("", stack);
+                }
+
+                throw new WrongSyntaxException(msg);
             }
 
             return Expression.Lambda<Func<T, T[], double>>(stack[0], new[] { arg, argT });

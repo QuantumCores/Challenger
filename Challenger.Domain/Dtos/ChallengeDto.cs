@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Challenger.Domain.Dtos
 {
-    public class ChallengeDto: Entity
+    public class ChallengeDto : Entity
     {
         public Guid CreatorId { get; set; }
 
@@ -17,7 +17,23 @@ namespace Challenger.Domain.Dtos
 
         public DateTime EndDate { get; set; }
 
-        public string Formula { get; set; }
+        public bool IsUsingFitDefaultFormula { get; set; }
+
+        public string FitFormula { get; set; }
+
+        public bool AggregateFitFormula { get; set; }
+
+        public bool IsUsingGymDefaultFormula { get; set; }
+
+        public string GymFormula { get; set; }
+
+        public bool AggregateGymFormula { get; set; }
+
+        public bool IsUsingMeasurementDefaultFormula { get; set; }
+
+        public string MeasurementFormula { get; set; }
+
+        public bool AggregateMeasurementFormula { get; set; }
 
         public List<UserChallengeDto> Participants { get; set; }
     }

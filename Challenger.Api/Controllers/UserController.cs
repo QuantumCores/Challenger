@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace Challenger.Api.Controllers
 {
     [ApiController]
+    //[Authorize]
     [Route("[controller]")]
     public class UserController : Controller
     {
@@ -47,7 +48,8 @@ namespace Challenger.Api.Controllers
         [HttpGet(ApiRoutes.User.Search)]
         public Task<List<IdentityUser>> Search(string name)
         {
-            return  _identityApi.SearchUsersByName(name);
+            var userId = Guid.Parse(_tokenProvider.GetUserId());
+            return _identityApi.SearchUsersByName(name, userId);
         }
 
         [Authorize]

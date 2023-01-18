@@ -31,6 +31,7 @@
     <EmbeddedResource Include="DB\Scripts\03\002_dbo.AddUserIdentityGuid.sql" />
     <EmbeddedResource Include="DB\Scripts\03\003_dbo.AddChallenge.sql" />
     <EmbeddedResource Include="DB\Scripts\03\004_dbo.AddFormulasToChallenge.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\005_dbo.AddAggregation.sql" />
   </ItemGroup>
 
   <ItemGroup>
