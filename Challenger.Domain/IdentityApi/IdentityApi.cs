@@ -37,6 +37,13 @@ namespace Challenger.Domain.IdentityApi
             return result;
         }
 
+        public async Task<List<ApplicationUser>> GetUsers(Guid[] userIds)
+        {
+            var url = $"{_discoverySettings.IdentityUrl}/User/UsersInfo";
+            var result = await this.PostAsync<List<ApplicationUser>>(url, userIds, HttpClientType.Jwt, await GetOptions());
+            return result;
+        }
+
         private async Task<RequestOptions>GetOptions()
         {
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);

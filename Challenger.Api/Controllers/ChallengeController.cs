@@ -8,6 +8,7 @@ using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
@@ -19,6 +20,7 @@ namespace Challenger.Api.Controllers
     {
         private readonly ITokenProvider _tokenProvider;
         private readonly IChallengeRepository _challengeRepository;
+        private readonly IUserChallengeRepository _userChallengeRepository;
         private readonly IChallengeService _challengeService;
         private readonly IFormulaService _formulaService;
         private readonly DefaultForumulaSetting[] _defaultForumulaSettings;
@@ -27,6 +29,7 @@ namespace Challenger.Api.Controllers
         public ChallengeController(
             ITokenProvider tokenProvider,
             IChallengeRepository challengeRepository,
+            IUserChallengeRepository userChallengeRepository,
             IChallengeService challengeService,
             IFormulaService formulaService,
             DefaultForumulaSetting[] defaultForumulaSettings,
@@ -34,6 +37,7 @@ namespace Challenger.Api.Controllers
         {
             _tokenProvider = tokenProvider;
             _challengeRepository = challengeRepository;
+            _userChallengeRepository = userChallengeRepository;
             _challengeService = challengeService;
             _formulaService = formulaService;
             _defaultForumulaSettings = defaultForumulaSettings;
@@ -41,15 +45,14 @@ namespace Challenger.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ChallengeDto[]> Get()
+        public Task<ChallengeDisplayDto[]> Get()
         {
-            var all = await _challengeRepository.GetAllForUser(Guid.Parse(_tokenProvider.GetUserId()));
-            return _mapper.Map<ChallengeDto[]>(all);
+            return _challengeService.GetForUser(Guid.Parse(_tokenProvider.GetUserId()));
         }
 
         [HttpGet("DefaultFormulas")]
         public DefaultForumulaSetting[] GetDefaultFormulas()
-        {   
+        {
             return _defaultForumulaSettings;
         }
 

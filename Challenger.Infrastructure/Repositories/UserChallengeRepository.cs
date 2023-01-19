@@ -35,7 +35,9 @@ namespace Challenger.Infrastructure.Repositories
 
         public Task<List<UserChallenge>> GetAllForUser(Guid userId)
         {
-            return _context.UserChallenges.Where(x => x.UserCorrelationId == userId).ToListAsync();
+            return _context.UserChallenges.Where(x => x.UserCorrelationId == userId)
+                                          .Include(x => x.Challenge)
+                                          .ToListAsync();
         }
 
         public void Remove(UserChallenge record)

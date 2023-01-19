@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.RankingService;
 using System.Collections.Generic;
@@ -11,6 +12,10 @@ namespace Challenger.Domain.Dtos
         {
             CreateMap<ChallengeDto, Challenge>()
                 .ReverseMap();
+
+            CreateMap<Challenge, ChallengeDisplayDto>();
+            CreateMap<UserChallenge, ApplicationUser>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.UserCorrelationId));
 
             CreateMap<UserChallengeDto, UserChallenge>()
                 .ReverseMap();

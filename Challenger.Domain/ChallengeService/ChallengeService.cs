@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +17,7 @@ namespace Challenger.Domain.ChallengeService
         private readonly IUserChallengeRepository _userChallengeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IFormulaService _formulaService;
+        private readonly IIdentityApi _identityApi;
         private readonly IMapper _mapper;
 
         public ChallengeService(
@@ -23,6 +26,7 @@ namespace Challenger.Domain.ChallengeService
             IUserChallengeRepository userChallengeRepository,
             IUserRepository userRepository,
             IFormulaService formulaService,
+            IIdentityApi identityApi,
             IMapper mapper)
         {
 
@@ -31,7 +35,26 @@ namespace Challenger.Domain.ChallengeService
             _userChallengeRepository = userChallengeRepository;
             _userRepository = userRepository;
             _formulaService = formulaService;
+            _identityApi = identityApi;
             _mapper = mapper;
+        }
+
+        public async Task<ChallengeDisplayDto[]> GetForUser(Guid userId)
+        {
+            var all = await _userChallengeRepository.GetAllForUser(userId);
+            var mapped = _mapper.Map<ChallengeDisplayDto[]>(all.Select(x => x.Challenge));
+            var allParticipants = mapped.SelectMany(x => x.Participants).ToList();
+            var users = allParticipants.Select(x => x.Id).Distinct().ToArray();
+            var usersInfo = await _identityApi.GetUsers(users);
+            var usersDict = usersInfo.ToDictionary(x => x.Id);
+
+            foreach (var participant in allParticipants)
+            {
+                participant.Avatar = usersDict[participant.Id].Avatar;
+                participant.UserName = usersDict[participant.Id].UserName;
+            } 
+
+            return mapped;
         }
 
         public async Task<Challenge> CreateChallenge(ChallengeDto record)

@@ -31,17 +31,17 @@ namespace Challenger.Identity.Quickstart.User
         public Task<List<IdentityUserSimple>> Search(string name, string userId)
         {
             return _identityContext.Users.Where(x => x.UserName.Contains(name) && x.EmailConfirmed && x.Id != userId)
-                                         .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName })
+                                         .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName, Avatar = x.Avatar })
                                          .OrderBy(x => x.UserName)
                                          .Take(5)
                                          .ToListAsync();
         }
 
-        [HttpGet("usersInfo")]
-        public Task<List<IdentityUserSimple>> GetUsersInfo(List<string> ids)
+        [HttpPost("usersInfo")]
+        public Task<List<IdentityUserSimple>> GetUsersInfo([FromBody] List<string> ids)
         {
             return _identityContext.Users.Where(x => ids.Contains(x.Id))
-                                         .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName })
+                                         .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName, Avatar = x.Avatar })
                                          .ToListAsync();                
         }
     }
