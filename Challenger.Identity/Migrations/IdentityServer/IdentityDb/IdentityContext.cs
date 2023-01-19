@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Challenger.Identity.Migrations.IdentityServer.IdentityDb
 {
-    public class IdentityContext : IdentityDbContext
+    public class IdentityContext : IdentityDbContext<ApplicationUser>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options)
             : base(options)

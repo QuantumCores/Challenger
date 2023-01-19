@@ -32,7 +32,7 @@ namespace Challenger.Identity
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                             .AddEntityFrameworkStores<IdentityContext>()
                             .AddDefaultTokenProviders();
 
@@ -66,7 +66,7 @@ namespace Challenger.Identity
                 opt.ConfigureDbContext = o => o.UseSqlServer(Configuration.GetConnectionString("IdentityConfigurationConnection"),
                     sql => sql.MigrationsAssembly(migrationAssembly));
             })
-            .AddAspNetIdentity<IdentityUser>();
+            .AddAspNetIdentity<ApplicationUser>();
             //.AddTestUsers(TestUsers.Users);
 
             if (!Environment.IsDevelopment())

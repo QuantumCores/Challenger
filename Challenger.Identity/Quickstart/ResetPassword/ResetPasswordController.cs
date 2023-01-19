@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -10,12 +11,12 @@ namespace Challenger.Identity.Quickstart.ResetPassword
 {
     public class ResetPasswordController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
 
         private static string test;
 
-        public ResetPasswordController(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ResetPasswordController(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

@@ -30,10 +30,10 @@ namespace Challenger.Domain.IdentityApi
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<IdentityUser>> SearchUsersByName(string name, Guid userId)
+        public async Task<List<ApplicationUser>> SearchUsersByName(string name, Guid userId)
         {
             var url = $"{_discoverySettings.IdentityUrl}/User/Search?name={name}&userId={userId}";
-            var result = await this.GetAsync<List<IdentityUser>>(url, HttpClientType.Jwt, await GetOptions());
+            var result = await this.GetAsync<List<ApplicationUser>>(url, HttpClientType.Jwt, await GetOptions());
             return result;
         }
 

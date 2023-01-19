@@ -6,6 +6,6 @@ namespace Challenger.Domain.Contracts.Identity
 {
     public interface IIdentityApi
     {
-        Task<List<IdentityUser>> SearchUsersByName(string name, Guid userId);
+        Task<List<ApplicationUser>> SearchUsersByName(string name, Guid userId);
     }
 }

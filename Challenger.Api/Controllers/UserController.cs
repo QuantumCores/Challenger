@@ -46,7 +46,7 @@ namespace Challenger.Api.Controllers
         }
 
         [HttpGet(ApiRoutes.User.Search)]
-        public Task<List<IdentityUser>> Search(string name)
+        public Task<List<ApplicationUser>> Search(string name)
         {
             var userId = Guid.Parse(_tokenProvider.GetUserId());
             return _identityApi.SearchUsersByName(name, userId);

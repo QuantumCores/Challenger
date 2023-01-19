@@ -1,4 +1,5 @@
-﻿using IdentityServerHost.Quickstart.UI;
+﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -17,14 +18,14 @@ namespace Challenger.Identity.Quickstart.Register
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterController> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterController> logger,
             IEmailSender emailSender)
         {
@@ -53,7 +54,7 @@ namespace Challenger.Identity.Quickstart.Register
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { Email = Input.Email, UserName = Input.UserName };
+                var user = new ApplicationUser { Email = Input.Email, UserName = Input.UserName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -168,7 +169,7 @@ namespace Challenger.Identity.Quickstart.Register
             return View(vm);
         }
 
-        private async Task<string> GetEmailConfirmationUrl(IdentityUser user, string returnUrl = null)
+        private async Task<string> GetEmailConfirmationUrl(ApplicationUser user, string returnUrl = null)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
