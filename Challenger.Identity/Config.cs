@@ -37,7 +37,9 @@ namespace Challenger.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("challenger", "Challanger main API")
+                new ApiScope("challenger", "Challanger main API"),
+                //local api
+                new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
             };
 
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -81,7 +83,9 @@ namespace Challenger.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "challenger"
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "challenger",
+                                                
                     },
                 },
                 // interactive ASP.NET Core MVC client
@@ -122,7 +126,8 @@ namespace Challenger.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "challenger"
+                        IdentityServerConstants.LocalApi.ScopeName,
+                        "challenger",
                     },
                     AllowedCorsOrigins = { "http://localhost:4200" },
                     RequireClientSecret = false,

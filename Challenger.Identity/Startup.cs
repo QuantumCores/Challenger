@@ -45,6 +45,8 @@ namespace Challenger.Identity
                 options.Events.RaiseSuccessEvents = true;
                 options.UserInteraction.LoginUrl = "/Account/Login";
                 options.UserInteraction.LogoutUrl = "/Account/Logout";
+                options.Discovery.CustomEntries.Add("challenger", "localhost:5002");
+                options.Discovery.CustomEntries.Add("challenger_web", "localhost:4002");
                 //options.Authentication = new AuthenticationOptions()
                 //{
                 //    CookieLifetime = TimeSpan.FromHours(10), // ID server cookie timeout set to 10 hours
@@ -76,6 +78,8 @@ namespace Challenger.Identity
                 builder.AddDeveloperSigningCredential();
             }
 
+            //local calls to IS
+            services.AddLocalApiAuthentication();
             services.AddControllersWithViews();
         }
 

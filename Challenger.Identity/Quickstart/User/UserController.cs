@@ -7,11 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace Challenger.Identity.Quickstart.User
 {
     [ApiController]
-    //[Authorize]
+    [Authorize(LocalApi.PolicyName)]
     [Route("[controller]")]
     public class UserController : Controller
     {
@@ -34,6 +35,14 @@ namespace Challenger.Identity.Quickstart.User
                                          .OrderBy(x => x.UserName)
                                          .Take(5)
                                          .ToListAsync();
+        }
+
+        [HttpGet("usersInfo")]
+        public Task<List<IdentityUserSimple>> GetUsersInfo(List<string> ids)
+        {
+            return _identityContext.Users.Where(x => ids.Contains(x.Id))
+                                         .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName })
+                                         .ToListAsync();                
         }
     }
 }
