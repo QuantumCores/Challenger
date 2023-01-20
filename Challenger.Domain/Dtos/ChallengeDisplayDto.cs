@@ -1,5 +1,4 @@
 ﻿using Challenger.Domain.Contracts.Identity;
-using Challenger.Domain.DbModels;
 using QuantumCore.Repository.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,9 +7,7 @@ namespace Challenger.Domain.Dtos
 {
     public class ChallengeDisplayDto : Entity
     {
-        public Guid CreatorId { get; set; }
-
-        public User User { get; set; }
+        public ApplicationUser Creator { get; set; }
 
         public string Name { get; set; }
 

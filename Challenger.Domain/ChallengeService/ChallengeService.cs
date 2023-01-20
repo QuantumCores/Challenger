@@ -44,15 +44,23 @@ namespace Challenger.Domain.ChallengeService
             var all = await _userChallengeRepository.GetAllForUser(userId);
             var mapped = _mapper.Map<ChallengeDisplayDto[]>(all.Select(x => x.Challenge));
             var allParticipants = mapped.SelectMany(x => x.Participants).ToList();
-            var users = allParticipants.Select(x => x.Id).Distinct().ToArray();
-            var usersInfo = await _identityApi.GetUsers(users);
+            var users = allParticipants.Select(x => x.Id).ToList();
+            users.AddRange(mapped.Select(x => x.Creator.Id));
+            users = users.Distinct().ToList();
+            var usersInfo = await _identityApi.GetUsers(users.ToArray());
             var usersDict = usersInfo.ToDictionary(x => x.Id);
 
             foreach (var participant in allParticipants)
             {
                 participant.Avatar = usersDict[participant.Id].Avatar;
                 participant.UserName = usersDict[participant.Id].UserName;
-            } 
+            }
+
+            foreach (var challenge in mapped)
+            {
+                challenge.Creator.Avatar = usersDict[challenge.Creator.Id].Avatar;
+                challenge.Creator.UserName = usersDict[challenge.Creator.Id].UserName;
+            }
 
             return mapped;
         }

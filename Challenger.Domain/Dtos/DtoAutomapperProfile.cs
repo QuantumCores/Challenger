@@ -13,7 +13,12 @@ namespace Challenger.Domain.Dtos
             CreateMap<ChallengeDto, Challenge>()
                 .ReverseMap();
 
-            CreateMap<Challenge, ChallengeDisplayDto>();
+            CreateMap<User, ApplicationUser>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.CorrelationId));
+
+            CreateMap<Challenge, ChallengeDisplayDto>()
+                .ForMember(x => x.Creator, opt => opt.MapFrom(y => y.User));
+
             CreateMap<UserChallenge, ApplicationUser>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(y => y.UserCorrelationId));
 
