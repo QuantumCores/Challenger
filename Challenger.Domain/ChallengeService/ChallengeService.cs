@@ -76,6 +76,11 @@ namespace Challenger.Domain.ChallengeService
                 throw new System.Exception();
             }
 
+            if (_challengeSettings.MaxParticipantsForRegular < record.Participants.Count)
+            {
+                throw new System.Exception();
+            }
+
             var fit = _formulaService.ValidateFitFormula(record.FitFormula);
             var gym = _formulaService.ValidateGymFormula(record.GymFormula);
             var mes = _formulaService.ValidateMeasurementFormula(record.MeasurementFormula);
@@ -101,6 +106,31 @@ namespace Challenger.Domain.ChallengeService
             await _challengeRepository.SaveChanges();
 
             return entity;
+        }
+
+        public async Task<ChallengeDisplayDto[]> GetByName(Guid userId, string name)
+        {
+            var found = await _challengeRepository.GetByName(userId,  name);            
+            var mapped = _mapper.Map<ChallengeDisplayDto[]>(found);
+
+            var users = mapped.SelectMany(x => x.Participants.Select(x => x.Id)).ToArray();
+            var usersInfo = await _identityApi.GetUsers(users.ToArray());
+            var usersDict = usersInfo.ToDictionary(x => x.Id);
+
+            var allParticipants = mapped.SelectMany(x => x.Participants).ToList();
+            foreach (var participant in allParticipants)
+            {
+                participant.Avatar = usersDict[participant.Id].Avatar;
+                participant.UserName = usersDict[participant.Id].UserName;
+            }
+
+            foreach (var challenge in mapped)
+            {
+                challenge.Creator.Avatar = usersDict[challenge.Creator.Id].Avatar;
+                challenge.Creator.UserName = usersDict[challenge.Creator.Id].UserName;
+            }
+
+            return mapped;
         }
     }
 }

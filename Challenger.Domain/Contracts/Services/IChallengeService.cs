@@ -10,5 +10,7 @@ namespace Challenger.Domain.Contracts.Services
         Task<ChallengeDisplayDto[]> GetForUser(Guid userId);
 
         Task<Challenge> CreateChallenge(ChallengeDto challenge);
+
+        Task<ChallengeDisplayDto[]> GetByName(Guid guid, string name);
     }
 }

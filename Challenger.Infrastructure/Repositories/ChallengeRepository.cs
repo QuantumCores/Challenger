@@ -28,6 +28,15 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Challenges.FindAsync(id);
         }
 
+        public Task<List<Challenge>> GetByName(Guid userId, string name)
+        {
+            return _context.Challenges.Include(x=>x.User)
+                                      .Include(x => x.Participants)
+                                        .ThenInclude(x => x.User)
+                                      .Where(x => x.Name.Contains(name) && x.CreatorId != userId)
+                                      .ToListAsync();
+        }
+
         public Task<List<Challenge>> GetAll()
         {
             return _context.Challenges.Include(x => x.User).ToListAsync();

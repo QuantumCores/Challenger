@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Challenger.Domain.ChallengeService;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
@@ -8,7 +9,6 @@ using Heimdal.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
@@ -23,6 +23,7 @@ namespace Challenger.Api.Controllers
         private readonly IUserChallengeRepository _userChallengeRepository;
         private readonly IChallengeService _challengeService;
         private readonly IFormulaService _formulaService;
+        private readonly ChallengeSettings _settings;
         private readonly DefaultForumulaSetting[] _defaultForumulaSettings;
         private readonly IMapper _mapper;
 
@@ -32,6 +33,7 @@ namespace Challenger.Api.Controllers
             IUserChallengeRepository userChallengeRepository,
             IChallengeService challengeService,
             IFormulaService formulaService,
+            ChallengeSettings settings,
             DefaultForumulaSetting[] defaultForumulaSettings,
             IMapper mapper)
         {
@@ -40,6 +42,7 @@ namespace Challenger.Api.Controllers
             _userChallengeRepository = userChallengeRepository;
             _challengeService = challengeService;
             _formulaService = formulaService;
+            _settings = settings;
             _defaultForumulaSettings = defaultForumulaSettings;
             _mapper = mapper;
         }
@@ -48,6 +51,18 @@ namespace Challenger.Api.Controllers
         public Task<ChallengeDisplayDto[]> Get()
         {
             return _challengeService.GetForUser(Guid.Parse(_tokenProvider.GetUserId()));
+        }
+
+        [HttpGet("Search")]
+        public Task<ChallengeDisplayDto[]> Search(string name)
+        {
+            return _challengeService.GetByName(Guid.Parse(_tokenProvider.GetUserId()), name);
+        }
+
+        [HttpGet("Settings")]
+        public ChallengeSettings Settings()
+        {
+            return _settings;
         }
 
         [HttpGet("DefaultFormulas")]
