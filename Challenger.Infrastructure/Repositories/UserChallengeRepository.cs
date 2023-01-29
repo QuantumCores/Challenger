@@ -38,6 +38,7 @@ namespace Challenger.Infrastructure.Repositories
             return _context.UserChallenges.Where(x => x.UserCorrelationId == userId)
                                           .Include(x => x.User)
                                           .Include(x => x.Challenge)
+                                            .ThenInclude(x => x.Participants)
                                           .ToListAsync();
         }
 
