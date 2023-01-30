@@ -16,7 +16,7 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<User>> GetManyByCorrelationId(Guid[] guid);
 
-        Task<long> GetIdByCorrelationId(string email);
+        Task<long> GetIdByCorrelationId(string correlationId);
 
         Task<List<User>> GetAll();
 

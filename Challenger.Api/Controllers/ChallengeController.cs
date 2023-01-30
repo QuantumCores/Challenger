@@ -71,6 +71,12 @@ namespace Challenger.Api.Controllers
             return _defaultForumulaSettings;
         }
 
+        [HttpPatch("Join")]
+        public Task<bool> JoinChallenge(int challengeId)
+        {
+            return _challengeService.JoinChallenge(Guid.Parse(_tokenProvider.GetUserId()), challengeId);
+        }
+
         [HttpPost]
         public async Task<ChallengeDto> Add([FromBody] ChallengeDto record)
         {

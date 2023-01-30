@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Challenger.Infrastructure.Repositories
 {
-    public class UserChallengeRepository: IUserChallengeRepository
+    public class UserChallengeRepository : IUserChallengeRepository
     {
         private const int MaxResultCount = 10;
         private readonly ChallengerContext _context;
@@ -39,7 +39,14 @@ namespace Challenger.Infrastructure.Repositories
                                           .Include(x => x.User)
                                           .Include(x => x.Challenge)
                                             .ThenInclude(x => x.Participants)
+                                            .ThenInclude(x => x.User)
                                           .ToListAsync();
+        }
+
+        public Task<int> GetCountForUser(Guid userId)
+        {
+            return _context.UserChallenges.Where(x => x.UserCorrelationId == userId)
+                                          .CountAsync();
         }
 
         public void Remove(UserChallenge record)

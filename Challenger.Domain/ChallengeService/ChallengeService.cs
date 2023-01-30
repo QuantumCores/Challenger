@@ -110,7 +110,7 @@ namespace Challenger.Domain.ChallengeService
 
         public async Task<ChallengeDisplayDto[]> GetByName(Guid userId, string name)
         {
-            var found = await _challengeRepository.GetByName(userId,  name);            
+            var found = await _challengeRepository.GetByName(userId, name);
             var mapped = _mapper.Map<ChallengeDisplayDto[]>(found);
 
             var users = mapped.SelectMany(x => x.Participants.Select(x => x.Id)).ToArray();
@@ -131,6 +131,28 @@ namespace Challenger.Domain.ChallengeService
             }
 
             return mapped;
+        }
+
+        public async Task<bool> JoinChallenge(Guid userId, int challengeId)
+        {
+            var challenge = await _challengeRepository.GetWithAllData(challengeId);
+            if (_challengeSettings.MaxParticipantsForRegular <= challenge.Participants.Count)
+            {
+                throw new System.Exception();
+            }
+
+            var count = await _userChallengeRepository.GetCountForUser(userId);
+            if (_challengeSettings.MaxChallengesAsParticipantForRegular <= count)
+            {
+                throw new System.Exception();
+            }
+
+            var id = await _userRepository.GetIdByCorrelationId(userId.ToString());
+            challenge.Participants.Add(new UserChallenge { ChallengeId = challenge.Id, UserCorrelationId = userId, UserId = id });
+            await _challengeRepository.Update(challenge);
+            await _challengeRepository.SaveChanges();
+
+            return true;
         }
     }
 }

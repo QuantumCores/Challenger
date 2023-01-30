@@ -10,6 +10,9 @@ namespace Challenger.Domain.Dtos
     {
         public DtoAutomapperProfile()
         {
+            CreateMap<User, ApplicationUser>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.CorrelationId));                
+
             CreateMap<ChallengeDto, Challenge>()
                 .ReverseMap();
 
