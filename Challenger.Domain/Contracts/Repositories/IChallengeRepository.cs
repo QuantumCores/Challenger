@@ -9,6 +9,8 @@ namespace Challenger.Domain.Contracts.Repositories
     {
         ValueTask<Challenge> Get(long id);
 
+        Task<Challenge> GetWithAllData(long id);
+
         Task<List<Challenge>> GetByName(Guid userId, string name);
 
         Task<List<Challenge>> GetAll();

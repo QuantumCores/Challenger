@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Challenger.Domain.Contracts.Identity;
 using System.Collections.Generic;
 
 namespace Challenger.Domain.RankingService
 {
     public class UserScores
     {
-        public Guid CorrelationId { get; set; }
+        public ApplicationUser User { get; set; }
 
         public double TotalScore { get; set; }
 

@@ -85,7 +85,7 @@ namespace Challenger.Domain.FormulaService
                     MeasurementFormula = mes,
                 };
 
-                _defaultFormulaCache.Add(setting.Name, tmp);
+                _defaultFormulaCache.Add(setting.Formula, tmp);
             }
         }
 

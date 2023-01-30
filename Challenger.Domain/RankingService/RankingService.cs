@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Challenger.Domain.Contracts.Identity;
 using Challenger.Domain.Contracts.Repositories;
 using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
@@ -17,6 +18,7 @@ namespace Challenger.Domain.RankingService
         private readonly IFitRecordRepository _fitRecordRepository;
         private readonly IMeasurementRepository _measurementRepository;
         private readonly IFormulaService _formulaService;
+        private readonly IIdentityApi _identityApi;
         private readonly IMapper _mapper;
 
         public RankingService(
@@ -25,6 +27,7 @@ namespace Challenger.Domain.RankingService
             IFitRecordRepository fitRecordRepository,
             IMeasurementRepository measurementRepository,
             IFormulaService formulaService,
+            IIdentityApi identityApi,
             IMapper mapper)
         {
             _challengeRepository = challengeRepository;
@@ -32,12 +35,13 @@ namespace Challenger.Domain.RankingService
             _fitRecordRepository = fitRecordRepository;
             _measurementRepository = measurementRepository;
             _formulaService = formulaService;
+            _identityApi = identityApi;
             _mapper = mapper;
         }
 
-        public async Task<List<UserScores>> GetScores(long challengeId)
+        public async Task<ChallengeScores> GetScores(long challengeId)
         {
-            var challenge = await _challengeRepository.Get(challengeId);
+            var challenge = await _challengeRepository.GetWithAllData(challengeId);
             var formulas = await _formulaService.GetFormulas(challenge);
 
             var usersIds = challenge.Participants.Select(x => x.UserCorrelationId).ToArray();
@@ -52,10 +56,14 @@ namespace Challenger.Domain.RankingService
 
             var usersDictionary = usersIds.ToHashSet().ToDictionary(x => x, x => new Dictionary<DateTime, RankingScore>());
 
-            var result = new List<UserScores>();
+            var usersIdentities = await _identityApi.GetUsers(usersIds);
+            var usersIdentitiesDict = usersIdentities.ToDictionary(x => x.Id);
+
+
+            var result = new ChallengeScores() { UsersScores = new List<UserScores>(), EndDate = challenge.EndDate, StartDate = challenge.StartDate, Name = challenge.Name };
             foreach (var userKey in usersDictionary.Keys)
             {
-                var userScore = new UserScores { CorrelationId = userKey };
+                var userScore = new UserScores { User = usersIdentitiesDict[userKey] };
 
                 if (userFitRecords.Contains(userKey) && formulas.FitFormula != null)
                 {
@@ -65,6 +73,11 @@ namespace Challenger.Domain.RankingService
                     foreach (var dateGroup in byDate)
                     {
                         var dateSum = dateGroup.Sum(x => formulas.FitFormula(x, fitArray));
+
+                        if (dateSum == 0)
+                        {
+                            continue;
+                        }
 
                         if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
                         {
@@ -84,6 +97,11 @@ namespace Challenger.Domain.RankingService
                     {
                         var dateSum = dateGroup.Sum(x => formulas.GymFormula(x, gymArray));
 
+                        if (dateSum == 0)
+                        {
+                            continue;
+                        }
+
                         if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
                         {
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
@@ -102,6 +120,11 @@ namespace Challenger.Domain.RankingService
                     {
                         var dateSum = dateGroup.Sum(x => formulas.MeasurementFormula(x, mesArray));
 
+                        if (dateSum == 0)
+                        {
+                            continue;
+                        }
+
                         if (!usersDictionary[userKey].ContainsKey(dateGroup.Key))
                         {
                             usersDictionary[userKey].Add(dateGroup.Key, new RankingScore() { Date = dateGroup.Key });
@@ -112,11 +135,14 @@ namespace Challenger.Domain.RankingService
                 }
 
                 var ordered = usersDictionary[userKey].OrderBy(x => x.Key);
+                var fullFitScore = 0.0;
+                var fullGymScore = 0.0;
+                var fullMeasurementScore = 0.0;
                 foreach (var scoreByDate in ordered)
                 {
                     if (challenge.AggregateFitFormula)
                     {
-                        scoreByDate.Value.FullFitScore += scoreByDate.Value.FitScore;
+                        scoreByDate.Value.FullFitScore = fullFitScore += scoreByDate.Value.FitScore;
                     }
                     else
                     {
@@ -125,7 +151,7 @@ namespace Challenger.Domain.RankingService
 
                     if (challenge.AggregateGymFormula)
                     {
-                        scoreByDate.Value.FullGymScore += scoreByDate.Value.GymScore;
+                        scoreByDate.Value.FullGymScore = fullGymScore += scoreByDate.Value.GymScore;
                     }
                     else
                     {
@@ -134,7 +160,7 @@ namespace Challenger.Domain.RankingService
 
                     if (challenge.AggregateMeasurementFormula)
                     {
-                        scoreByDate.Value.FullMeasurementScore += scoreByDate.Value.MeasurementScore;
+                        scoreByDate.Value.FullMeasurementScore = fullMeasurementScore += scoreByDate.Value.MeasurementScore;
                     }
                     else
                     {
@@ -142,8 +168,9 @@ namespace Challenger.Domain.RankingService
                     }
                 }
 
+                userScore.TotalScore = ordered.Sum(x => x.Value.FullFitScore + x.Value.FullGymScore + x.Value.FullMeasurementScore);
                 userScore.Scores = ordered.Select(x => x.Value).ToList();
-                result.Add(userScore);
+                result.UsersScores.Add(userScore);
             }
 
             return result;

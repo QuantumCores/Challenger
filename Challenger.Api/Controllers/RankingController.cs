@@ -1,8 +1,6 @@
 ﻿using Challenger.Domain.Contracts.Services;
-using Challenger.Domain.DbModels;
 using Challenger.Domain.RankingService;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Challenger.Api.Controllers
@@ -19,7 +17,7 @@ namespace Challenger.Api.Controllers
         }
 
         [HttpGet]
-        public Task<List<UserScores>> Get(long challengeId)
+        public Task<ChallengeScores> Get(long challengeId)
         {
             //var challenge = new Challenge
             //{

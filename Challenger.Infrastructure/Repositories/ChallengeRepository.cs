@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Challenger.Infrastructure.Repositories
 {
-    public class ChallengeRepository: IChallengeRepository
+    public class ChallengeRepository : IChallengeRepository
     {
         private const int MaxResultCount = 10;
         private readonly ChallengerContext _context;
@@ -28,9 +28,18 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Challenges.FindAsync(id);
         }
 
+        public Task<Challenge> GetWithAllData(long id)
+        {
+            return _context.Challenges.Include(x => x.User)
+                                      .Include(x => x.Participants)
+                                        .ThenInclude(x => x.User)
+                                      .Where(x => x.Id == id)
+                                      .SingleAsync();
+        }
+
         public Task<List<Challenge>> GetByName(Guid userId, string name)
         {
-            return _context.Challenges.Include(x=>x.User)
+            return _context.Challenges.Include(x => x.User)
                                       .Include(x => x.Participants)
                                         .ThenInclude(x => x.User)
                                       .Where(x => x.Name.Contains(name) && x.CreatorId != userId)
@@ -49,9 +58,9 @@ namespace Challenger.Infrastructure.Repositories
 
         public Task<List<Challenge>> GetWithCustomFormulas()
         {
-            return Active().Where(x =>                                           
-                                !x.IsUsingFitDefaultFormula || 
-                                !x.IsUsingGymDefaultFormula || 
+            return Active().Where(x =>
+                                !x.IsUsingFitDefaultFormula ||
+                                !x.IsUsingGymDefaultFormula ||
                                 !x.IsUsingMeasurementDefaultFormula)
                            .ToListAsync();
         }
