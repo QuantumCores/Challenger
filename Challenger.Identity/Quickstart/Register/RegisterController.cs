@@ -82,12 +82,12 @@ namespace Challenger.Identity.Quickstart.Register
                     }
 
                     var callbackUrl = await GetEmailConfirmationUrl(user, returnUrl);
-                    await _emailBuilder.Configure();
-                    var values = new Dictionary<string, object>() { ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}" };
-                    await _emailSender.SendEmailAsync(
-                        Input.Email, 
-                        _emailBuilder.BuildEmailSubject("Register"),
-                        _emailBuilder.BuildEmailMessage("Templates.Register.html", values));
+                    var values = new Dictionary<string, object>()
+                    {
+                        ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}",
+                        ["userName"] = Input.UserName,
+                    };
+                    await SendEmail(Input.Email, values);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -197,6 +197,15 @@ namespace Challenger.Identity.Quickstart.Register
                 ReturnUrl = returnUrl = returnUrl ?? Url.Content("~/"),
             };
 
+        }
+
+        private async Task SendEmail(string email, Dictionary<string, object> values)
+        {
+            await _emailBuilder.Configure();
+            await _emailSender.SendEmailAsync(
+                email,
+                _emailBuilder.BuildEmailSubject("Register"),
+                _emailBuilder.BuildEmailMessage("Templates.Register.html", values));
         }
     }
 }

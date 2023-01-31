@@ -57,12 +57,12 @@ namespace Challenger.Identity.Quickstart.ResetPassword
                     values: new { code },
                     protocol: Request.Scheme);
 
-                await _emailBuilder.Configure();
-                var values = new Dictionary<string, object>() { ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}" };
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    _emailBuilder.BuildEmailSubject("ResetPassword"),
-                    _emailBuilder.BuildEmailMessage("Templates.ResetPassword.html", values));
+                var values = new Dictionary<string, object>()
+                {
+                    ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}",
+                    ["userName"] = user.UserName,
+                };
+                await SendEmail(Input.Email, values);
 
                 return RedirectToAction("ForgotPasswordConfirmation");
             }
@@ -128,6 +128,16 @@ namespace Challenger.Identity.Quickstart.ResetPassword
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+
+
+        private async Task SendEmail(string email, Dictionary<string, object> values)
+        {
+            await _emailBuilder.Configure();
+            await _emailSender.SendEmailAsync(
+                email,
+                _emailBuilder.BuildEmailSubject("Register"),
+                _emailBuilder.BuildEmailMessage("Templates.Register.html", values));
         }
     }
 }
