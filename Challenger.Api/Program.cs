@@ -9,16 +9,21 @@ using Challenger.Domain.Dtos;
 using Challenger.Domain.FormulaService;
 using Challenger.Domain.IdentityApi;
 using Challenger.Domain.RankingService;
+using Challenger.Email;
+using Challenger.Email.Templates;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
 using Heimdal.Token;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using QuantumCore.Logging.Abstractions;
 using QuantumCore.Logging.Api;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -26,6 +31,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+// Add and configure settings
+//builder.Configuration.AddEnvironmentVariables(prefix: "Challenger_");
+
+//var emailSettings = new EmailSettings();
+//builder.Configuration.GetSection("MyEmail").Bind(emailSettings);
+
 
 var rankingSettings = new RankingSettings();
 builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
@@ -55,8 +67,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<GymRecordRepository>().As<IGymRecordRepository>();
     builder.RegisterType<UserRepository>().As<IUserRepository>();
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
-    builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>();    
-    builder.RegisterType<UserChallengeRepository>().As<IUserChallengeRepository>();    
+    builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>();
+    builder.RegisterType<UserChallengeRepository>().As<IUserChallengeRepository>();
 
     builder.RegisterType<ProductRepository>().As<IProductRepository>();
     builder.RegisterType<DishRepository>().As<IDishRepository>();
@@ -72,7 +84,17 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<FormulaService>().As<IFormulaService>();
     builder.RegisterType<ChallengeService>().As<IChallengeService>();
 
+    builder.RegisterType<ChallengerEmail>().As<IEmailSender>();
+    builder.RegisterType<ChallengerEmailBuilder>().As<EmailBuilder>();
+
 });
+
+//builder.Services.AddHttpClient("IDPClient", client =>
+//{
+//    client.BaseAddress = new Uri(discoverySettings.IdentityUrl);
+//    client.DefaultRequestHeaders.Clear();
+//    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+//});
 
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
@@ -147,6 +169,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
 
 // APP MIDDLEWARES HERE
 var app = builder.Build();

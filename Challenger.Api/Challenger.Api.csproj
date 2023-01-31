@@ -38,6 +38,8 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Challenger.Domain\Challenger.Domain.csproj" />
+    <ProjectReference Include="..\Challenger.Email.Templates\Challenger.Email.Templates.csproj" />
+    <ProjectReference Include="..\Challenger.Email\Challenger.Email.csproj" />
     <ProjectReference Include="..\Challenger.Infrastructure\Challenger.Infrastructure.csproj" />
   </ItemGroup>
 
