@@ -10,9 +10,6 @@ namespace Challenger.Email
         private readonly EmailSettings _settings;
         private readonly EmailBuilder _emailBuilder;
 
-        /// <summary>
-        /// Creates an instance of EmailHepler with gmail as smtp client
-        /// </summary>
         public ChallengerEmail(
             IOptions<EmailSettings> settings,
             EmailBuilder emailBuilder)
@@ -21,11 +18,11 @@ namespace Challenger.Email
             _emailBuilder = emailBuilder;
         }
 
-        public async Task SendEmailAsync(string email, string subjectType, string emailType)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             await _emailBuilder.Configure();
             var client = GetSmtpClient();
-            var message = GetFormattedMessage(email, subjectType, emailType);
+            var message = PrepareMessage(email, subject, htmlMessage);
 
             try
             {
@@ -37,20 +34,14 @@ namespace Challenger.Email
             }            
         }
 
-        /// <summary>
-        /// Set one of the formated messages with callbackUrl for register/resetpassword link. Check Admin/EmailFormatter.cshtml
-        /// </summary>
-        /// <param name="userMail">Users email</param>
-        /// <param name="callbackUrl">Link for account management</param>
-        /// <param name="emailType">Formated email type</param>
-        public MailMessage GetFormattedMessage(string userMail, string subjectType, string emailType)
+        private MailMessage PrepareMessage(string userMail, string subject, string htmlMessage)
         {
             var m = new MailMessage(
                     new MailAddress(_settings.Address, "Challenger - no reply automated email."),
                     new MailAddress(userMail));
 
-            m.Subject = _emailBuilder.BuildEmailSubject(subjectType);
-            m.Body = _emailBuilder.BuildEmailMessage(emailType, new System.Collections.Generic.Dictionary<string, object>());
+            m.Subject = subject;
+            m.Body = htmlMessage;
             m.IsBodyHtml = true;
 
             return m;

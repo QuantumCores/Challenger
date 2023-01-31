@@ -1,8 +1,10 @@
-﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+﻿using Challenger.Email;
+using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -12,18 +14,21 @@ namespace Challenger.Identity.Quickstart.ResetPassword
     public class ResetPasswordController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly EmailBuilder _emailBuilder;
         private readonly IEmailSender _emailSender;
 
-        private static string test;
-
-        public ResetPasswordController(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ResetPasswordController(
+            UserManager<ApplicationUser> userManager,
+            EmailBuilder emailBuilder,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
+            _emailBuilder = emailBuilder;
             _emailSender = emailSender;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string returnUrl = null)
+        public IActionResult Index(string returnUrl = null)
         {
             return View(new ForgotPasswordViewModel());
         }
@@ -52,27 +57,23 @@ namespace Challenger.Identity.Quickstart.ResetPassword
                     values: new { code },
                     protocol: Request.Scheme);
 
+                await _emailBuilder.Configure();
+                var values = new Dictionary<string, object>() { ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}" };
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _emailBuilder.BuildEmailSubject("ResetPassword"),
+                    _emailBuilder.BuildEmailMessage("Templates.ResetPassword.html", values));
 
-                test = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>";
                 return RedirectToAction("ForgotPasswordConfirmation");
             }
 
             return View();
         }
 
-        public class SimpleVM
-        {
-            public string test = ResetPasswordController.test;
-        }
-
         [HttpGet]
         public IActionResult ForgotPasswordConfirmation()
         {
-            return View(new SimpleVM());
+            return View();
         }
 
         [HttpGet]

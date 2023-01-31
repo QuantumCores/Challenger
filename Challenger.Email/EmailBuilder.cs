@@ -10,7 +10,7 @@ namespace Challenger.Email
     {
         private static bool _isConfigured = false;
         private static readonly Dictionary<string, string> _templates = new Dictionary<string, string>();
-        private static readonly Regex reg = new Regex(@"{{[A-Za-z0-9]+}}", RegexOptions.Compiled);
+        private static readonly Regex reg = new Regex(@"{{([A-Za-z0-9]+)}}", RegexOptions.Compiled);
 
         public async Task Configure()
         {
@@ -19,7 +19,7 @@ namespace Challenger.Email
                 return;
             }
 
-            var asm = this.GetType().Assembly;            
+            var asm = this.GetType().Assembly;
             var embeded = asm.GetManifestResourceNames().Where(x => x.EndsWith(".html"));
 
             foreach (var e in embeded)
@@ -42,12 +42,15 @@ namespace Challenger.Email
         public string BuildEmailMessage(string emailTemplate, Dictionary<string, object> substitutes)
         {
             var template = _templates[emailTemplate];
-            var values = reg.Matches(template).Select(x => x.Value).Distinct().ToArray();
+            var values = reg.Matches(template)
+                            .Select(x => (sub: x.Value, key: x.Groups[1].Value))
+                            .Distinct()
+                            .ToArray();
 
             var res = template;
             for (int i = 0; i < substitutes.Count; i++)
             {
-                res = res.Replace(values[i], substitutes[values[i]].ToString());
+                res = res.Replace(values[i].sub, substitutes[values[i].key].ToString());
             }
 
             return res;
@@ -58,6 +61,6 @@ namespace Challenger.Email
         /// </summary>
         /// <param name="emailType"></param>
         /// <returns></returns>
-        public abstract string BuildEmailSubject(string emailType);        
+        public abstract string BuildEmailSubject(string emailType);
     }
 }

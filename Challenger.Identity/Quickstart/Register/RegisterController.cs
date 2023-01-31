@@ -1,4 +1,5 @@
-﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+﻿using Challenger.Email;
+using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -21,17 +23,20 @@ namespace Challenger.Identity.Quickstart.Register
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterController> _logger;
+        private readonly EmailBuilder _emailBuilder;
         private readonly IEmailSender _emailSender;
 
         public RegisterController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterController> logger,
+            EmailBuilder emailBuilder,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _emailBuilder = emailBuilder;
             _emailSender = emailSender;
         }
 
@@ -77,8 +82,12 @@ namespace Challenger.Identity.Quickstart.Register
                     }
 
                     var callbackUrl = await GetEmailConfirmationUrl(user, returnUrl);
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailBuilder.Configure();
+                    var values = new Dictionary<string, object>() { ["url"] = $"{HtmlEncoder.Default.Encode(callbackUrl)}" };
+                    await _emailSender.SendEmailAsync(
+                        Input.Email, 
+                        _emailBuilder.BuildEmailSubject("Register"),
+                        _emailBuilder.BuildEmailMessage("Templates.Register.html", values));
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -124,7 +133,7 @@ namespace Challenger.Identity.Quickstart.Register
             {
                 Email = email,
                 ReturnUrl = returnUrl,
-                DisplayConfirmAccountLink = true,
+                DisplayConfirmAccountLink = false,
             };
 
             // Once you add a real email sender, you should remove this code that lets you confirm the account

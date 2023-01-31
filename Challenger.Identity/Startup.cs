@@ -2,10 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Challenger.Email;
+using Challenger.Email.Templates;
 using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +32,8 @@ namespace Challenger.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<EmailSettings>(Configuration.GetSection("Email"));
+
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
@@ -77,6 +82,10 @@ namespace Challenger.Identity
             {
                 builder.AddDeveloperSigningCredential();
             }
+
+
+            builder.Services.AddScoped<IEmailSender, ChallengerEmail>();
+            builder.Services.AddScoped<EmailBuilder, ChallengerEmailBuilder>();
 
             //local calls to IS
             services.AddLocalApiAuthentication();
