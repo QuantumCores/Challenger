@@ -17,9 +17,9 @@ namespace Challenger.Identity.Quickstart.User
     public class UserController : Controller
     {
         private readonly IdentityContext _identityContext;
-        private readonly ILogger<UserController> _logger;        
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(         
+        public UserController(
             IdentityContext identityContext,
             ILogger<UserController> logger)
         {
@@ -42,7 +42,23 @@ namespace Challenger.Identity.Quickstart.User
         {
             return _identityContext.Users.Where(x => ids.Contains(x.Id))
                                          .Select(x => new IdentityUserSimple { Id = Guid.Parse(x.Id), UserName = x.UserName, Avatar = x.Avatar })
-                                         .ToListAsync();                
+                                         .ToListAsync();
+        }
+
+        [HttpPut("Update")]
+        public async Task<string> UpdateUser(string avatar, string userId)
+        {
+            var user = _identityContext.Users.Find(userId);
+            if (user.Avatar == avatar)
+            {
+                return avatar;
+            }
+
+            user.Avatar = avatar;
+            _identityContext.Users.Update(user);
+            await _identityContext.SaveChangesAsync();
+
+            return avatar;
         }
     }
 }

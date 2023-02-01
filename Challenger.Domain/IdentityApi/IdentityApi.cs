@@ -44,7 +44,13 @@ namespace Challenger.Domain.IdentityApi
             return result;
         }
 
-        private async Task<RequestOptions>GetOptions()
+        public async Task<string> UpdateUser(string avatar, Guid userId)
+        {
+            var url = $"{_discoverySettings.IdentityUrl}/User/Update?avatar={avatar}&userId={userId}";
+            return await this.PutAsync<string>(url, null, HttpClientType.Jwt, await GetOptions());
+        }
+
+        private async Task<RequestOptions> GetOptions()
         {
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
             var authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);

@@ -9,5 +9,7 @@ namespace Challenger.Domain.Contracts.Identity
         Task<List<ApplicationUser>> SearchUsersByName(string name, Guid userId);
 
         Task<List<ApplicationUser>> GetUsers(Guid[] userIds);
+
+        Task<string> UpdateUser(string avatar, Guid userId);
     }
 }
