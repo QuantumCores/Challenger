@@ -9,8 +9,6 @@ using Challenger.Domain.Dtos;
 using Challenger.Domain.FormulaService;
 using Challenger.Domain.IdentityApi;
 using Challenger.Domain.RankingService;
-using Challenger.Email;
-using Challenger.Email.Templates;
 using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
 using Heimdal.Token;
@@ -77,10 +75,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<RankingService>().As<IRankingService>();
     builder.RegisterType<FormulaService>().As<IFormulaService>();
     builder.RegisterType<ChallengeService>().As<IChallengeService>();
-
-    builder.RegisterType<ChallengerEmail>().As<IEmailSender>();
-    builder.RegisterType<ChallengerEmailBuilder>().As<EmailBuilder>();
-
 });
 
 builder.Services.AddHttpClient();
@@ -131,7 +125,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+//builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
 
 // APP MIDDLEWARES HERE
 var app = builder.Build();
