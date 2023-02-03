@@ -9,6 +9,7 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using Challenger.Identity.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace Challenger.Identity
 {
@@ -60,6 +61,10 @@ namespace Challenger.Identity
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration(configurationBuilder =>
+                {
+                    configurationBuilder.AddEnvironmentVariables(prefix: "CHALLENGER_");
                 });
     }
 }

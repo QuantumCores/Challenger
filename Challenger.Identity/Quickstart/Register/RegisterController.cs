@@ -1,5 +1,4 @@
-﻿using Challenger.Email;
-using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using QuantumCore.Email.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;

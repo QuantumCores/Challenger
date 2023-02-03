@@ -1,4 +1,6 @@
-﻿namespace Challenger.Email.Templates
+﻿using QuantumCore.Email.Builders;
+
+namespace Challenger.Email.Templates
 {
     public class ChallengerEmailBuilder : EmailBuilder
     {

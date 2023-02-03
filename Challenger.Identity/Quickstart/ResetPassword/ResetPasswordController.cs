@@ -1,9 +1,9 @@
-﻿using Challenger.Email;
-using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
+﻿using Challenger.Identity.Migrations.IdentityServer.IdentityDb;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using QuantumCore.Email.Builders;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -136,8 +136,8 @@ namespace Challenger.Identity.Quickstart.ResetPassword
             await _emailBuilder.Configure();
             await _emailSender.SendEmailAsync(
                 email,
-                _emailBuilder.BuildEmailSubject("Register"),
-                _emailBuilder.BuildEmailMessage("Templates.Register.html", values));
+                _emailBuilder.BuildEmailSubject("ResetPassword"),
+                _emailBuilder.BuildEmailMessage("Templates.ResetPassword.html", values));
         }
     }
 }
