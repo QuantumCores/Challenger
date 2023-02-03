@@ -20,10 +20,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
 using QuantumCore.Logging.Abstractions;
 using QuantumCore.Logging.Api;
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -32,12 +30,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-// Add and configure settings
-//builder.Configuration.AddEnvironmentVariables(prefix: "Challenger_");
-
-//var emailSettings = new EmailSettings();
-//builder.Configuration.GetSection("MyEmail").Bind(emailSettings);
-
+// Add and configure CHALLENGER Env settings
+builder.Configuration.AddEnvironmentVariables(prefix: "CHALLENGER_");
 
 var rankingSettings = new RankingSettings();
 builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
@@ -89,13 +83,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 
 });
 
-//builder.Services.AddHttpClient("IDPClient", client =>
-//{
-//    client.BaseAddress = new Uri(discoverySettings.IdentityUrl);
-//    client.DefaultRequestHeaders.Clear();
-//    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-//});
-
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTokenProvider(builder.Configuration);
@@ -109,31 +96,6 @@ builder.Services.AddDbContext<ChallengerFoodContext>(options =>
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddSingleton(jwtSettings);
 
-//builder.Services.AddAuthentication(x =>
-//{
-//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//}
-//).AddJwtBearer(x =>
-//{
-//    //x.SaveToken = true;
-//    x.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        //ValidateIssuer = true,
-//        ValidateAudience = false,        
-//        //RequireExpirationTime = false,
-//        //ValidateLifetime = true,
-//        //ValidateIssuerSigningKey = true,
-
-//        //ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-//        //ValidAudience = jwtSettings.GetSection("validAudience").Value,
-//        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.GetSection("securityKey").Value)),
-//    };    
-//    x.Authority = jwtSettings.GetSection("identityUrl").Value;    
-//    x.RequireHttpsMetadata = builder.Environment.IsDevelopment() ? false : true; // PROD TRUE
-//    x.Audience = "challenger"; //This value has to be the same as the one provided in the authorization server configuration for the API resource
-//});
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
