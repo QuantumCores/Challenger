@@ -37,8 +37,8 @@ builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
 var challengeSettings = new ChallengeSettings();
 builder.Configuration.GetSection(nameof(ChallengeSettings)).Bind(challengeSettings);
 
-var discoverySettings = new DiscoverySettings();
-builder.Configuration.GetSection(nameof(DiscoverySettings)).Bind(discoverySettings);
+var discoverySettings = new Discovery();
+builder.Configuration.GetSection(nameof(Discovery)).Bind(discoverySettings);
 
 var challengeDefaultFormulas = new List<DefaultForumulaSetting>();
 builder.Configuration.GetSection("ChallengeDefaultFormulas").Bind(challengeDefaultFormulas);
@@ -68,7 +68,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<DiaryRecordRepository>().As<IDiaryRecordRepository>();
     builder.RegisterType<MealRecordRepository>().As<IMealRecordRepository>();
     builder.RegisterType<MealProductRepository>().As<IMealProductRepository>();
-
     builder.RegisterType<FastRecordRepository>().As<IFastRecordRepository>();
     builder.RegisterType<MealDishRepository>().As<IMealDishRepository>();
 
@@ -87,15 +86,11 @@ builder.Services.AddDbContext<ChallengerContext>(options =>
 builder.Services.AddDbContext<ChallengerFoodContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FoodConnection")));
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-builder.Services.AddSingleton(jwtSettings);
-
-
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
     {
         opt.RequireHttpsMetadata = false;
-        opt.Authority = jwtSettings.GetSection("identityUrl").Value;
+        opt.Authority = discoverySettings.IdentityApi;
         opt.Audience = "challenger";
     });
 
@@ -107,8 +102,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "AllowAnyOrigin",
                       builder =>
                       {
-                          builder//.WithOrigins("http://54.37.137.86", "https://54.37.137.86", "http://localhost:4200")
-                          .AllowAnyOrigin()
+                          builder.WithOrigins(
+                              discoverySettings.ChallengerApi,
+                              discoverySettings.ChallengerWeb,
+                              discoverySettings.IdentityApi)
+                          //.AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                           //.WithHeaders("content-type")

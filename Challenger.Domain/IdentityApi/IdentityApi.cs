@@ -13,10 +13,10 @@ namespace Challenger.Domain.IdentityApi
 {
     public class IdentityApi : RestApi, IIdentityApi
     {
-        private readonly DiscoverySettings _discoverySettings;
+        private readonly Discovery _discoverySettings;
 
         public IdentityApi(
-            DiscoverySettings discoverySettings,
+            Discovery discoverySettings,
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContextAccessor,
             ICorrelationIdProvider correlationIdProvider)
@@ -27,21 +27,21 @@ namespace Challenger.Domain.IdentityApi
 
         public async Task<List<ApplicationUser>> SearchUsersByName(string name, Guid userId)
         {
-            var url = $"{_discoverySettings.IdentityUrl}/User/Search?name={name}&userId={userId}";
+            var url = $"{_discoverySettings.IdentityApi}/User/Search?name={name}&userId={userId}";
             var result = await this.GetAsync<List<ApplicationUser>>(url, HttpClientType.Jwt);
             return result;
         }
 
         public async Task<List<ApplicationUser>> GetUsers(Guid[] userIds)
         {
-            var url = $"{_discoverySettings.IdentityUrl}/User/UsersInfo";
+            var url = $"{_discoverySettings.IdentityApi}/User/UsersInfo";
             var result = await this.PostAsync<List<ApplicationUser>>(url, userIds, HttpClientType.Jwt);
             return result;
         }
 
         public async Task<string> UpdateUser(string avatar, Guid userId)
         {
-            var url = $"{_discoverySettings.IdentityUrl}/User/Update?avatar={avatar}&userId={userId}";
+            var url = $"{_discoverySettings.IdentityApi}/User/Update?avatar={avatar}&userId={userId}";
             return await this.PutAsync<string>(url, null, HttpClientType.Jwt);
         }
     }
