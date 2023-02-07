@@ -1,4 +1,5 @@
-﻿using Challenger.Domain.DbModels;
+﻿using Challenger.Domain.Contracts.Identity;
+using Challenger.Domain.DbModels;
 using QuantumCore.Repository.Entities;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,6 @@ namespace Challenger.Domain.Dtos
 
         public bool AggregateMeasurementFormula { get; set; }
 
-        public List<UserChallengeDto> Participants { get; set; }
+        public List<ApplicationUser> Participants { get; set; }
     }
 }

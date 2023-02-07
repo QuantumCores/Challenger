@@ -33,6 +33,12 @@ namespace Challenger.Infrastructure.Repositories
             return _context.Users.SingleAsync(x => x.CorrelationId == correlationId);
         }
 
+        public Task<User> GetByCorrelationIdNoTracking(Guid correlationId)
+        {
+            return _context.Users.AsNoTracking()
+                                 .SingleAsync(x => x.CorrelationId == correlationId);
+        }
+
         public Task<List<User>> GetManyByCorrelationId(Guid[] guids)
         {
             return _context.Users.Where(x => guids.Contains(x.CorrelationId))

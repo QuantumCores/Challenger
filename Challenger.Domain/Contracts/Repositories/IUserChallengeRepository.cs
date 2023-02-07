@@ -13,6 +13,8 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<List<UserChallenge>> GetAllForUser(Guid userId);
 
+        Task<List<UserChallenge>> GetForChallenge(long id);
+
         Task<int> GetCountForUser(Guid userId);
 
         void Add(UserChallenge record);

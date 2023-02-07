@@ -56,7 +56,7 @@ namespace Challenger.Api.Controllers
         public async Task<UserDto> Update(UserDto update)
         {
             var userId = Guid.Parse(_tokenProvider.GetUserId());
-            if (update.CorrelationId != userId)
+            if (update.Id != userId)
             {
                 throw new InvalidOperationException();
             }
@@ -80,6 +80,7 @@ namespace Challenger.Api.Controllers
             var identity = await _identityApi.GetUsers(new Guid[] { userGuid });            
             var mapped = _mapper.Map<UserDto>(user);
             mapped.UserName = identity[0].UserName;
+            mapped.Email = identity[0].Email;
             mapped.Avatar = identity[0].Avatar;
             return mapped;
         }

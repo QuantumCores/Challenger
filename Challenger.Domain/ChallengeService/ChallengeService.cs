@@ -5,6 +5,7 @@ using Challenger.Domain.Contracts.Services;
 using Challenger.Domain.DbModels;
 using Challenger.Domain.Dtos;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,6 +38,23 @@ namespace Challenger.Domain.ChallengeService
             _formulaService = formulaService;
             _identityApi = identityApi;
             _mapper = mapper;
+        }
+
+        public async Task<ChallengeDto> GetChallenge(long id)
+        {
+            var entity = await _challengeRepository.GetWithAllData(id);
+            var allParticipants = entity.Participants.Select(x => x.UserCorrelationId).ToArray();
+            var users = await _identityApi.GetUsers(allParticipants);
+            var result = _mapper.Map<ChallengeDto>(entity);
+            var usersDict = users.ToDictionary(x => x.Id);
+
+            foreach (var participant in result.Participants)
+            {
+                participant.Avatar = usersDict[participant.Id].Avatar;
+                participant.UserName = usersDict[participant.Id].UserName;
+            }
+
+            return result;
         }
 
         public async Task<ChallengeDisplayDto[]> GetForUser(Guid userId)
@@ -94,7 +112,7 @@ namespace Challenger.Domain.ChallengeService
             var creator = await _userRepository.GetByCorrelationId(record.CreatorId);
             entity.UserId = creator.Id;
 
-            var participants = await _userRepository.GetManyByCorrelationId(record.Participants.Select(x => x.UserCorrelationId).ToArray());
+            var participants = await _userRepository.GetManyByCorrelationId(record.Participants.Select(x => x.Id).ToArray());
             var participantsDict = participants.ToDictionary(x => x.CorrelationId);
             foreach (var participant in entity.Participants)
             {
@@ -153,6 +171,96 @@ namespace Challenger.Domain.ChallengeService
             await _challengeRepository.SaveChanges();
 
             return true;
+        }
+
+        public async Task<ChallengeDto> UpdateChallenge(ChallengeDto record)
+        {
+            if (_challengeSettings.MaxParticipantsForRegular < record.Participants.Count)
+            {
+                throw new System.Exception();
+            }
+
+            var fit = _formulaService.ValidateFitFormula(record.FitFormula);
+            var gym = _formulaService.ValidateGymFormula(record.GymFormula);
+            var mes = _formulaService.ValidateMeasurementFormula(record.MeasurementFormula);
+
+            if (!(fit.IsValid && gym.IsValid && mes.IsValid))
+            {
+                throw new System.Exception("One of the formulas is invalid");
+            }
+
+            var entity = await _challengeRepository.Get(record.Id);
+            entity = _mapper.Map(record, entity);
+            var creator = await _userRepository.GetByCorrelationIdNoTracking(record.CreatorId);
+            entity.UserId = creator.Id;
+            entity.Participants = null;
+
+            await _challengeRepository.Update(entity);
+            await _challengeRepository.SaveChanges();
+
+            var original = await _userChallengeRepository.GetForChallenge(entity.Id);
+
+            var existing = original.ToDictionary(x => x.UserCorrelationId);
+            var update = record.Participants.ToDictionary(x => x.Id, x => new UserChallenge { UserCorrelationId = x.Id });
+            var partition = Partition(existing, update);
+
+            var rmvList = original.Where(x => x.UserCorrelationId != creator.CorrelationId &&
+                                              partition.toRmv.ContainsKey(x.UserCorrelationId))
+                                             .ToList();
+
+            foreach (var rmv in rmvList)
+            {
+                _userChallengeRepository.Remove(rmv);
+            }
+
+            var addList = await _userRepository.GetManyByCorrelationId(partition.toAdd.Select(x => x.Key).ToArray());
+            var addListDict = addList.ToDictionary(x => x.CorrelationId);
+            foreach (var add in addList)
+            {
+                _userChallengeRepository.Add(new UserChallenge
+                {
+                    ChallengeId = entity.Id,
+                    UserId = addListDict[add.CorrelationId].Id,
+                    UserCorrelationId = add.CorrelationId
+                });
+            }
+            
+            await _userChallengeRepository.SaveChanges();
+
+            var mapped = _mapper.Map<ChallengeDto>(entity);
+            mapped.Participants = record.Participants;
+
+            return mapped;
+        }
+
+        private (Dictionary<TKey, TVal> toAdd, Dictionary<TKey, TVal> toRmv, Dictionary<TKey, TVal> toUpd)
+            Partition<TKey, TVal>(Dictionary<TKey, TVal> existing, Dictionary<TKey, TVal> update)
+        {
+            var toAdd = new Dictionary<TKey, TVal>();
+            var toRmv = new Dictionary<TKey, TVal>();
+            var toUpd = new Dictionary<TKey, TVal>();
+
+            foreach (var key in update.Keys)
+            {
+                if (existing.ContainsKey(key))
+                {
+                    toUpd.Add(key, update[key]);
+                }
+                else
+                {
+                    toAdd.Add(key, update[key]);
+                }
+            }
+
+            foreach (var key in existing.Keys)
+            {
+                if (!update.ContainsKey(key))
+                {
+                    toRmv.Add(key, existing[key]);
+                }
+            }
+
+            return (toAdd, toRmv, toUpd);
         }
     }
 }

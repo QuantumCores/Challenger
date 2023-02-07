@@ -47,10 +47,16 @@ namespace Challenger.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public Task<ChallengeDisplayDto[]> Get()
+        [HttpGet("records")]
+        public Task<ChallengeDisplayDto[]> GetRecords()
         {
             return _challengeService.GetForUser(Guid.Parse(_tokenProvider.GetUserId()));
+        }
+
+        [HttpGet]
+        public Task<ChallengeDto> Get(long id)
+        {
+            return _challengeService.GetChallenge(id);
         }
 
         [HttpGet("Search")]
@@ -88,18 +94,11 @@ namespace Challenger.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<JsonResult> Update([FromBody] ChallengeDto record)
+        public Task<ChallengeDto> Update([FromBody] ChallengeDto record)
         {
             var userId = Guid.Parse(_tokenProvider.GetUserId());
-            if (userId != record.CreatorId)
-            {
-                return Json(new { IsSuccess = false });
-            }
-
-            await _challengeRepository.Update(_mapper.Map<Challenge>(record));
-            await _challengeRepository.SaveChanges();
-
-            return Json(new { IsSuccess = true });
+            record.CreatorId = userId;
+            return _challengeService.UpdateChallenge(record);
         }
 
         [HttpDelete]

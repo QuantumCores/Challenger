@@ -49,6 +49,12 @@ namespace Challenger.Infrastructure.Repositories
                                           .CountAsync();
         }
 
+        public Task<List<UserChallenge>> GetForChallenge(long challengeId)
+        {
+            return _context.UserChallenges.Where(x => x.ChallengeId == challengeId)
+                                          .ToListAsync();
+        }
+
         public void Remove(UserChallenge record)
         {
             _context.UserChallenges.Remove(record);

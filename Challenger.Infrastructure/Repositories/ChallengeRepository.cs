@@ -32,7 +32,7 @@ namespace Challenger.Infrastructure.Repositories
         {
             return _context.Challenges.Include(x => x.User)
                                       .Include(x => x.Participants)
-                                        .ThenInclude(x => x.User)
+                                        //.ThenInclude(x => x.User)
                                       .Where(x => x.Id == id)
                                       .SingleAsync();
         }

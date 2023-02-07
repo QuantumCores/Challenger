@@ -14,6 +14,8 @@ namespace Challenger.Domain.Contracts.Repositories
 
         Task<User> GetByCorrelationId(Guid guid);
 
+        Task<User> GetByCorrelationIdNoTracking(Guid correlationId);
+
         Task<List<User>> GetManyByCorrelationId(Guid[] guid);
 
         Task<long> GetIdByCorrelationId(string correlationId);

@@ -81,7 +81,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTokenProvider(builder.Configuration);
 
 builder.Services.AddDbContext<ChallengerContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
+           .EnableSensitiveDataLogging());
 
 builder.Services.AddDbContext<ChallengerFoodContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FoodConnection")));

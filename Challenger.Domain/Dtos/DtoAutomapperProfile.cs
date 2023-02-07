@@ -10,20 +10,22 @@ namespace Challenger.Domain.Dtos
     {
         public DtoAutomapperProfile()
         {
-            CreateMap<User, ApplicationUser>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.CorrelationId));                
+            CreateMap<ApplicationUser, User>()
+                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.Id))
+                .ReverseMap();
+
+            CreateMap<ApplicationUser, UserChallenge>()
+                .ForMember(x => x.UserCorrelationId, opt => opt.MapFrom(y => y.Id))
+                .ForMember(x => x.User, opt => opt.Ignore())
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<ChallengeDisplayDto, Challenge>()
+                .ForMember(x => x.User, opt => opt.MapFrom(y => y.Creator))
+                .ReverseMap();
 
             CreateMap<ChallengeDto, Challenge>()
                 .ReverseMap();
-
-            CreateMap<User, ApplicationUser>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.CorrelationId));
-
-            CreateMap<Challenge, ChallengeDisplayDto>()
-                .ForMember(x => x.Creator, opt => opt.MapFrom(y => y.User));
-
-            CreateMap<UserChallenge, ApplicationUser>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.UserCorrelationId));
 
             CreateMap<UserChallengeDto, UserChallenge>()
                 .ReverseMap();
@@ -38,14 +40,14 @@ namespace Challenger.Domain.Dtos
                 .ReverseMap();
 
             CreateMap<UserDto, User>()
-                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.CorrelationId))
+                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.Id))
                 .ForMember(x => x.Height, opt => opt.MapFrom(y => y.Height))
                 .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
                 .ForMember(x => x.Sex, opt => opt.MapFrom(y => y.Sex))
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
             CreateMap<User, UserDto>()
-                .ForMember(x => x.CorrelationId, opt => opt.MapFrom(y => y.CorrelationId))
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.CorrelationId))
                 .ForMember(x => x.Height, opt => opt.MapFrom(y => y.Height))
                 .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(y => y.DateOfBirth))
                 .ForMember(x => x.Sex, opt => opt.MapFrom(y => y.Sex));
