@@ -111,6 +111,9 @@ namespace Challenger.Api.Controllers
                 return Json(new { IsSuccess = false });
             }
 
+            await _userChallengeRepository.RemoveForChallenge(id);
+            await _userChallengeRepository.SaveChanges();
+
             _challengeRepository.Remove(toDelete);
             await _challengeRepository.SaveChanges();
 

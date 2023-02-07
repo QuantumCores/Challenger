@@ -60,6 +60,12 @@ namespace Challenger.Infrastructure.Repositories
             _context.UserChallenges.Remove(record);
         }
 
+        public async Task RemoveForChallenge(long challengeId)
+        {
+            var toRemove = await _context.UserChallenges.Where(x => x.ChallengeId == challengeId).ToArrayAsync();
+            _context.UserChallenges.RemoveRange(toRemove);
+        }
+
         public Task SaveChanges()
         {
             return _context.SaveChangesAsync();

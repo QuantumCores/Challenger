@@ -23,6 +23,8 @@ namespace Challenger.Domain.Contracts.Repositories
 
         void Remove(UserChallenge record);
 
+        Task RemoveForChallenge(long challengeId);
+
         Task SaveChanges();
     }
 }
