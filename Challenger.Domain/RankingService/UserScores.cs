@@ -9,6 +9,12 @@ namespace Challenger.Domain.RankingService
 
         public double TotalScore { get; set; }
 
+        public double TotalFitScore { get; set; }
+
+        public double TotalGymScore { get; set; }
+
+        public double TotalMeasurementScore { get; set; }
+
         public List<RankingScore> Scores { get; set; }
     }
 }

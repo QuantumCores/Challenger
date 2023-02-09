@@ -134,7 +134,7 @@ namespace Challenger.Domain.RankingService
                     }
                 }
 
-                var ordered = usersDictionary[userKey].OrderBy(x => x.Key);
+                var ordered = usersDictionary[userKey].OrderBy(x => x.Key).ToArray();
                 var fullFitScore = 0.0;
                 var fullGymScore = 0.0;
                 var fullMeasurementScore = 0.0;
@@ -168,7 +168,14 @@ namespace Challenger.Domain.RankingService
                     }
                 }
 
-                userScore.TotalScore = ordered.Sum(x => x.Value.FullFitScore + x.Value.FullGymScore + x.Value.FullMeasurementScore);
+                if (ordered.Length > 0)
+                {
+                    var last = ordered[^1].Value;
+                    userScore.TotalScore = last.FullFitScore + last.FullGymScore + last.FullMeasurementScore;
+                    userScore.TotalFitScore = last.FullFitScore;
+                    userScore.TotalGymScore = last.FullGymScore;
+                    userScore.TotalMeasurementScore = last.FullMeasurementScore;
+                }
                 userScore.Scores = ordered.Select(x => x.Value).ToList();
                 result.UsersScores.Add(userScore);
             }
