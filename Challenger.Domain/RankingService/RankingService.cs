@@ -44,7 +44,7 @@ namespace Challenger.Domain.RankingService
             var challenge = await _challengeRepository.GetWithAllData(challengeId);
             var formulas = await _formulaService.GetFormulas(challenge);
 
-            var usersIds = challenge.Participants.Select(x => x.UserCorrelationId).ToArray();
+            var usersIds = challenge.Participants.Select(x => x.UserCorrelationId).Distinct().ToArray();
 
             var fitRecords = await _fitRecordRepository.GetAllByTimeRange(challenge.StartDate, challenge.EndDate, usersIds);
             var gymRecords = await _gymRecordRepository.GetAllByTimeRange(challenge.StartDate, challenge.EndDate, usersIds);
@@ -54,7 +54,7 @@ namespace Challenger.Domain.RankingService
             var userGymRecords = gymRecords.ToLookup(x => x.User.CorrelationId, x => _mapper.Map<GymFormulaRecord>(x));
             var userMesRecords = mesRecords.ToLookup(x => x.User.CorrelationId, x => _mapper.Map<MeasurementFormulaRecord>(x));
 
-            var usersDictionary = usersIds.ToHashSet().ToDictionary(x => x, x => new Dictionary<DateTime, RankingScore>());
+            var usersDictionary = usersIds.ToDictionary(x => x, x => new Dictionary<DateTime, RankingScore>());
 
             var usersIdentities = await _identityApi.GetUsers(usersIds);
             var usersIdentitiesDict = usersIdentities.ToDictionary(x => x.Id);

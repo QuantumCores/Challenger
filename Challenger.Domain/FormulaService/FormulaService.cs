@@ -67,7 +67,7 @@ namespace Challenger.Domain.FormulaService
                 MeasurementFormula = mes,
             };
 
-            _formulaCache.Add(challenge.Id, tmp);
+            _formulaCache.TryAdd(challenge.Id, tmp);
         }
 
         private void CacheDefaultFormulas(DefaultForumulaSetting[] settings)
@@ -85,7 +85,7 @@ namespace Challenger.Domain.FormulaService
                     MeasurementFormula = mes,
                 };
 
-                _defaultFormulaCache.Add(setting.Formula, tmp);
+                _defaultFormulaCache.TryAdd(setting.Formula, tmp);
             }
         }
 
