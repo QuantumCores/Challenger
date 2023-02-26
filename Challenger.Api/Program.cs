@@ -13,7 +13,6 @@ using Challenger.Infrastructure;
 using Challenger.Infrastructure.Repositories;
 using Heimdal.Token;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using QuantumCore.Logging.Abstractions;
 using QuantumCore.Logging.Api;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,8 +28,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 // Add and configure CHALLENGER Env settings
 builder.Configuration.AddEnvironmentVariables(prefix: "CHALLENGER_");
+
 
 var rankingSettings = new RankingSettings();
 builder.Configuration.GetSection(nameof(RankingSettings)).Bind(rankingSettings);
@@ -90,11 +93,22 @@ builder.Services.AddDbContext<ChallengerFoodContext>(options =>
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
     {
+        // TODO change to true when HTTPS will be used
         opt.RequireHttpsMetadata = false;
         opt.Authority = discoverySettings.IdentityApi;
-        opt.Audience = "challenger";
+        opt.Audience = "challenger";        
     });
 
+// TEST THIS IF IT WORKS
+//https://identityserver4.readthedocs.io/en/latest/quickstarts/1_client_credentials.html#further-experiments
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("ApiScope", policy =>
+//    {
+//        policy.RequireAuthenticatedUser();
+//        policy.RequireClaim("scope", "challenger");
+//    });
+//});
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(UserDto).Assembly);
 
