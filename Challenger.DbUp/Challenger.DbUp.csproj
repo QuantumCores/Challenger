@@ -32,6 +32,9 @@
     <EmbeddedResource Include="DB\Scripts\03\003_dbo.AddChallenge.sql" />
     <EmbeddedResource Include="DB\Scripts\03\004_dbo.AddFormulasToChallenge.sql" />
     <EmbeddedResource Include="DB\Scripts\03\005_dbo.AddAggregation.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\006_dbo.AddActivityType.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\007_dbo.SeedActivityType.sql" />
+    <EmbeddedResource Include="DB\Scripts\03\008_dbo.UseActivityType.sql" />
   </ItemGroup>
 
   <ItemGroup>

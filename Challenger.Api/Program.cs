@@ -64,6 +64,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<MeasurementRepository>().As<IMeasurementRepository>();
     builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>();
     builder.RegisterType<UserChallengeRepository>().As<IUserChallengeRepository>();
+    builder.RegisterType<ActivityTypeRepository>().As<IActivityTypeRepository>();
 
     builder.RegisterType<ProductRepository>().As<IProductRepository>();
     builder.RegisterType<DishRepository>().As<IDishRepository>();

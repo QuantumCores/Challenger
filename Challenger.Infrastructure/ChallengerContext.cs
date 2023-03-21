@@ -22,5 +22,7 @@ namespace Challenger.Infrastructure
         public DbSet<Challenge> Challenges { get; set; }
 
         public DbSet<UserChallenge> UserChallenges { get; set; }
+
+        public DbSet<ActivityType> ActivityTypes { get; set; }
     }
 }

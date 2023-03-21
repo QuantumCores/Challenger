@@ -16,7 +16,9 @@ namespace Challenger.Domain.DbModels
 
         public DateTime RecordDate { get; set; }
 
-        public string Excersize { get; set; }
+        public long ActivityTypeId { get; set; }
+
+        public ActivityType ActivityType { get; set; }
 
         public int? Duration { get; set; }
 

@@ -1,5 +1,5 @@
 
--- ADD MISSIN MIGRATION
+-- ADD MISSING MIGRATION
   INSERT INTO [ChallengerIdentity].[dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion])
   VALUES ('20221111231557_IdentityInit', '3.1.30')
 GO

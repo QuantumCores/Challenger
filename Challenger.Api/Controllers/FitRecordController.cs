@@ -16,19 +16,28 @@ namespace Challenger.Api.Controllers
     {
         private readonly ITokenProvider _tokenProvider;
         private readonly IFitRecordRepository _fitRecordRepository;
+        private readonly IActivityTypeRepository _activityTypeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public FitRecordController(
             ITokenProvider tokenProvider,
             IFitRecordRepository fitRecordRepository,
+            IActivityTypeRepository activityTypeRepository,
             IUserRepository userRepository,
             IMapper mapper)
         {
             _tokenProvider = tokenProvider;
             _fitRecordRepository = fitRecordRepository;
+            _activityTypeRepository = activityTypeRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+        }
+
+        [HttpGet("ActivityTypes")]
+        public Task<ActivityType[]> GetActivityTypes()
+        {
+            return _activityTypeRepository.GetAll();
         }
 
         [HttpGet]

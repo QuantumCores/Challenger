@@ -10,7 +10,7 @@ namespace Challenger.Domain.Dtos
 
         public DateTime RecordDate { get; set; }
 
-        public string Excersize { get; set; }
+        public long ActivityTypeId { get; set; }
 
         public int? Duration { get; set; }
 
